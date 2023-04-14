@@ -1,36 +1,51 @@
 [{
-        "id_user": 2,
-        "average_score": 8.5,
-        "id_class": 1
-    },
-    {
-        "id_user": 4,
-        "average_score": 7.5,
-        "id_class": 2
-    },
-    {
-        "id_user": 6,
-        "average_score": 7.5,
-        "id_class": 3
-    },
-    {
-        "id_user": 7,
-        "average_score": 7.5,
-        "id_class": 1
-    },
-    {
-        "id_user": 8,
-        "average_score": 7.5,
-        "id_class": 2
-    },
-    {
-        "id_user": 9,
-        "average_score": 7.5,
-        "id_class": 3
-    },
-    {
-        "id_user": 10,
-        "average_marks": 7.5,
+    "model": "student.student",
+    "pk": 2,
+    "fields": {
+        "avg_score": 8.5,
         "id_class": 1
     }
-]
+}, {
+    "model": "student.student",
+    "pk": 4,
+    "fields": {
+        "avg_score": 7.5,
+        "id_class": 2
+    }
+}, {
+    "model": "student.student",
+    "pk": 6,
+    "fields": {
+        "avg_score": 7.5,
+        "id_class": 3
+    }
+}, {
+    "model": "student.student",
+    "pk": 7,
+    "fields": {
+        "id_user": 7,
+        "avg_score": 7.5,
+        "id_class": 1
+    }
+}, {
+    "model": "student.student",
+    "pk": 8,
+    "fields": {
+        "avg_score": 7.5,
+        "id_class": 2
+    }
+}, {
+    "model": "student.student",
+    "pk": 9,
+    "fields": {
+        "avg_score": 7.5,
+        "id_class": 3
+    }
+}, {
+    "model": "student.student",
+    "pk": 10,
+    "fields": {
+        "avg_score": 7.5,
+        "id_class": 1
+    }
+}]

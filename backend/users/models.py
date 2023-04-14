@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class Users(models.Model):
     id = models.AutoField(primary_key=True)
     username = models.CharField(max_length=255)
@@ -12,6 +13,8 @@ class Users(models.Model):
     gender = models.BooleanField()
     dob = models.DateField()
     avatar = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def _str_(self):
         return self.username

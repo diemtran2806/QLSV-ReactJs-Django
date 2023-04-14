@@ -1,18 +1,23 @@
-{
-    "fields": [{
-            "id_class": 1,
-            "class_name": "Lớp CNTT1",
-            "id_lecturer": 1
-        },
-        {
-            "id_class": 2,
-            "class_name": "Lớp CNTT2",
-            "id_lecturer": 3
-        },
-        {
-            "id_class": 3,
-            "class_name": "Lớp Kinh tế 1",
-            "id_lecturer": 5
-        }
-    ]
-}
+[{
+    "model": "class.class",
+    "pk": 1,
+    "fields": {
+        "id_class": 1,
+        "class_name": "Lớp CNTT1",
+        "id_lecturer": 1
+    }
+}, {
+    "model": "class.class",
+    "pk": 2,
+    "fields": {
+        "class_name": "Lớp CNTT2",
+        "id_lecturer": 1
+    }
+}, {
+    "model": "class.class",
+    "pk": 3,
+    "fields": {
+        "class_name": "Lớp Kinh tế 1",
+        "id_lecturer": 1
+    }
+}]
