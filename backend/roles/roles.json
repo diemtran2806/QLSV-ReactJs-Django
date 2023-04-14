@@ -1,0 +1,15 @@
+[{
+        "model": "roles.Roles",
+        "pk": 1,
+        "fields": {
+            "role_name": "student"
+        }
+    },
+    {
+        "model": "roles.Roles",
+        "pk": 2,
+        "fields": {
+            "role_name": "lecturer"
+        }
+    }
+]

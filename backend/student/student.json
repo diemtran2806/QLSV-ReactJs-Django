@@ -1,0 +1,36 @@
+[{
+        "id_user": 2,
+        "average_score": 8.5,
+        "id_class": 1
+    },
+    {
+        "id_user": 4,
+        "average_score": 7.5,
+        "id_class": 2
+    },
+    {
+        "id_user": 6,
+        "average_score": 7.5,
+        "id_class": 3
+    },
+    {
+        "id_user": 7,
+        "average_score": 7.5,
+        "id_class": 1
+    },
+    {
+        "id_user": 8,
+        "average_score": 7.5,
+        "id_class": 2
+    },
+    {
+        "id_user": 9,
+        "average_score": 7.5,
+        "id_class": 3
+    },
+    {
+        "id_user": 10,
+        "average_marks": 7.5,
+        "id_class": 1
+    }
+]
