@@ -1,0 +1,199 @@
+[{
+        "model": "users.users",
+        "pk": 1,
+        "fields": {
+            "username": "user1",
+            "password": "password1",
+            "name": "User One",
+            "email": "user1@example.com",
+            "phone": "0123456789",
+            "id_role": 2,
+            "cccd": "1234567890",
+            "gender": true,
+            "dob": "2000-01-01",
+            "created_at": "2022-04-09T12:00:00Z",
+            "updated_at": "2022-04-09T12:00:00Z",
+            "avatar": "https://haycafe.vn/wp-content/uploads/2022/02/anh-meo-cute-hinh-cute-meo.jpg"
+        }
+    },
+    {
+        "model": "users.users",
+        "pk": 2,
+        "fields": {
+            "username": "user2",
+            "password": "password2",
+            "name": "User Two",
+            "email": "user2@example.com",
+            "phone": "0123456789",
+            "id_role": 1,
+            "cccd": "1234567890",
+            "gender": true,
+            "dob": "2000-01-01",
+            "created_at": "2022-04-09T12:00:00Z",
+            "updated_at": "2022-04-09T12:00:00Z",
+            "avatar": "https://img.meta.com.vn/Data/image/2021/09/22/anh-meo-cute-de-thuong-dang-yeu-44.jpg"
+        }
+    },
+    {
+        "model": "users.users",
+        "pk": 3,
+        "fields": {
+            "username": "user3",
+            "password": "password3",
+            "name": "User Three",
+            "email": "user3@example.com",
+            "phone": "0123456789",
+            "id_role": 2,
+            "cccd": "1234567890",
+            "gender": true,
+            "dob": "2000-01-01",
+            "created_at": "2022-04-09T12:00:00Z",
+            "updated_at": "2022-04-09T12:00:00Z",
+            "avatar": "https://phunugioi.com/wp-content/uploads/2020/10/hinh-ve-be-meo-cute-dang-yeu-dang-uong-tra-sua.jpg"
+        }
+    },
+    {
+        "model": "users.users",
+        "pk": 4,
+        "fields": {
+            "username": "user4",
+            "password": "password4",
+            "name": "User Four",
+            "email": "user4@example.com",
+            "phone": "0123456789",
+            "id_role": 1,
+            "cccd": "1234567890",
+            "gender": true,
+            "dob": "2000-01-01",
+            "created_at": "2022-04-09T12:00:00Z",
+            "updated_at": "2022-04-09T12:00:00Z",
+            "avatar": "https://inkythuatso.com/uploads/thumbnails/800/2022/05/anh-meo-cute-trai-tim-6-10-11-49-23.jpg"
+        }
+    },
+    {
+        "model": "users.users",
+        "pk": 5,
+        "fields": {
+            "username": "user5",
+            "password": "password5",
+            "name": "User Five",
+            "email": "user5@example.com",
+            "phone": "0123456789",
+            "id_role": 2,
+            "cccd": "1234567890",
+            "gender": true,
+            "dob": "2000-01-01",
+            "created_at": "2022-04-09T12:00:00Z",
+            "updated_at": "2022-04-09T12:00:00Z",
+            "avatar": "https://ctp.edu.vn/wp-content/uploads/2022/05/1d83a6d88d8be5b041a9a98fd5048311.jpg"
+        }
+    },
+    {
+        "model": "users.users",
+        "pk": 6,
+        "fields": {
+            "username": "user6",
+            "password": "password6",
+            "name": "User Six",
+            "email": "user6@example.com",
+            "phone": "0123456789",
+            "id_role": 1,
+            "cccd": "1234567890",
+            "gender": true,
+            "dob": "2000-01-01",
+            "created_at": "2022-04-09T12:00:00Z",
+            "updated_at": "2022-04-09T12:00:00Z",
+            "avatar": "https://tinhayvip.com/wp-content/uploads/2021/11/anh-meo-che-sieu-bua-khien-cong-dong-mang-cuoi-bo-9.jpg"
+        }
+    },
+    {
+        "model": "users.users",
+        "pk": 7,
+        "fields": {
+            "username": "user7",
+            "password": "password7",
+            "name": "User Serven",
+            "email": "user7@example.com",
+            "phone": "0123456789",
+            "id_role": 1,
+            "cccd": "1234567890",
+            "gender": false,
+            "dob": "2000-01-01",
+            "created_at": "2022-04-09T12:00:00Z",
+            "updated_at": "2022-04-09T12:00:00Z",
+            "avatar": "https://demoda.vn/wp-content/uploads/2022/01/anh-meme-meo-doi.jpg"
+        }
+    },
+    {
+        "model": "users.users",
+        "pk": 8,
+        "fields": {
+            "username": "user8",
+            "password": "password8",
+            "name": "User Eight",
+            "email": "user8@example.com",
+            "phone": "0123456789",
+            "id_role": 1,
+            "cccd": "1234567890",
+            "gender": true,
+            "dob": "2000-01-01",
+            "created_at": "2022-04-09T12:00:00Z",
+            "updated_at": "2022-04-09T12:00:00Z",
+            "avatar": "https://www.studytienganh.vn/upload/2023/03/116903.jpg"
+        }
+    },
+    {
+        "model": "users.users",
+        "pk": 9,
+        "fields": {
+            "username": "user9",
+            "password": "password9",
+            "name": "User Nine",
+            "email": "user9@example.com",
+            "phone": "0123456789",
+            "id_role": 1,
+            "cccd": "1234567890",
+            "gender": false,
+            "dob": "2000-01-01",
+            "created_at": "2022-04-09T12:00:00Z",
+            "updated_at": "2022-04-09T12:00:00Z",
+            "avatar": "https://petmaster.vn/petroom/wp-content/uploads/2020/04/meo-golden-2.jpg"
+        }
+    },
+    {
+        "model": "users.users",
+        "pk": 10,
+        "fields": {
+            "username": "user10",
+            "password": "password10",
+            "name": "User Ten",
+            "email": "user10@example.com",
+            "phone": "0123456789",
+            "id_role": 1,
+            "cccd": "1234567890",
+            "gender": true,
+            "dob": "2000-01-01",
+            "created_at": "2022-04-09T12:00:00Z",
+            "updated_at": "2022-04-09T12:00:00Z",
+            "avatar": "https://woow.vn/wp-content/uploads/meo-meme.jpeg"
+        }
+    },
+    {
+        "model": "users.users",
+        "pk": 11,
+        "fields": {
+            "username": "user11",
+            "password": "password11",
+            "name": "User Elevent",
+            "email": "user11@example.com",
+            "phone": "0123456789",
+            "id_role": 1,
+            "cccd": "1234567890",
+            "gender": false,
+            "dob": "2000-01-01",
+            "created_at": "2022-04-09T12:00:00Z",
+            "updated_at": "2022-04-09T12:00:00Z",
+            "avatar": "https://dthezntil550i.cloudfront.net/86/latest/861911302007288750002221253/05f85cab-dc3a-48e3-81ff-b7347d2e450b.png"
+        }
+    }
+]

@@ -1,0 +1,28 @@
+[{
+        "model": "lecturer.lecturer",
+        "pk": 1,
+        "fields": {
+            "id_user": 1,
+            "is_admin": true,
+            "id_faculty": 1
+        }
+    },
+    {
+        "model": "lecturer.lecturer",
+        "pk": 2,
+        "fields": {
+            "id_user": 3,
+            "is_admin": false,
+            "id_faculty": 2
+        }
+    },
+    {
+        "model": "lecturer.lecturer",
+        "pk": 3,
+        "fields": {
+            "id_user": 5,
+            "is_admin": false,
+            "id_faculty": 3
+        }
+    }
+]
