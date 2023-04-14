@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import idstyle from "./ListTable.module.css";
+import tableStyle from "./ListTable.module.css";
 
 const TableList = (props) => {
   const [datas, setDatas] = useState(props.data);
@@ -29,56 +29,61 @@ const TableList = (props) => {
 
 
   const renderTableData = () => {
-    const header = Object.keys(datas[0])
-    return datas.map((data, index) => {
-      return (
-        <tr key={data.id}>
-          <td>
-            <input value={data.id} type="checkbox" onChange={handleCheck} checked={checked.includes(data.id)}/>
-          </td>
-          {
-            header.map((key, index)=>{
-              if(key !== 'id'){
-                return(
-                  <td>
-                    {
-                      data[key]
+    return(
+        datas.map((data, index) => {
+          return (
+              <tr key={data.id}>
+                <td className={tableStyle.relative}>
+                  <input className={tableStyle.center} value={data.id} type="checkbox" onChange={handleCheck} checked={checked.includes(data.id)}/>
+                </td>
+                {
+                  header.map((key, index)=>{
+                    if(key !== 'id'){
+                      return(
+                        <td>
+                          {
+                            data[key]
+                          }
+                        </td>
+                      )
                     }
-                  </td>
-                )
-              }
-            })
-          }
-        </tr>
-      )
-    })
+                  })
+                }
+              </tr>
+          )
+        })
+    )
   };
 
   const renderTableHeader = () => {
     return (
         <>
-          <th>
-            <input type="checkbox" checked={datas.length === checked.length} onChange={handleCheckAll}/>
-          </th>
-          {
-            header.map((key, index) => {
-                if(key !== 'id'){
-                  return(
-                    <th>{key.toUpperCase()}</th>
-                  )
-                }
+          <thead>
+            <tr>
+              <th>
+                <input type="checkbox" checked={datas.length === checked.length} onChange={handleCheckAll}/>
+              </th>
+              {
+                header.map((key, index) => {
+                    if(key !== 'id'){
+                      return(
+                        <th>{key.toUpperCase()}</th>
+                      )
+                    }
+                  }
+                )
               }
-            )
-          }
+            </tr>
+          </thead>
         </>
     )
   }
 
   return (
     <>
-      <table>
+      <table className="tableStyle.data">
+        {renderTableHeader()}
         <tbody>
-          {renderTableHeader()}
           {renderTableData()}
         </tbody>
       </table>
