@@ -3,6 +3,7 @@ import "./App.css";
 import RootLayout from "./pages/Root";
 import HomePage from "./pages/Home";
 import FacultyPage from "./pages/Faculty";
+import StudentPage from "./pages/Student";
 import LoginPage from "./pages/Login";
 
 const router = createBrowserRouter([
@@ -22,7 +23,7 @@ const router = createBrowserRouter([
       },
       {
         path: "student",
-        element: <FacultyPage />,
+        element: <StudentPage />,
       },
       {
         path: "lecture",
