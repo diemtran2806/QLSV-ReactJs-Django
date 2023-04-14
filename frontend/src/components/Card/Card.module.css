@@ -9,13 +9,6 @@ h4 {
 	display: none;
 }
 
-.navbar {
-	z-index: 1;
-	position: fixed;
-	width: 100%;
-	top: 0;
-}
-
 .search {
 	padding: 6px;
 	border: 1px solid #255783;
@@ -46,7 +39,13 @@ button, input {
 	outline: none;
 	border: none;
 }
+
 /*login*/
+.wrapperInput {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
 .wapperLogin {
 	height: 100%;
 	display: flex;
@@ -63,11 +62,6 @@ button, input {
 	box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
 
-.error {
-	color: red;
-	font-size: 12px;
-	margin-top: 24px;
-}
 /* modal */
 .modal {
 	position: fixed;
@@ -130,24 +124,13 @@ header.modalHeader {
 	opacity: 0.8;
 }
 
-.modal-body {
+.body {
 	padding: 32px;
 	/*  overflow-y: scroll;
     scrollbar-width: thin;
     position: relative; */
 }
-
-.modal-input {
-	border: 1px solid #ccc;
-	width: 100%;
-	padding: 10px;
-	margin-bottom: 12px;
-	margin-top: 12px;
-	color: #333;
-	font-weight: 500;
-}
-
-.modal-form {
+.form {
 	margin-top: 12px;
 	text-align: left;
 }
@@ -156,11 +139,6 @@ header.modalHeader {
 	display: flex;
 	justify-content: space-between;
 	margin-top: 12px;
-}
-
-.modal-label {
-	margin-bottom: 12px;
-	font-size: 14px;
 }
 
 @keyframes modalFadeIn {from { transform:translateY(-140px);

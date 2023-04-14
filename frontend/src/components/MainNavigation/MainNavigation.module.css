@@ -5,6 +5,17 @@
 	background-color: #283c4e;
 	justify-content: space-between;
 	align-items: center;
+	z-index: 1;
+	position: fixed;
+	width: 100%;
+	top: 0;
+}
+
+.navbar {
+	z-index: 1;
+	position: fixed;
+	width: 100%;
+	top: 0;
 }
 
 .text {
