@@ -38,13 +38,15 @@ const TableList = (props) => {
           </td>
           {
             header.map((key, index)=>{
-              return(
-                <td>
-                  {
-                    data[key]
-                  }
-                </td>
-              )
+              if(key !== 'id'){
+                return(
+                  <td>
+                    {
+                      data[key]
+                    }
+                  </td>
+                )
+              }
             })
           }
         </tr>
@@ -59,13 +61,19 @@ const TableList = (props) => {
             <input type="checkbox" checked={datas.length === checked.length} onChange={handleCheckAll}/>
           </th>
           {
-            header.map((key, index) => <th>{key.toUpperCase()}</th>)
+            header.map((key, index) => {
+                if(key !== 'id'){
+                  return(
+                    <th>{key.toUpperCase()}</th>
+                  )
+                }
+              }
+            )
           }
         </>
     )
   }
 
-  
   return (
     <>
       <table>
