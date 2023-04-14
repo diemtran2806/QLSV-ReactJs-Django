@@ -1,0 +1,33 @@
+[{
+        "model": "faculty.faculty",
+        "pk": 1,
+        "fields": {
+            "id_faculty": 1,
+            "name_faculty": "Khoa công nghệ thông tin"
+        }
+    },
+    {
+        "model": "faculty.faculty",
+        "pk": 2,
+        "fields": {
+            "id_faculty": 2,
+            "name_faculty": "Khoa kinh tế"
+        }
+    },
+    {
+        "model": "faculty.faculty",
+        "pk": 3,
+        "fields": {
+            "id_faculty": 3,
+            "name_faculty": "Khoa y khoa"
+        }
+    },
+    {
+        "model": "faculty.faculty",
+        "pk": 4,
+        "fields": {
+            "id_faculty": 4,
+            "name_faculty": "Khoa kỹ thuật"
+        }
+    }
+]
