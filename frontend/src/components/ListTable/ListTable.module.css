@@ -35,10 +35,14 @@ thead tr:hover {
     background-color: transparent;
 }
 
-.relative{
+.textcenter{
     text-align: center;
 }
 
-.center{
-    margin: 0 auto;
+button{
+    background-color: rgba(255, 255, 255, 0);
+}
+
+td button{
+    font-size: 17px;
 }

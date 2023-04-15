@@ -7,7 +7,7 @@ const FacultyPage = () => {
     { id: 4, name: 'Asad', age: 25, email: 'asad@email.com',hihi: 'wasif@email.com'},
   ]
   return <>
-        <TableList data={students}/>
+        <TableList data={students} update={true} del={true} checkbox={true} detail={true}/>
   </>;
 };
 
