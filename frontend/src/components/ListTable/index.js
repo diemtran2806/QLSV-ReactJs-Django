@@ -151,9 +151,7 @@ const TableList = (props) => {
     <>
       <table className="tableStyle.data">
         {renderTableHeader()}
-        <tbody>
-          {renderTableData()}
-        </tbody>
+        {renderTableData()}
       </table>
     </>
 )
