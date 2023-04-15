@@ -32,8 +32,8 @@ function MainNavigation() {
           </NavLink>
         </div>
       </div>
-      <div class="menu">
-        <div class="wrapper-button">
+      <div className="menu">
+        <div className="wrapper-button">
           <div className={classes.wrapperButton}>
             <NavLink to="/login" className={classes.text}>
               Đăng nhập
