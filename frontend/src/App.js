@@ -15,11 +15,11 @@ const router = createBrowserRouter([
       { index: true, element: <HomePage /> },
       {
         path: "faculty",
-        element: <FacultyPage />,
+        element: <FacultyPage  admin={false}/>,
       },
       {
         path: "class",
-        element: <FacultyPage />,
+        element: <HomePage/>,
       },
       {
         path: "student",
@@ -27,7 +27,7 @@ const router = createBrowserRouter([
       },
       {
         path: "lecture",
-        element: <FacultyPage />,
+        element: <HomePage />,
       },
       {
         path: "login",

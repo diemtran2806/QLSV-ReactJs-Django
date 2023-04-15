@@ -60,6 +60,9 @@ const TableList = (props) => {
                 :
                   <></>
               }
+
+              <th>STT</th>
+
               
               {
                 header.map((key, index) => {
@@ -77,11 +80,11 @@ const TableList = (props) => {
               }
               
               {
-                update?<th>Xóa</th>:<></>
+                del?<th>Xóa</th>:<></>
               }
 
               {
-                detail?<th>Xóa</th>:<></>
+                detail?<th>Chi tiết</th>:<></>
               }
             </tr>
           </thead>
@@ -94,7 +97,7 @@ const TableList = (props) => {
         datas.map((data, index) => {
           return (
               <tr key={data.id}>
-
+                    
                 {
                   checkbox?
                     <td className={tableStyle.textcenter}>
@@ -103,6 +106,10 @@ const TableList = (props) => {
                   :
                   <></>
                 }
+
+                <td td className={tableStyle.textcenter}>
+                  {index}
+                </td> 
 
                 {
                   header.map((key, index)=>{
