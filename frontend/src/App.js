@@ -23,7 +23,7 @@ const router = createBrowserRouter([
       },
       {
         path: "student",
-        element: <StudentPage />,
+        element: <StudentPage admin={true}/>,
       },
       {
         path: "lecture",
