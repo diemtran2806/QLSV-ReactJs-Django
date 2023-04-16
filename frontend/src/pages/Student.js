@@ -3,6 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import TableList from "../components/ListTable";
+import BodyBox from "../components/BodyBox";
 const StudentsPage = (props) => {
   const [students, setStudents] = useState([
     { id: 1, "Tên": 'sdfsd', "Số điện thoại": "0378945213", "email": 'wasif@email.com',"CCCD": 'wasif@email.com', "Giới tính":"Nam","Ngày sinh":"19/05/2002","Lớp":"20T2", avatar:"https://img.com/sdfsdf"},
@@ -60,8 +61,8 @@ const StudentsPage = (props) => {
           ):
           (
             isAdmin?
-              <TableList key="admin" data={students} update={true} del={true} checkbox={true}/>:
-              <TableList key="user" data={students}/>
+              <BodyBox><TableList key="admin" data={students} update={true} del={true} checkbox={true}/></BodyBox>:
+              <BodyBox><TableList key="user" data={students}/></BodyBox>
           )
         }
   </>;

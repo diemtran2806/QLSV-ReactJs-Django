@@ -2,6 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import TableList from "../components/ListTable";
 import ClassPage from "./Class";
+import BodyBox from "../components/BodyBox";
 
 const FacultyPage = (props) => {
   const Faculty = [
@@ -21,9 +22,8 @@ const FacultyPage = (props) => {
     <>
       {
         isAdmin?
-          <TableList key="admin" data={Faculty} update={true} detail={"/class"}/>
-        :
-          <TableList key="user" data={Faculty} detail={"/class"}/>
+          <BodyBox><TableList key="admin" data={Faculty} update={true} detail={"/class"}/></BodyBox>:
+          <BodyBox><TableList key="user" data={Faculty} detail={"/class"}/></BodyBox>
       }
     </>
   );
