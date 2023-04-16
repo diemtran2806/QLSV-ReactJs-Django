@@ -1,8 +1,10 @@
 import { NavLink } from "react-router-dom";
 
 import classes from "./MainNavigation.module.css";
+import defaultAvatar from "../../assets/images/defaultAvatar.jpg";
 
 function MainNavigation() {
+  const user = true;
   return (
     <div className={classes.wrapper}>
       <div className={classes.menu}>
@@ -32,14 +34,39 @@ function MainNavigation() {
           </NavLink>
         </div>
       </div>
-      <div className="menu">
-        <div className="wrapper-button">
+      <div className={classes.menu}>
+        {user ? (
           <div className={classes.wrapperButton}>
             <NavLink to="/login" className={classes.text}>
               Đăng nhập
             </NavLink>
           </div>
-        </div>
+        ) : (
+          <div className={classes.avata}>
+            <img src={defaultAvatar} alt="avata" />
+            <div className={classes.nameUser}>Diem Tran</div>
+            <ul className={classes.userMenu}>
+              <li className={classes.userItem}>
+                <div className={classes.wrapperUserItem}>
+                  {/* <i class="icon-item fa-solid fa-user"></i> */}
+                  <NavLink to="/myProfile">Trang Cá Nhân</NavLink>
+                </div>
+              </li>
+              <li className={classes.userItem}>
+                <div className={classes.wrapperUserItem}>
+                  {/* <i class="icon-item fa-solid fa-lock"></i> */}
+                  <a>Đổi Mật Khẩu</a>
+                </div>
+              </li>
+              <li className={classes.userItem}>
+                <div className={classes.wrapperUserItem}>
+                  {/* <i class="icon-item fa-solid fa-right-from-bracket"></i> */}
+                  <a>Đăng Xuất</a>
+                </div>
+              </li>
+            </ul>
+          </div>
+        )}
       </div>
     </div>
 

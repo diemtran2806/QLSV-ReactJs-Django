@@ -7,6 +7,7 @@ import StudentPage from "./pages/Student";
 import ClassPage from "./pages/Class";
 import LoginPage from "./pages/Login";
 import LecturerPage from "./pages/Lecturer";
+import MyProfile from "./pages/MyProfile";
 
 const router = createBrowserRouter([
   {
@@ -17,23 +18,27 @@ const router = createBrowserRouter([
       { index: true, element: <HomePage /> },
       {
         path: "faculty",
-        element: <FacultyPage  admin={true}/>,
+        element: <FacultyPage admin={true} />,
       },
       {
         path: "class",
-        element: <ClassPage/>,
+        element: <ClassPage />,
       },
       {
         path: "student",
-        element: <StudentPage admin={true}/>,
+        element: <StudentPage admin={true} />,
       },
       {
         path: "lecture",
-        element: <LecturerPage admin={true}/>,
+        element: <LecturerPage admin={true} />,
       },
       {
         path: "login",
         element: <LoginPage />,
+      },
+      {
+        path: "myProfile",
+        element: <MyProfile />,
       },
     ],
   },
