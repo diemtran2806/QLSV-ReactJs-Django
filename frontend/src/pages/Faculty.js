@@ -1,6 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import TableList from "../components/ListTable";
+import ClassPage from "./Class";
 
 const FacultyPage = (props) => {
   const Faculty = [
@@ -20,9 +21,9 @@ const FacultyPage = (props) => {
     <>
       {
         isAdmin?
-          <TableList key="admin" data={Faculty} update={true} detail={true}/>
+          <TableList key="admin" data={Faculty} update={true} detail={"/class"}/>
         :
-          <TableList key="user" data={Faculty} detail={true}/>
+          <TableList key="user" data={Faculty} detail={"/class"}/>
       }
     </>
   );

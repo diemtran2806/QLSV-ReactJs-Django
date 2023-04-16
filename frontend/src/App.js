@@ -4,6 +4,7 @@ import RootLayout from "./pages/Root";
 import HomePage from "./pages/Home";
 import FacultyPage from "./pages/Faculty";
 import StudentPage from "./pages/Student";
+import ClassPage from "./pages/Class";
 import LoginPage from "./pages/Login";
 
 const router = createBrowserRouter([
@@ -15,11 +16,11 @@ const router = createBrowserRouter([
       { index: true, element: <HomePage /> },
       {
         path: "faculty",
-        element: <FacultyPage  admin={false}/>,
+        element: <FacultyPage  admin={true}/>,
       },
       {
         path: "class",
-        element: <HomePage/>,
+        element: <ClassPage/>,
       },
       {
         path: "student",

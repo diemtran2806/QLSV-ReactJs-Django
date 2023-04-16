@@ -1,5 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import tableStyle from "./ListTable.module.css";
 import { HiPencilSquare } from "react-icons/hi2";
 import { RiDeleteBinFill } from "react-icons/ri";
@@ -18,6 +19,11 @@ const TableList = (props) => {
   const [del, setDel] = useState(props.del);
   const [checkbox,setCheckbox] = useState(props.checkbox)
   const [detail,setDetail] = useState(props.detail)
+  const [avatar, setAvatar] = useState(false);
+  useEffect(()=>{
+    const hasAvatar = data.some(item => item.hasOwnProperty('avatar'));
+    setAvatar(hasAvatar);
+  },[data])
 
   const handleCheck = (event) => {
     const checkboxValue = parseInt(event.target.value);
@@ -46,10 +52,6 @@ const TableList = (props) => {
     console.log("update", id);
   };
   
-  const handleDetail = (id) => {
-    console.log("detail:", id);
-  };
-
   const renderTableHeader = () => {
     return (
         <>
@@ -64,12 +66,16 @@ const TableList = (props) => {
                   <></>
               }
 
-              <th>STT</th>
-
+              {
+                avatar?
+                  <th>Ảnh</th>
+                :
+                  <></>
+              }
               
               {
                 header.map((key, index) => {
-                    if(key !== 'id'){
+                    if(key !== 'avatar'){
                       return(
                         <th key={index}>{key.toUpperCase()}</th>
                       )
@@ -112,13 +118,20 @@ const TableList = (props) => {
                       <></>
                     }
     
-                    <td className={tableStyle.textcenter}>
-                      {index}
-                    </td> 
-    
+                    {
+                      avatar?
+                        <td className={tableStyle.textcenter}>
+                          <img className={tableStyle.avatar} src="https://scontent.fhan3-2.fna.fbcdn.net/v/t39.30808-1/323095559_1323500548471151_6901010600181680926_n.jpg?stp=cp6_dst-jpg_p320x320&_nc_cat=107&ccb=1-7&_nc_sid=7206a8&_nc_ohc=d17eIQxN50oAX-KoxWE&_nc_ht=scontent.fhan3-2.fna&oh=00_AfB0bB4kGSlcypXCOlSoDeOXk-6GM2Sdw9IZz02AvxO5kw&oe=6440CAA1" alt="Logo" /> 
+                        </td> 
+                      :
+                      <></>
+                    }
+                    
+                    
+
                     {
                       header.map((key, index)=>{
-                        if(key !== 'id'){
+                        if(key != 'avatar'){
                           return(
                             <td key={index}>
                               {
@@ -149,7 +162,9 @@ const TableList = (props) => {
                     {
                       detail?
                         <td className={tableStyle.textcenter}>
-                          <button onClick={()=>handleDetail(data.id)}><FaInfoCircle/></button>
+                          <Link to={`${detail}?id=${data.id}`} className="header-icon tick">
+                            <FaInfoCircle/>
+                          </Link>
                         </td>
                       :<></>
                     }

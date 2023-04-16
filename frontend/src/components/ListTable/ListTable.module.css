@@ -46,3 +46,9 @@ button{
 td button{
     font-size: 17px;
 }
+
+.avatar{
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+}
