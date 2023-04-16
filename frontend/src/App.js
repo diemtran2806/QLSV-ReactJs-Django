@@ -6,6 +6,7 @@ import FacultyPage from "./pages/Faculty";
 import StudentPage from "./pages/Student";
 import ClassPage from "./pages/Class";
 import LoginPage from "./pages/Login";
+import LecturerPage from "./pages/Lecturer";
 
 const router = createBrowserRouter([
   {
@@ -28,7 +29,7 @@ const router = createBrowserRouter([
       },
       {
         path: "lecture",
-        element: <HomePage />,
+        element: <LecturerPage admin={true}/>,
       },
       {
         path: "login",
