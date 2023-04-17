@@ -18,7 +18,7 @@ const SlidesShow = () => {
   };
 
   return (
-    <div>
+    <div className={classes.container}>
       <Slide {...properties}>
         {slideImages.map((each, index) => (
           <div key={index} className={classes.img}>
