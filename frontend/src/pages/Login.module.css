@@ -1,0 +1,10 @@
+.wrapperBtn {
+	display: flex;
+	justify-content: space-between;
+	margin-top: 12px;
+}
+
+.errorLogin {
+    color: red;
+    font-size: 12px;
+}

@@ -5,8 +5,10 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.views import APIView
 from .serializers import UserSerializer
 from django.contrib.auth import authenticate
+from django.views.decorators.csrf import csrf_exempt
 
 
+@csrf_exempt
 @api_view(['POST'])
 def login_view(request):
     # Xác thực thông tin đăng nhập
@@ -24,6 +26,7 @@ def login_view(request):
         'user': UserSerializer(user).data,
     })
 
+@csrf_exempt
 @api_view(['POST'])
 def logout_view(request):
     # Hủy JWT token
@@ -49,6 +52,7 @@ class RegisterView(APIView):
 
     return Response(user.data, status=status.HTTP_201_CREATED)
 
+@csrf_exempt
 @api_view(['GET'])
 def user_view(request):
     user = request.user

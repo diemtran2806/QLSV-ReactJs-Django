@@ -4,12 +4,15 @@ import { useNavigate } from "react-router-dom";
 import { loginUser } from "../store/authActions";
 import Card from "../components/Card";
 import Input from "../components/Input";
+import classes from "./Login.module.css";
+import Button from "../components/Button";
 
 const LoginPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [errors, setErrors] = useState({});
+  const [errorLogin, setErrorLogin] = useState("");
   const [form, setForm] = useState({});
 
   const onChange = ({ name, value }) => {
@@ -64,9 +67,12 @@ const LoginPage = () => {
         username: form.username,
         password: form.password,
       };
+      console.log("login ne");
       const statuss = await loginUser(user, dispatch, navigate);
-      // if(statuss === 401)
-      //showError("THE LOGIN DETAILS YOU PROVIDED ARE INCORRECT. PLEASE TRY AGAIN.");
+      if (statuss === 401)
+        setErrorLogin(
+          "The login details you provided are incorrect. Please try again!"
+        );
     }
   };
 
@@ -94,7 +100,11 @@ const LoginPage = () => {
         }}
         error={errors.password}
       />
-      <button>Login</button>
+      {errorLogin && <div className={classes.errorLogin}>{errorLogin}</div>}
+      <div className={classes.wrapperBtn}>
+        <Button onClick={onSubmit}>Đăng nhập</Button>
+        <Button type="reset">Nhập lại</Button>
+      </div>
     </Card>
   );
 };

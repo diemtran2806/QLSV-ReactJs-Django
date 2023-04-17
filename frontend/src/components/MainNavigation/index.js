@@ -1,10 +1,11 @@
 import { NavLink } from "react-router-dom";
-
+import { useDispatch, useSelector } from "react-redux";
 import classes from "./MainNavigation.module.css";
 import defaultAvatar from "../../assets/images/defaultAvatar.jpg";
 
 function MainNavigation() {
-  const user = true;
+  const user = useSelector((state) => state.auth.login.currentUser);
+  console.log(user);
   return (
     <div className={classes.wrapper}>
       <div className={classes.menu}>
@@ -36,15 +37,9 @@ function MainNavigation() {
       </div>
       <div className={classes.menu}>
         {user ? (
-          <div className={classes.wrapperButton}>
-            <NavLink to="/login" className={classes.text}>
-              Đăng nhập
-            </NavLink>
-          </div>
-        ) : (
           <div className={classes.avata}>
             <img src={defaultAvatar} alt="avata" />
-            <div className={classes.nameUser}>Diem Tran</div>
+            <div className={classes.nameUser}>{user.user.name}</div>
             <ul className={classes.userMenu}>
               <li className={classes.userItem}>
                 <div className={classes.wrapperUserItem}>
@@ -65,6 +60,12 @@ function MainNavigation() {
                 </div>
               </li>
             </ul>
+          </div>
+        ) : (
+          <div className={classes.wrapperButton}>
+            <NavLink to="/login" className={classes.text}>
+              Đăng nhập
+            </NavLink>
           </div>
         )}
       </div>

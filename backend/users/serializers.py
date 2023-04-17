@@ -14,8 +14,8 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         if password is not None:
             instance.set_password(password)
 
-        if dob is not None:
-            instance.dob = datetime.strptime(dob, '%Y-%m-%d').date()
+        # if dob is not None:
+        #     instance.dob = datetime.strptime(dob, '%Y-%m-%d').date()
 
         instance.save()
         return instance
