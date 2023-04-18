@@ -14,8 +14,8 @@ import defaultAvatar from "../../assets/images/defaultAvatar.jpg";
 function MainNavigation() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.auth.login.currentUser);
-  const accessToken = user?.access;
+  const user = useSelector((state) => state.authen.login.currentUser);
+  const accessToken = user?.accessToken;
   // const id = user?.id;
   console.log(accessToken);
   console.log(user);

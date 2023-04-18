@@ -3,9 +3,51 @@ import Input from "../components/Input";
 import classes from "./MyProfile.module.css";
 import Avatar from "../components/Avatar";
 import { useDispatch, useSelector } from "react-redux";
+import Button from "../components/Button";
+import { updateUser } from "../store/userActions";
+import { useState, useNavigate, useEffect } from "react";
 
 const MyProfile = () => {
-  const user = useSelector((state) => state.auth.login.currentUser);
+  const dispatch = useDispatch();
+  //const navigate = useNavigate();
+  const user = useSelector((state) => state.authen.login.currentUser);
+  const id = user?.user.id;
+  const accessToken = user?.accessToken;
+  const userLogined = {
+    mssv: user.user.mssv,
+    name: user.user.name,
+    phone: user.user.phone,
+    email: user.user.email,
+    cccd: user.user.cccd,
+    gender: user.user.gender ? "Nam" : "Nữ",
+    address: user.user.address,
+    dob: user.user.dob,
+  };
+  useEffect(() => {
+    setForm(userLogined);
+  }, []);
+  console.log(accessToken);
+  const [form, setForm] = useState({});
+
+  const onChange = ({ name, value }) => {
+    setForm({ ...form, [name]: value });
+  };
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    const userUpd = {
+      mssv: form.mssv,
+      name: form.name,
+      phone: form.phone,
+      email: form.email,
+      cccd: form.cccd,
+      gender: form.gender,
+      address: form.address,
+      dob: form.dob,
+    };
+    const statuss = await updateUser(userUpd, id, dispatch, accessToken);
+  };
+
   return (
     <Card header="Thông Tin Cá Nhân">
       <div style={{ textAlign: "center" }}>
@@ -17,16 +59,20 @@ const MyProfile = () => {
           type="text"
           name="mssv"
           id="mssv"
-          // placeholder="Nhập tên tài khoản"
-          value={user.user.username}
+          onChange={(event) => {
+            onChange({ name: "mssv", value: event.target.value });
+          }}
+          value={form.mssv}
         />
         <Input
           label="Tên"
           type="text"
           name="mssv"
           id="mssv"
-          // placeholder="Nhập tên tài khoản"
-          value={user.user.name}
+          onChange={(event) => {
+            onChange({ name: "name", value: event.target.value });
+          }}
+          value={form.name}
         />
       </div>
       <div className={classes.wrap}>
@@ -35,16 +81,20 @@ const MyProfile = () => {
           type="text"
           name="sdt"
           id="sdt"
-          // placeholder="Nhập tên tài khoản"
-          value={user.user.phone}
+          onChange={(event) => {
+            onChange({ name: "phone", value: event.target.value });
+          }}
+          value={form.phone}
         />
         <Input
           label="Email"
           type="text"
           name="email"
           id="email"
-          // placeholder="Nhập tên tài khoản"
-          value={user.user.email}
+          onChange={(event) => {
+            onChange({ name: "email", value: event.target.value });
+          }}
+          value={form.email}
         />
       </div>
       <div className={classes.wrap}>
@@ -53,16 +103,23 @@ const MyProfile = () => {
           type="text"
           name="cccd"
           id="cccd"
-          // placeholder="Nhập tên tài khoản"
-          value={user.user.cccd}
+          onChange={(event) => {
+            onChange({ name: "cccd", value: event.target.value });
+          }}
+          value={form.cccd}
         />
         <Input
           label="Giới Tính"
           type="text"
           name="gender"
           id="gender"
-          // placeholder="Nhập tên tài khoản"
-          value={user.user.gender ? "Nam" : "Nữ"}
+          onChange={(event) => {
+            onChange({
+              name: "gender",
+              value: event.target.value === "Nữ" ? false : true,
+            });
+          }}
+          value={form.gender}
         />
       </div>
       <div className={classes.wrap}>
@@ -71,17 +128,26 @@ const MyProfile = () => {
           type="text"
           name="address"
           id="address"
-          // placeholder="Nhập tên tài khoản"
-          value={user.user.address}
+          onChange={(event) => {
+            onChange({ name: "address", value: event.target.value });
+          }}
+          value={form.address}
         />
         <Input
           label="Ngày Sinh"
           type="text"
-          name="date"
-          id="date"
-          // placeholder="Nhập tên tài khoản"
-          value={user.user.gender ? "Nam" : "Nữ"}
+          name="dob"
+          id="dob"
+          onChange={(event) => {
+            onChange({ name: "dob", value: event.target.value });
+          }}
+          value={form.dob}
         />
+      </div>
+
+      <div className={classes.wrap}>
+        <Button onClick={onSubmit}>Cập Nhật</Button>
+        <Button>Làm Mới</Button>
       </div>
     </Card>
   );

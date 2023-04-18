@@ -33,7 +33,7 @@ const LoginPage = () => {
           });
         }
       }
-      if (name === "username") {
+      if (name === "mssv") {
         setErrors((prev) => {
           return { ...prev, [name]: null };
         });
@@ -47,9 +47,9 @@ const LoginPage = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    if (!form.username) {
+    if (!form.mssv) {
       setErrors((prev) => {
-        return { ...prev, username: "Please add a username!" };
+        return { ...prev, mssv: "Please add a username!" };
       });
     }
     if (!form.password) {
@@ -64,7 +64,7 @@ const LoginPage = () => {
       Object.values(errors).every((item) => !item)
     ) {
       const user = {
-        username: form.username,
+        mssv: form.mssv,
         password: form.password,
       };
       console.log("login ne");
@@ -85,9 +85,9 @@ const LoginPage = () => {
         id="username"
         placeholder="Nhập tên tài khoản"
         onChange={(event) => {
-          onChange({ name: "username", value: event.target.value });
+          onChange({ name: "mssv", value: event.target.value });
         }}
-        error={errors.username}
+        error={errors.mssv}
       />
       <Input
         label="Mật khẩu"
