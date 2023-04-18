@@ -81,7 +81,7 @@ def user_update_view(request, id):
         data = request.data        
         serializer = UserSerializer(user, data=data)
         if serializer.is_valid():
-            serializer.save()
+            serializer.update(user, serializer.validated_data)
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     return Response(status=status.HTTP_401_UNAUTHORIZED)    
