@@ -1,5 +1,5 @@
 [{
-    "model": "class.class",
+    "model": "Class.class",
     "pk": 1,
     "fields": {
         "id_class": 1,
@@ -7,14 +7,14 @@
         "id_lecturer": 1
     }
 }, {
-    "model": "class.class",
+    "model": "Class.class",
     "pk": 2,
     "fields": {
         "class_name": "Lớp CNTT2",
         "id_lecturer": 1
     }
 }, {
-    "model": "class.class",
+    "model": "Class.class",
     "pk": 3,
     "fields": {
         "class_name": "Lớp Kinh tế 1",

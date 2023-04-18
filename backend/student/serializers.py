@@ -1,13 +1,13 @@
 from rest_framework import serializers
 from .models import Student
 from users.serializers import UserSerializer
-# from Class.serializers import ClassSerializer
+from Class.serializers import ClassSerializer
 
 
 class StudentSerializer(serializers.ModelSerializer):
     id_user = UserSerializer()
-    # id_class = ClassSerializer()
-    url = serializers.HyperlinkedIdentityField(view_name='student-detail', read_only=True)
+    id_class = ClassSerializer()
+    # url = serializers.HyperlinkedIdentityField(view_name='student-detail', read_only=True)
     
     def create(self, validated_data):
         instance = self.Meta.model(**validated_data)
