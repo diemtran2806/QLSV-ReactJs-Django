@@ -28,3 +28,12 @@ def student_view(request, id):
     student = get_object(id)
     serializer = StudentSerializer(student)
     return Response(serializer.data)
+
+@csrf_exempt
+@api_view(['POST'])
+def student_create_view(request):
+    serializer = StudentSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

@@ -1,10 +1,10 @@
 from rest_framework import serializers
-from .models import Class
-from lecturer.serializers import LecturerSerializer
+from .models import Lecturer
+from users.serializers import UserSerializer
 
-class ClassSerializer(serializers.ModelSerializer):
-    id_lecturer = LecturerSerializer()
-    # url = serializers.HyperlinkedIdentityField(view_name='class-detail', read_only=True)
+class LecturerSerializer(serializers.ModelSerializer):
+    id_user = UserSerializer()
+    # url = serializers.HyperlinkedIdentityField(view_name='lecturer-detail', read_only=True)
     
     def create(self, validated_data):
         instance = self.Meta.model(**validated_data)
@@ -22,5 +22,5 @@ class ClassSerializer(serializers.ModelSerializer):
         return instance
 
     class Meta:
-        model = Class
+        model = Lecturer
         fields = '__all__'
