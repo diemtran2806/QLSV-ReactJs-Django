@@ -20,22 +20,23 @@ class UserManager(BaseUserManager):
 
 class Users(AbstractBaseUser, PermissionsMixin):
     id = models.AutoField(primary_key=True)
-    username = models.CharField(max_length=30, blank=True, null=True, unique=True)
-    password = models.CharField(max_length=255)
+    mssv = models.CharField(max_length=30, blank=True, null=True, unique=True)
+    password = models.CharField(max_length=255, blank=True, null=True, default=None)
     name = models.CharField(max_length=255)
     email = models.EmailField(unique=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
 
-    USERNAME_FIELD = 'username'
+    USERNAME_FIELD = 'mssv'
     REQUIRED_FIELDS = []
 
     phone = models.CharField(max_length=10, unique=True)
     id_role = models.ForeignKey('roles.Roles', on_delete=models.CASCADE)
-    cccd = models.CharField(max_length=20, unique=True)
+    cccd = models.CharField(max_length=20, unique=True, blank=True)
+    address = models.CharField(max_length=255, blank=True)
     gender = models.BooleanField()
     dob = models.DateField(null=True, blank=True)
-    avatar = models.CharField(max_length=255)
+    avatar = models.CharField(max_length=255, blank=True, null=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
