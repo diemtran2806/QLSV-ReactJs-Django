@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'users',
     'roles',
     'faculty',
-    'class',
+    'Class',
     'lecturer',
     'student',
 ]
