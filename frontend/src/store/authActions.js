@@ -22,3 +22,17 @@ export const loginUser = async (user, dispatch, navigate) => {
     return err.response.status;
   }
 };
+
+export const logoutUser = async (dispatch, navigate, accessToken, axiosJWT) => {
+  dispatch(logoutStart());
+  try {
+    await axiosJWT.post("http://127.0.0.1:8000/api/users/logout/", {
+      headers: { authorization: `Bearer ${accessToken}` },
+    });
+    dispatch(logoutSuccess());
+    navigate("/");
+  } catch (err) {
+    console.log(err);
+    dispatch(logoutFalse());
+  }
+};

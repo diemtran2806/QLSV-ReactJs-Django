@@ -1,7 +1,4 @@
-.wrap {
+.avatarCenter {
     display: flex;
-}
-
-.avatar {
     justify-content: center;
 }
