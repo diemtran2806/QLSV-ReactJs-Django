@@ -15,7 +15,7 @@ const TableList = (props) => {
   const [checked, setChecked] = useState([]);
   const [isCheckAll, setIsCheckAll] = useState(false);
   const [header,setHeader] = useState(Object.keys(data[0]).map((key, index) => key));
-  const [update, setUpdate] = useState(props.update);
+  const [update, setUpdate] = useState(typeof props.update === 'function');
   const [del, setDel] = useState(props.del);
   const [checkbox,setCheckbox] = useState(props.checkbox)
   const [detail,setDetail] = useState(props.detail)
@@ -49,7 +49,7 @@ const TableList = (props) => {
   };
 
   const handleUpdate = (id) => {
-    console.log("update", id);
+    props.update(id)
   };
   
   const renderTableHeader = () => {

@@ -1,0 +1,14 @@
+.row{
+    display: flex;
+    justify-content: space-between;
+}
+
+.col50 {
+    width: 50%;
+}
+
+.input-item{
+    padding:10px 5px;
+}
+
+
