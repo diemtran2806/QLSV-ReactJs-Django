@@ -31,13 +31,9 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         instance.save()
         return instance
 
-    def get(self, instance):
-        return instance
-
     class Meta:
         model = Users
         extra_kwargs = {'password': {'write_only': True}, 'id_role': {'required': True}}
-        fields = ('id', 'mssv', 'password', 'name', 'email', 'phone', 'gender', 'id_role', 'cccd', 'dob', 'address', 'avatar', 'created_at', 'updated_at',
-                  'is_active', 'is_staff', 'is_superuser')
+        fields = ('id', 'mssv', 'password', 'name', 'email', 'phone', 'gender', 'id_role', 'cccd', 'dob', 'address', 'avatar')
         
 
