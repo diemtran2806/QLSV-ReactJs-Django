@@ -8,53 +8,10 @@ import TableList from "../components/ListTable";
 import BodyBox from "../components/BodyBox";
 import StudentUpdatePage from "./StudentUpdate";
 
+const getAllUserURL = "http://127.0.0.1:8000/api/student/"
+
 const StudentsPage = (props) => {
-  const [students, setStudents] = useState([
-    { id: 1, "Tên": 'sdfsd', "Số điện thoại": "0378945213", "email": 'wasif@email.com',"CCCD": 'wasif@email.com', "Giới tính":"Nam","Ngày sinh":"19/05/2002","Lớp":"20T2", avatar:"https://img.com/sdfsdf"},
-    { id: 2, "Tên": 'sdfwer', "Số điện thoại": "0378945213", "email": 'wasif@email.com',"CCCD": 'wasif@email.com', "Giới tính":"Nam","Ngày sinh":"19/05/2002","Lớp":"20T2", avatar:"https://img.com/sdfsdf"},
-    { id: 3, "Tên": 'Wavbcvbsif', "Số điện thoại": "0378945213", "email": 'wasif@email.com',"CCCD": 'wasif@email.com', "Giới tính":"Nam","Ngày sinh":"19/05/2002","Lớp":"20T2", avatar:"https://img.com/sdfsdf"},
-    { id: 4, "Tên": 'Wasfghif', "Số điện thoại": "0378945213", "email": 'wasif@email.com',"CCCD": 'wasif@email.com', "Giới tính":"Nam","Ngày sinh":"19/05/2002","Lớp":"20T2", avatar:"https://img.com/sdfsdf"},
-    { id: 5, "Tên": 'Wajkljif', "Số điện thoại": "0378945213", "email": 'wasif@email.com',"CCCD": 'wasif@email.com', "Giới tính":"Nam","Ngày sinh":"19/05/2002","Lớp":"20T2", avatar:"https://img.com/sdfsdf"},
-    { id: 6, "Tên": 'Waqưesif', "Số điện thoại": "0378945213", "email": 'wasif@email.com',"CCCD": 'wasif@email.com', "Giới tính":"Nam","Ngày sinh":"19/05/2002","Lớp":"20T2", avatar:"https://img.com/sdfsdf"},
-    { id: 7, "Tên": 'Wavvbvbnsif', "Số điện thoại": "0378945213", "email": 'wasif@email.com',"CCCD": 'wasif@email.com', "Giới tính":"Nam","Ngày sinh":"19/05/2002","Lớp":"20T2", avatar:"https://img.com/sdfsdf"},
-    { id: 1, "Tên": 'sdfsd', "Số điện thoại": "0378945213", "email": 'wasif@email.com',"CCCD": 'wasif@email.com', "Giới tính":"Nam","Ngày sinh":"19/05/2002","Lớp":"20T2", avatar:"https://img.com/sdfsdf"},
-    { id: 2, "Tên": 'sdfwer', "Số điện thoại": "0378945213", "email": 'wasif@email.com',"CCCD": 'wasif@email.com', "Giới tính":"Nam","Ngày sinh":"19/05/2002","Lớp":"20T2", avatar:"https://img.com/sdfsdf"},
-    { id: 3, "Tên": 'Wavbcvbsif', "Số điện thoại": "0378945213", "email": 'wasif@email.com',"CCCD": 'wasif@email.com', "Giới tính":"Nam","Ngày sinh":"19/05/2002","Lớp":"20T2", avatar:"https://img.com/sdfsdf"},
-    { id: 4, "Tên": 'Wasfghif', "Số điện thoại": "0378945213", "email": 'wasif@email.com',"CCCD": 'wasif@email.com', "Giới tính":"Nam","Ngày sinh":"19/05/2002","Lớp":"20T2", avatar:"https://img.com/sdfsdf"},
-    { id: 5, "Tên": 'Wajkljif', "Số điện thoại": "0378945213", "email": 'wasif@email.com',"CCCD": 'wasif@email.com', "Giới tính":"Nam","Ngày sinh":"19/05/2002","Lớp":"20T2", avatar:"https://img.com/sdfsdf"},
-    { id: 6, "Tên": 'Waqưesif', "Số điện thoại": "0378945213", "email": 'wasif@email.com',"CCCD": 'wasif@email.com', "Giới tính":"Nam","Ngày sinh":"19/05/2002","Lớp":"20T2", avatar:"https://img.com/sdfsdf"},
-    { id: 1, "Tên": 'sdfsd', "Số điện thoại": "0378945213", "email": 'wasif@email.com',"CCCD": 'wasif@email.com', "Giới tính":"Nam","Ngày sinh":"19/05/2002","Lớp":"20T2", avatar:"https://img.com/sdfsdf"},
-    { id: 2, "Tên": 'sdfwer', "Số điện thoại": "0378945213", "email": 'wasif@email.com',"CCCD": 'wasif@email.com', "Giới tính":"Nam","Ngày sinh":"19/05/2002","Lớp":"20T2", avatar:"https://img.com/sdfsdf"},
-    { id: 3, "Tên": 'Wavbcvbsif', "Số điện thoại": "0378945213", "email": 'wasif@email.com',"CCCD": 'wasif@email.com', "Giới tính":"Nam","Ngày sinh":"19/05/2002","Lớp":"20T2", avatar:"https://img.com/sdfsdf"},
-    { id: 4, "Tên": 'Wasfghif', "Số điện thoại": "0378945213", "email": 'wasif@email.com',"CCCD": 'wasif@email.com', "Giới tính":"Nam","Ngày sinh":"19/05/2002","Lớp":"20T2", avatar:"https://img.com/sdfsdf"},
-    { id: 5, "Tên": 'Wajkljif', "Số điện thoại": "0378945213", "email": 'wasif@email.com',"CCCD": 'wasif@email.com', "Giới tính":"Nam","Ngày sinh":"19/05/2002","Lớp":"20T2", avatar:"https://img.com/sdfsdf"},
-    { id: 6, "Tên": 'Waqưesif', "Số điện thoại": "0378945213", "email": 'wasif@email.com',"CCCD": 'wasif@email.com', "Giới tính":"Nam","Ngày sinh":"19/05/2002","Lớp":"20T2", avatar:"https://img.com/sdfsdf"},
-    { id: 1, "Tên": 'sdfsd', "Số điện thoại": "0378945213", "email": 'wasif@email.com',"CCCD": 'wasif@email.com', "Giới tính":"Nam","Ngày sinh":"19/05/2002","Lớp":"20T2", avatar:"https://img.com/sdfsdf"},
-    { id: 2, "Tên": 'sdfwer', "Số điện thoại": "0378945213", "email": 'wasif@email.com',"CCCD": 'wasif@email.com', "Giới tính":"Nam","Ngày sinh":"19/05/2002","Lớp":"20T2", avatar:"https://img.com/sdfsdf"},
-    { id: 3, "Tên": 'Wavbcvbsif', "Số điện thoại": "0378945213", "email": 'wasif@email.com',"CCCD": 'wasif@email.com', "Giới tính":"Nam","Ngày sinh":"19/05/2002","Lớp":"20T2", avatar:"https://img.com/sdfsdf"},
-    { id: 4, "Tên": 'Wasfghif', "Số điện thoại": "0378945213", "email": 'wasif@email.com',"CCCD": 'wasif@email.com', "Giới tính":"Nam","Ngày sinh":"19/05/2002","Lớp":"20T2", avatar:"https://img.com/sdfsdf"},
-    { id: 5, "Tên": 'Wajkljif', "Số điện thoại": "0378945213", "email": 'wasif@email.com',"CCCD": 'wasif@email.com', "Giới tính":"Nam","Ngày sinh":"19/05/2002","Lớp":"20T2", avatar:"https://img.com/sdfsdf"},
-    { id: 6, "Tên": 'Waqưesif', "Số điện thoại": "0378945213", "email": 'wasif@email.com',"CCCD": 'wasif@email.com', "Giới tính":"Nam","Ngày sinh":"19/05/2002","Lớp":"20T2", avatar:"https://img.com/sdfsdf"},
-    { id: 1, "Tên": 'sdfsd', "Số điện thoại": "0378945213", "email": 'wasif@email.com',"CCCD": 'wasif@email.com', "Giới tính":"Nam","Ngày sinh":"19/05/2002","Lớp":"20T2", avatar:"https://img.com/sdfsdf"},
-    { id: 2, "Tên": 'sdfwer', "Số điện thoại": "0378945213", "email": 'wasif@email.com',"CCCD": 'wasif@email.com', "Giới tính":"Nam","Ngày sinh":"19/05/2002","Lớp":"20T2", avatar:"https://img.com/sdfsdf"},
-    { id: 3, "Tên": 'Wavbcvbsif', "Số điện thoại": "0378945213", "email": 'wasif@email.com',"CCCD": 'wasif@email.com', "Giới tính":"Nam","Ngày sinh":"19/05/2002","Lớp":"20T2", avatar:"https://img.com/sdfsdf"},
-    { id: 4, "Tên": 'Wasfghif', "Số điện thoại": "0378945213", "email": 'wasif@email.com',"CCCD": 'wasif@email.com', "Giới tính":"Nam","Ngày sinh":"19/05/2002","Lớp":"20T2", avatar:"https://img.com/sdfsdf"},
-    { id: 5, "Tên": 'Wajkljif', "Số điện thoại": "0378945213", "email": 'wasif@email.com',"CCCD": 'wasif@email.com', "Giới tính":"Nam","Ngày sinh":"19/05/2002","Lớp":"20T2", avatar:"https://img.com/sdfsdf"},
-    { id: 6, "Tên": 'Waqưesif', "Số điện thoại": "0378945213", "email": 'wasif@email.com',"CCCD": 'wasif@email.com', "Giới tính":"Nam","Ngày sinh":"19/05/2002","Lớp":"20T2", avatar:"https://img.com/sdfsdf"},
-    { id: 1, "Tên": 'sdfsd', "Số điện thoại": "0378945213", "email": 'wasif@email.com',"CCCD": 'wasif@email.com', "Giới tính":"Nam","Ngày sinh":"19/05/2002","Lớp":"20T2", avatar:"https://img.com/sdfsdf"},
-    { id: 2, "Tên": 'sdfwer', "Số điện thoại": "0378945213", "email": 'wasif@email.com',"CCCD": 'wasif@email.com', "Giới tính":"Nam","Ngày sinh":"19/05/2002","Lớp":"20T2", avatar:"https://img.com/sdfsdf"},
-    { id: 3, "Tên": 'Wavbcvbsif', "Số điện thoại": "0378945213", "email": 'wasif@email.com',"CCCD": 'wasif@email.com', "Giới tính":"Nam","Ngày sinh":"19/05/2002","Lớp":"20T2", avatar:"https://img.com/sdfsdf"},
-    { id: 4, "Tên": 'Wasfghif', "Số điện thoại": "0378945213", "email": 'wasif@email.com',"CCCD": 'wasif@email.com', "Giới tính":"Nam","Ngày sinh":"19/05/2002","Lớp":"20T2", avatar:"https://img.com/sdfsdf"},
-    { id: 5, "Tên": 'Wajkljif', "Số điện thoại": "0378945213", "email": 'wasif@email.com',"CCCD": 'wasif@email.com', "Giới tính":"Nam","Ngày sinh":"19/05/2002","Lớp":"20T2", avatar:"https://img.com/sdfsdf"},
-    { id: 6, "Tên": 'Waqưesif', "Số điện thoại": "0378945213", "email": 'wasif@email.com',"CCCD": 'wasif@email.com', "Giới tính":"Nam","Ngày sinh":"19/05/2002","Lớp":"20T2", avatar:"https://img.com/sdfsdf"},
-    { id: 1, "Tên": 'sdfsd', "Số điện thoại": "0378945213", "email": 'wasif@email.com',"CCCD": 'wasif@email.com', "Giới tính":"Nam","Ngày sinh":"19/05/2002","Lớp":"20T2", avatar:"https://img.com/sdfsdf"},
-    { id: 2, "Tên": 'sdfwer', "Số điện thoại": "0378945213", "email": 'wasif@email.com',"CCCD": 'wasif@email.com', "Giới tính":"Nam","Ngày sinh":"19/05/2002","Lớp":"20T2", avatar:"https://img.com/sdfsdf"},
-    { id: 3, "Tên": 'Wavbcvbsif', "Số điện thoại": "0378945213", "email": 'wasif@email.com',"CCCD": 'wasif@email.com', "Giới tính":"Nam","Ngày sinh":"19/05/2002","Lớp":"20T2", avatar:"https://img.com/sdfsdf"},
-    { id: 4, "Tên": 'Wasfghif', "Số điện thoại": "0378945213", "email": 'wasif@email.com',"CCCD": 'wasif@email.com', "Giới tính":"Nam","Ngày sinh":"19/05/2002","Lớp":"20T2", avatar:"https://img.com/sdfsdf"},
-    { id: 5, "Tên": 'Wajkljif', "Số điện thoại": "0378945213", "email": 'wasif@email.com',"CCCD": 'wasif@email.com', "Giới tính":"Nam","Ngày sinh":"19/05/2002","Lớp":"20T2", avatar:"https://img.com/sdfsdf"},
-    { id: 6, "Tên": 'Waqưesif', "Số điện thoại": "0378945213", "email": 'wasif@email.com',"CCCD": 'wasif@email.com', "Giới tính":"Nam","Ngày sinh":"19/05/2002","Lớp":"20T2", avatar:"https://img.com/sdfsdf"},
-    
-  ])
+  const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isAdmin, setIsAdmin] = useState(props.admin);
   useEffect(() => {
@@ -66,39 +23,40 @@ const StudentsPage = (props) => {
   const [isUpdate,setIsUpdate] = useState(false);
   const [updateId,setUpdateId] = useState(null);
 
-  // useEffect(() => {
-  //    if (id) {
-  //     // lấy data sinh viên theo lớp
-  //     axios.get(`https://reqres.in/api/users?page=${id}`)
-  //       .then(response => {
-  //         if(response.data.data){
-  //           setStudents(response.data.data);
-  //         }
-  //         else{
-  //           setStudents([]);
-  //         }
-  //         setLoading(false);
-  //       })
-  //       .catch(error => {
-  //         console.log(error);
-  //         setLoading(false);
-  //       });
-  //   } else {
-  //     // nếu không có thì lấy tất cả sinh viên 
-  //     axios.get("https://reqres.in/api/users")
-  //       .then(response => {
-  //         setStudents(response.data);
-  //         setLoading(false);
-  //       })
-  //       .catch(error => {
-  //         console.log(error);
-  //         setLoading(false);
-  //       });
-  //   }
-  // }, [id]);
-  
+  //get list student on server
+  useEffect(() => {
+      // nếu không có thì lấy tất cả sinh viên 
+      axios.get(getAllUserURL)
+        .then(response => {
+          //data
+          let data = [];
+          response.data.map((student, index) => {
+            const user = student.id_user;
+            const stu = {
+              id: user.id,
+              mssv: user.mssv,
+              Tên: user.name,
+              email:user.email ,
+              SĐT:user.phone ,
+              "Giới tính":user.gender?"Nam":"Nữ" ,
+              cccd:user.cccd ,
+              "Ngày sinh":user.dob ,
+              "Địa chỉ":user.address ,
+              avatar:user.avatar,
+              "Điểm trung bình": student.avg_score,
+            }
+            data.push(stu);
+          })
+          setStudents(data);
+          setLoading(false);
+        })
+        .catch(error => {
+          console.log(error);
+          setLoading(false);
+        });
+  }, []);
+
   const handleUpdateActive = (id) => {
-    console.log("huhuh toimetqua")
     setUpdateId(id);
     setIsUpdate(true);
   }
@@ -134,7 +92,7 @@ const StudentsPage = (props) => {
               <div className={style.rel}></div>
               <div className={style['model-header']}>Cập nhật sinh viên</div>
             </div>
-            <StudentUpdatePage id={updateId} data={students[1]}/>
+            <StudentUpdatePage id={updateId}/>
           </Modal>
         }
   </>;
@@ -143,3 +101,43 @@ const StudentsPage = (props) => {
 export default StudentsPage;
 
 
+  // useEffect(() => {
+  //   setIsAdmin(props.admin);
+  // }, [props.admin]);
+
+  // const [searchParams] = useSearchParams();
+  // const [id, setId] = useState(Number(searchParams.get("id")) || 1);
+  // const [isUpdate,setIsUpdate] = useState(false);
+  // const [updateId,setUpdateId] = useState(null);
+
+  // useEffect(() => {
+  //    if (id) {
+  //     // lấy data sinh viên theo lớp
+  //     axios.get(`https://reqres.in/api/users?page=${id}`)
+  //       .then(response => {
+  //         if(response.data.data){
+  //           setStudents(response.data.data);
+  //         }
+  //         else{
+  //           setStudents([]);
+  //         }
+  //         setLoading(false);
+  //       })
+  //       .catch(error => {
+  //         console.log(error);
+  //         setLoading(false);
+  //       });
+  //   } else {
+  //     // nếu không có thì lấy tất cả sinh viên 
+  //     axios.get("http://127.0.0.1:8000/api/student/")
+  //       .then(response => {
+  //         setStudents(response.data);
+  //         console.log("huhu",response.data);
+  //         setLoading(false);
+  //       })
+  //       .catch(error => {
+  //         console.log(error);
+  //         setLoading(false);
+  //       });
+  //   }
+  // }, [id]);

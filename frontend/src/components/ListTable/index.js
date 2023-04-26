@@ -6,20 +6,30 @@ import { HiPencilSquare } from "react-icons/hi2";
 import { RiDeleteBinFill } from "react-icons/ri";
 import { FaInfoCircle } from "react-icons/fa";
 
+
 const TableList = (props) => {
   const [data, setData] = useState(props.data);
-  useEffect(() => {
-    setData(props.data);
-  }, [props.data]);
-
   const [checked, setChecked] = useState([]);
   const [isCheckAll, setIsCheckAll] = useState(false);
-  const [header,setHeader] = useState(Object.keys(data[0]).map((key, index) => key));
+  const [header,setHeader] = useState([]);
   const [update, setUpdate] = useState(typeof props.update === 'function');
   const [del, setDel] = useState(props.del);
   const [checkbox,setCheckbox] = useState(props.checkbox)
   const [detail,setDetail] = useState(props.detail)
   const [avatar, setAvatar] = useState(false);
+  const [notShow, setNotShow] = useState(["id", "avatar"])
+
+  useEffect(() => {
+    setData(props.data);
+  }, [props.data]);
+
+  useEffect(()=>{
+    if(data[0]){
+      const header =Object.keys(data[0]).map((key, index) => key);
+      setHeader(header);
+    }
+  },[data])
+
   useEffect(()=>{
     const hasAvatar = data.some(item => item.hasOwnProperty('avatar'));
     setAvatar(hasAvatar);
@@ -68,14 +78,14 @@ const TableList = (props) => {
 
               {
                 avatar?
-                  <th>Ảnh</th>
+                  <th>ẢNH</th>
                 :
                   <></>
               }
               
               {
                 header.map((key, index) => {
-                    if(key !== 'avatar'){
+                    if(!notShow.includes(key)){
                       return(
                         <th key={index}>{key.toUpperCase()}</th>
                       )
@@ -85,15 +95,15 @@ const TableList = (props) => {
               }
               
               {
-                update?<th>Cập nhật</th>:<></>
+                update?<th>CẬP NHẬT</th>:<></>
               }
               
               {
-                del?<th>Xóa</th>:<></>
+                del?<th>XÓA</th>:<></>
               }
 
               {
-                detail?<th>Chi tiết</th>:<></>
+                detail?<th>CHI TIẾT</th>:<></>
               }
             </tr>
           </thead>
@@ -121,17 +131,15 @@ const TableList = (props) => {
                     {
                       avatar?
                         <td className={tableStyle.textcenter}>
-                          <img className={tableStyle.avatar} src="https://scontent.fhan3-2.fna.fbcdn.net/v/t39.30808-1/323095559_1323500548471151_6901010600181680926_n.jpg?stp=cp6_dst-jpg_p320x320&_nc_cat=107&ccb=1-7&_nc_sid=7206a8&_nc_ohc=d17eIQxN50oAX-KoxWE&_nc_ht=scontent.fhan3-2.fna&oh=00_AfB0bB4kGSlcypXCOlSoDeOXk-6GM2Sdw9IZz02AvxO5kw&oe=6440CAA1" alt="Logo" /> 
+                          <img className={tableStyle.avatar} src={data.avatar||"https://scontent.fhan3-1.fna.fbcdn.net/v/t1.30497-1/143086968_2856368904622192_1959732218791162458_n.png?stp=cp0_dst-png_p60x60&_nc_cat=1&ccb=1-7&_nc_sid=7206a8&_nc_ohc=blIOUfZoi4EAX-l182P&_nc_ht=scontent.fhan3-1.fna&oh=00_AfD-rSsRpHTWGNKgzAlsN1Djrz-oyfuo5KVY1Qng3C-LQw&oe=646FE778"} alt="Logo" /> 
                         </td> 
                       :
                       <></>
                     }
-                    
-                    
 
                     {
                       header.map((key, index)=>{
-                        if(key != 'avatar'){
+                        if(!notShow.includes(key)){
                           return(
                             <td key={index}>
                               {
@@ -177,12 +185,14 @@ const TableList = (props) => {
   };
 
   return (
+    data?
     <>
       <table className="tableStyle.data">
         {renderTableHeader()}
         {renderTableData()}
       </table>
-    </>
+    </>:
+    <></>
 )
 };
 
