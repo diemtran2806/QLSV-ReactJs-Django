@@ -5,53 +5,127 @@ import Avatar from "../components/Avatar";
 import { useDispatch, useSelector } from "react-redux";
 import Button from "../components/Button";
 import { updateUser } from "../store/userActions";
-import { useState, useNavigate, useEffect } from "react";
+import { useState, useEffect } from "react";
+import { DatePicker, Space } from "antd";
+import defaultAvatar from "../assets/images/defaultAvatar.jpg";
+import { useNavigation } from "react-router-dom";
 
 const MyProfile = () => {
   const dispatch = useDispatch();
-  //const navigate = useNavigate();
-  const user = useSelector((state) => state.authen.login.currentUser);
+  const navigate = useNavigation();
+  console.log("Chạy lại ne");
+  const user = useSelector((state) => state.auth.login.currentUser);
+  const userAfterUpdate = useSelector((state) => state.user.userUpdate);
+  console.log("userUpdated", userAfterUpdate);
+  console.log("userrr", user);
   const id = user?.user.id;
   const accessToken = user?.accessToken;
-  const userLogined = {
-    mssv: user.user.mssv,
-    name: user.user.name,
-    phone: user.user.phone,
-    email: user.user.email,
-    cccd: user.user.cccd,
-    gender: user.user.gender ? "Nam" : "Nữ",
-    address: user.user.address,
-    dob: user.user.dob,
-  };
-  useEffect(() => {
-    setForm(userLogined);
-  }, []);
+
+  const [form, setForm] = useState({
+    id: userAfterUpdate?.id || "",
+    mssv: userAfterUpdate.mssv || "",
+    name: userAfterUpdate.name || "",
+    phone: userAfterUpdate.phone || "",
+    email: userAfterUpdate.email || "",
+    cccd: userAfterUpdate.cccd || "",
+    gender: userAfterUpdate.gender ? "Nam" : "Nữ" || "",
+    address: userAfterUpdate.address || "",
+    dob: userAfterUpdate.dob || "",
+    avatar: userAfterUpdate.avatar || "",
+  });
+  // const userLogined = {
+  //   id,
+  //   mssv,
+  //   name,
+  //   phone,
+  //   email,
+  //   cccd,
+  //   gender,
+  //   address,
+  //   dob,
+  // };
+  // useEffect(() => {
+  //   setForm(userAfterUpdate);
+  // }, [userAfterUpdate]);
   console.log(accessToken);
-  const [form, setForm] = useState({});
+
+  const handleChangeAvatar = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.addEventListener("load", () => {
+        const imageSrc = reader.result;
+        const formData = new FormData();
+        formData.append("image", imageSrc.split(",")[1]);
+        fetch(
+          `${"https://api.imgbb.com/1/upload"}?key=${"592e68d61b4d1cb73e4970986bdc3a8f"}`,
+          {
+            method: "POST",
+            body: formData,
+          }
+        )
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data.data.url);
+            setForm({ ...form, ["avatar"]: data.data.url });
+          });
+      });
+      // console.log("form:", form.avatar);
+
+      reader.readAsDataURL(file);
+    }
+  };
 
   const onChange = ({ name, value }) => {
     setForm({ ...form, [name]: value });
   };
-
+  const onChangeDate = (date, dateString) => {
+    console.log(dateString);
+  };
   const onSubmit = async (e) => {
     e.preventDefault();
     const userUpd = {
+      id: form.id,
       mssv: form.mssv,
       name: form.name,
       phone: form.phone,
       email: form.email,
       cccd: form.cccd,
-      gender: form.gender,
+      gender: form.gender === "Nữ" ? false : true,
       address: form.address,
       dob: form.dob,
+      id_role: 1,
+      avatar: form.avatar,
     };
-    const statuss = await updateUser(userUpd, id, dispatch, accessToken);
+    const statuss = await updateUser(
+      userUpd,
+      id,
+      dispatch,
+      accessToken,
+      navigate
+    );
+    setForm(userUpd);
+    console.log("form ne:", form);
+    console.log("Statuss:", statuss);
   };
 
   return (
     <Card header="Thông Tin Cá Nhân">
-      <div style={{ textAlign: "center" }}>
-        <Avatar />
+      <div className={classes.wrapAvatar}>
+        {/* <Avatar /> */}
+        <label for="file-input" className={classes.avatarWrapper}>
+          {form.avatar ? (
+            <img className={classes.avatar} src={form.avatar} alt="Avatar" />
+          ) : (
+            <img className={classes.avatar} src={defaultAvatar} alt="Avatar" />
+          )}
+          <input
+            type="file"
+            id="file-input"
+            accept="image/*"
+            onChange={handleChangeAvatar}
+          />
+        </label>
       </div>
       <div className={classes.wrap}>
         <Input
@@ -64,11 +138,12 @@ const MyProfile = () => {
           }}
           value={form.mssv}
         />
+        <div className={classes.distance}></div>
         <Input
           label="Tên"
           type="text"
-          name="mssv"
-          id="mssv"
+          name="name"
+          id="name"
           onChange={(event) => {
             onChange({ name: "name", value: event.target.value });
           }}
@@ -86,6 +161,7 @@ const MyProfile = () => {
           }}
           value={form.phone}
         />
+        <div className={classes.distance}></div>
         <Input
           label="Email"
           type="text"
@@ -108,6 +184,7 @@ const MyProfile = () => {
           }}
           value={form.cccd}
         />
+        <div className={classes.distance}></div>
         <Input
           label="Giới Tính"
           type="text"
@@ -133,6 +210,7 @@ const MyProfile = () => {
           }}
           value={form.address}
         />
+        <div className={classes.distance}></div>
         <Input
           label="Ngày Sinh"
           type="text"
@@ -143,11 +221,20 @@ const MyProfile = () => {
           }}
           value={form.dob}
         />
+        {/* <div className={classes.wrapperInput}>
+          <label className={classes.label}>Ngày Sinh</label>
+          <Space direction="vertical">
+            <DatePicker
+              onChange={onChangeDate}
+              className={classes.date}
+              value={moment("2022-06-12")}
+            />
+          </Space>
+        </div> */}
       </div>
-
       <div className={classes.wrap}>
         <Button onClick={onSubmit}>Cập Nhật</Button>
-        <Button>Làm Mới</Button>
+        <Button type="Reset">Làm Mới</Button>
       </div>
     </Card>
   );

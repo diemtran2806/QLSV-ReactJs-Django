@@ -1,4 +1,5 @@
 import axios from "axios";
+
 import {
   loginStart,
   loginSuccess,
@@ -6,6 +7,7 @@ import {
   logoutStart,
   logoutSuccess,
   logoutFalse,
+  setPasswordUpdated,
 } from "./authSlice";
 
 export const loginUser = async (user, dispatch, navigate) => {
@@ -34,5 +36,30 @@ export const logoutUser = async (dispatch, navigate, accessToken, axiosJWT) => {
   } catch (err) {
     console.log(err);
     dispatch(logoutFalse());
+  }
+};
+
+export const changePassword = async (
+  newPass,
+  id,
+  dispatch,
+  accessToken,
+  navigate
+) => {
+  console.log(newPass);
+  try {
+    const res = await axios.patch(
+      `http://127.0.0.1:8000/api/users/${id}/change-password/`,
+      newPass,
+      {
+        headers: { authorization: `Bearer ${accessToken}` },
+      }
+    );
+    console.log(res.data);
+    dispatch(setPasswordUpdated(res.data));
+    navigate("/");
+  } catch (err) {
+    console.log(err);
+    return err.response.status;
   }
 };

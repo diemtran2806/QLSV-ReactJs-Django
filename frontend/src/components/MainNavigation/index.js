@@ -14,7 +14,8 @@ import defaultAvatar from "../../assets/images/defaultAvatar.jpg";
 function MainNavigation() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.authen.login.currentUser);
+  const user = useSelector((state) => state.auth.login.currentUser);
+  const userAfterUpdate = useSelector((state) => state.user.userUpdate);
   const accessToken = user?.accessToken;
   // const id = user?.id;
   console.log(accessToken);
@@ -54,11 +55,16 @@ function MainNavigation() {
             Giảng Viên
           </NavLink>
         </div>
+        <div className={classes.wrapperButton}>
+          <NavLink to="/admin" className={classes.text}>
+            Admin
+          </NavLink>
+        </div>
       </div>
       <div className={classes.menu}>
         {user ? (
           <div className={classes.avata}>
-            <img src={defaultAvatar} alt="avata" />
+            <img src={userAfterUpdate.avatar} alt="avata" />
             <div className={classes.nameUser}>{user.user.name}</div>
             <ul className={classes.userMenu}>
               <li className={classes.userItem}>
@@ -75,7 +81,7 @@ function MainNavigation() {
                   <div className={classes.iconItem}>
                     <MdPassword />
                   </div>
-                  <a>Đổi Mật Khẩu</a>
+                  <NavLink to="/changePassword">Đổi Mật Khẩu</NavLink>
                 </div>
               </li>
               <li className={classes.userItem}>

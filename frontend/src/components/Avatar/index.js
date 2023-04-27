@@ -58,7 +58,7 @@ const Avatar = () => {
       listType="picture-circle"
       className="avatar-uploader"
       showUploadList={false}
-      // action="https://www.mocky.io/v2/5cc8019d300000980a055e76" //thêm link backend ở đây
+      // action={`http://127.0.0.1:8000/api/users/${id}/update/`}
       beforeUpload={beforeUpload}
       onChange={handleChange}
     >
@@ -71,12 +71,12 @@ const Avatar = () => {
           }}
         />
       ) : (
-        //   uploadButton
-        <Image
-          width={45}
-          height={45}
-          src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
-        />
+        uploadButton
+        // <Image
+        //   width={45}
+        //   height={45}
+        //   src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+        // />
       )}
     </Upload>
   );
