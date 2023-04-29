@@ -2,6 +2,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 
+
 class UserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
         if not email:
@@ -18,10 +19,12 @@ class UserManager(BaseUserManager):
         extra_fields.setdefault('is_superuser', True)
         return self.create_user(email, password, **extra_fields)
 
+
 class Users(AbstractBaseUser, PermissionsMixin):
     id = models.AutoField(primary_key=True)
     mssv = models.CharField(max_length=30, blank=True, null=True, unique=True)
-    password = models.CharField(max_length=255, blank=True, null=True, default=None)
+    password = models.CharField(
+        max_length=255, blank=True, null=True, default=None)
     name = models.CharField(max_length=255)
     email = models.EmailField(unique=True)
     is_active = models.BooleanField(default=True)
@@ -44,4 +47,4 @@ class Users(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
 
     def __str__(self):
-        return self.username
+        return self.mssv
