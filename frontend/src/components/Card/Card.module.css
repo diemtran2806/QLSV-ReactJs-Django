@@ -52,6 +52,9 @@ button, input {
 	justify-content: center;
 	align-items: center;
 	background-color: #f2f2f26e;
+	/* margin-top: 50px; */
+	/* overflow: auto; */
+  	/* max-height: 400px; thiết lập chiều cao tối đa của Card-content */
 }
 
 .wapperLogin.sizeWrapper {

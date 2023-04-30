@@ -12,6 +12,9 @@ const authSlice = createSlice({
       isFetching: false,
       error: false,
     },
+    updatePass: {
+      currentUser: null,
+    },
   },
   reducers: {
     loginStart: (state) => {
@@ -38,6 +41,9 @@ const authSlice = createSlice({
       state.login.isFetching = false;
       state.login.error = true;
     },
+    setPasswordUpdated: (state, action) => {
+      state.updatePass.currentUser = action.payload;
+    },
   },
 });
 
@@ -48,6 +54,7 @@ export const {
   logoutStart,
   logoutSuccess,
   logoutFalse,
+  setPasswordUpdated,
 } = authSlice.actions;
 
 export default authSlice;

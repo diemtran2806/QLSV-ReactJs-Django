@@ -8,6 +8,8 @@ import ClassPage from "./pages/Class";
 import LoginPage from "./pages/Login";
 import LecturerPage from "./pages/Lecturer";
 import MyProfile from "./pages/MyProfile";
+import ChangePassword from "./pages/ChangePassword";
+import AdminPage from "./pages/Admin";
 
 const router = createBrowserRouter([
   {
@@ -33,12 +35,20 @@ const router = createBrowserRouter([
         element: <LecturerPage admin={true} />,
       },
       {
+        path: "admin",
+        element: <AdminPage admin={true} />,
+      },
+      {
         path: "login",
         element: <LoginPage />,
       },
       {
         path: "myProfile",
         element: <MyProfile />,
+      },
+      {
+        path: "changePassword",
+        element: <ChangePassword />,
       },
     ],
   },

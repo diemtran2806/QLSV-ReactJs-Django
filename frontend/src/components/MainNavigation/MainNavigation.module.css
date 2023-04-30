@@ -164,6 +164,7 @@
 }
 
 .wrapperUserItem {
+	position: relative;
 	display: flex;
 	align-items: center;
 	width: 100%;
@@ -171,7 +172,7 @@
 
 .iconItem {
 	color: #808080;
-	font-size: 12px;
+	font-size: 14px;
 	padding-left: 12px;
 }
 

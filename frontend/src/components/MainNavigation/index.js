@@ -1,11 +1,32 @@
 import { NavLink } from "react-router-dom";
+import { ImProfile } from "react-icons/im";
+import { MdPassword } from "react-icons/md";
+import { AiOutlineLogout } from "react-icons/ai";
+import { createAxios } from "../../createInstance";
+import { logoutSuccess } from "../../store/authSlice";
+import { logoutUser } from "../../store/authActions";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+
 import classes from "./MainNavigation.module.css";
 import defaultAvatar from "../../assets/images/defaultAvatar.jpg";
 
 function MainNavigation() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.login.currentUser);
+  const userAfterUpdate = useSelector((state) => state.user.userUpdate);
+  const accessToken = user?.accessToken;
+  // const id = user?.id;
+  console.log(accessToken);
   console.log(user);
+
+  let axiosJWT = createAxios(user, dispatch, logoutSuccess);
+
+  const handleLogout = () => {
+    logoutUser(dispatch, navigate, accessToken, axiosJWT);
+  };
+
   return (
     <div className={classes.wrapper}>
       <div className={classes.menu}>
@@ -34,29 +55,41 @@ function MainNavigation() {
             Giảng Viên
           </NavLink>
         </div>
+        <div className={classes.wrapperButton}>
+          <NavLink to="/admin" className={classes.text}>
+            Admin
+          </NavLink>
+        </div>
       </div>
       <div className={classes.menu}>
         {user ? (
           <div className={classes.avata}>
-            <img src={defaultAvatar} alt="avata" />
+            <img src={userAfterUpdate.avatar} alt="avata" />
             <div className={classes.nameUser}>{user.user.name}</div>
             <ul className={classes.userMenu}>
               <li className={classes.userItem}>
                 <div className={classes.wrapperUserItem}>
                   {/* <i class="icon-item fa-solid fa-user"></i> */}
+                  <div className={classes.iconItem}>
+                    <ImProfile />
+                  </div>
                   <NavLink to="/myProfile">Trang Cá Nhân</NavLink>
                 </div>
               </li>
               <li className={classes.userItem}>
                 <div className={classes.wrapperUserItem}>
-                  {/* <i class="icon-item fa-solid fa-lock"></i> */}
-                  <a>Đổi Mật Khẩu</a>
+                  <div className={classes.iconItem}>
+                    <MdPassword />
+                  </div>
+                  <NavLink to="/changePassword">Đổi Mật Khẩu</NavLink>
                 </div>
               </li>
               <li className={classes.userItem}>
                 <div className={classes.wrapperUserItem}>
-                  {/* <i class="icon-item fa-solid fa-right-from-bracket"></i> */}
-                  <a>Đăng Xuất</a>
+                  <div className={classes.iconItem}>
+                    <AiOutlineLogout />
+                  </div>
+                  <a onClick={handleLogout}>Đăng Xuất</a>
                 </div>
               </li>
             </ul>
