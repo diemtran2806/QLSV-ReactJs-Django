@@ -7,77 +7,43 @@ import { Button, Modal } from "antd";
 const AdminPage = () => {
   const [isUpdate, setIsUpdate] = useState(false);
   const [updateId, setUpdateId] = useState(null);
+  const [admins, setAdmins] = useState([]);
+
+  //   useEffect(() => {
+  //     const getAdmins = async () => {
+  //       const response = await fetch(
+  //         "https://react-http-e3a5b-default-rtdb.firebaseio.com/meals.json"
+  //       );
+
+  //       if (!response.ok) {
+  //         throw new Error("Something went wrong!");
+  //       }
+
+  //       const responseData = await response.json(); //vì nó vẫn trả về promise nên phải có await
+
+  //       const loadedMeals = [];
+  //       for (const key in responseData) {
+  //         loadedMeals.push({
+  //           id: key,
+  //           name: responseData[key].name,
+  //           description: responseData[key].description,
+  //           price: responseData[key].price,
+  //         });
+  //       }
+
+  //       setMeals(loadedMeals);
+  //       setIsLoading(false);
+  //     };
+  //     fetchMeals().catch((error) => {
+  //       setIsLoading(false);
+  //       setHttpError(error.message);
+  //     });
+  //   }, []);
 
   const [admin, setAdmin] = useState([
     {
       id: 1,
       Tên: "sdfsd",
-      "Số điện thoại": "0378945213",
-      email: "wasif@email.com",
-      CCCD: "wasif@email.com",
-      "Giới tính": "Nam",
-      "Ngày sinh": "19/05/2002",
-      Khoa: "Khoa Công nghệ thông tin",
-      avatar: "https://img.com/sdfsdf",
-    },
-    {
-      id: 2,
-      Tên: "sdfwer",
-      "Số điện thoại": "0378945213",
-      email: "wasif@email.com",
-      CCCD: "wasif@email.com",
-      "Giới tính": "Nam",
-      "Ngày sinh": "19/05/2002",
-      Khoa: "Khoa Công nghệ thông tin",
-      avatar: "https://img.com/sdfsdf",
-    },
-    {
-      id: 3,
-      Tên: "Wavbcvbsif",
-      "Số điện thoại": "0378945213",
-      email: "wasif@email.com",
-      CCCD: "wasif@email.com",
-      "Giới tính": "Nam",
-      "Ngày sinh": "19/05/2002",
-      Khoa: "Khoa Công nghệ thông tin",
-      avatar: "https://img.com/sdfsdf",
-    },
-    {
-      id: 4,
-      Tên: "Wasfghif",
-      "Số điện thoại": "0378945213",
-      email: "wasif@email.com",
-      CCCD: "wasif@email.com",
-      "Giới tính": "Nam",
-      "Ngày sinh": "19/05/2002",
-      Khoa: "Khoa Công nghệ thông tin",
-      avatar: "https://img.com/sdfsdf",
-    },
-    {
-      id: 5,
-      Tên: "Wajkljif",
-      "Số điện thoại": "0378945213",
-      email: "wasif@email.com",
-      CCCD: "wasif@email.com",
-      "Giới tính": "Nam",
-      "Ngày sinh": "19/05/2002",
-      Khoa: "Khoa Công nghệ thông tin",
-      avatar: "https://img.com/sdfsdf",
-    },
-    {
-      id: 6,
-      Tên: "Waqưesif",
-      "Số điện thoại": "0378945213",
-      email: "wasif@email.com",
-      CCCD: "wasif@email.com",
-      "Giới tính": "Nam",
-      "Ngày sinh": "19/05/2002",
-      Khoa: "Khoa Công nghệ thông tin",
-      avatar: "https://img.com/sdfsdf",
-    },
-    {
-      id: 7,
-      Tên: "Wavvbvbnsif",
       "Số điện thoại": "0378945213",
       email: "wasif@email.com",
       CCCD: "wasif@email.com",

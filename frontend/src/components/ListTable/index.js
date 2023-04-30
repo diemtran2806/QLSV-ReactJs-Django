@@ -94,11 +94,11 @@ const TableList = (props) => {
             {detail ? <th>CHI TIẾT</th> : <></>}
             {/* })} */}
 
-            {update ? <th>Cập nhật</th> : <></>}
+            {/* {update ? <th>Cập nhật</th> : <></>}
 
             {del ? <th>Xóa</th> : <></>}
 
-            {detail ? <th>Chi tiết</th> : <></>}
+            {detail ? <th>Chi tiết</th> : <></>} */}
           </tr>
         </thead>
       </>

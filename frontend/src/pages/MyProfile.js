@@ -9,8 +9,11 @@ import { useState, useEffect } from "react";
 import { DatePicker, Space } from "antd";
 import defaultAvatar from "../assets/images/defaultAvatar.jpg";
 import { useNavigation } from "react-router-dom";
+import { message } from "antd";
 
 const MyProfile = () => {
+  const [messageApi, contextHolder] = message.useMessage();
+
   const dispatch = useDispatch();
   const navigate = useNavigation();
   console.log("Chạy lại ne");
@@ -107,6 +110,10 @@ const MyProfile = () => {
     setForm(userUpd);
     console.log("form ne:", form);
     console.log("Statuss:", statuss);
+    messageApi.open({
+      type: "success",
+      content: "Updated successfully!",
+    });
   };
 
   return (
