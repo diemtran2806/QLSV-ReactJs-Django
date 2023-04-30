@@ -4,40 +4,33 @@ import style from "./StudentUpdate.module.css"
 import classnames from 'classnames';
 import axios from "axios";
 import { Select, Space } from 'antd';
-const StudentUpdatePage = (props) => {
-    const [idUpdate, setIdUpdate] = useState(props.id);
-    const [studentIDURL, setStudentIDURL] = useState(`http://127.0.0.1:8000/api/student/${idUpdate}`);
-    const [loading, setLoading] = useState(true);
-    const [formValue, setFormValue] = useState();
-    const [updateId,setUpdateId] = useState(props.id);
+const StudentAddEdit = (props) => {
+    const [loading, setLoading] = useState(false);
+    const [data, setData] = useState(props.data);
+    const [formValue, setFormValue] = useState({
+        id:  "",
+        mssv:"",
+        name:"",
+        phone:"",
+        email:"",
+        cccd:"",
+        gender:true,
+        address:"",
+        dob:"",
+        classId:"",
+        avatar:"https://scontent.fhan3-1.fna.fbcdn.net/v/t1.30497-1/143086968_2856368904622192_1959732218791162458_n.png?stp=cp0_dst-png_p60x60&_nc_cat=1&ccb=1-7&_nc_sid=7206a8&_nc_ohc=blIOUfZoi4EAX-l182P&_nc_ht=scontent.fhan3-1.fna&oh=00_AfD-rSsRpHTWGNKgzAlsN1Djrz-oyfuo5KVY1Qng3C-LQw&oe=646FE778"
+    });
+
+    const [isAdd, setIsAdd] = useState(false);// add/update
+    const [updateId,setUpdateId] = useState();// id user update
+
 
     useEffect(()=>{
-      axios.get(studentIDURL)
-      .then(response => {
-        //data
-        let data = response.data.id_user;
-        
-        let form = {
-            id:data.id,
-            mssv:data.mssv,
-            name:data.name,
-            phone:data.phone,
-            email:data.email,
-            cccd:data.cccd,
-            gender:data.gender,
-            address:data.address,
-            dob:data.dob,
-            classId:response.data.id_class.id_class
-        }
-        console.log("form nef",form)
-        setFormValue(form);
-        setLoading(false);
-      })
-      .catch(error => {
-        console.log(error);
-      });
-    },[]);
-
+        // if(props.data != undefined)
+        //  setFormValue(props.data);
+    },[props.data]);
+    
+    // nhập 
     const handleInputChange = (event) => {
         const { name, value } = event.target;
         setFormValue((prevState) => {
@@ -48,15 +41,73 @@ const StudentUpdatePage = (props) => {
         });
     };
 
+    //chọn trong option
+    const handleSelect = (value) => {
+        console.log(`selected ${value}`);
+    };
+
+    //get student by id => UPDATE
+    useEffect(()=>{
+        let data;
+        if(!isAdd){
+        console.log("Không có add nè")
+        axios.get(`http://127.0.0.1:8000/api/student/${updateId}`)
+        .then(response => {
+        //data
+            data = response.data;
+            let form = {
+                id: data.id_user.id,
+                mssv : data.id_user.mssv,
+                name : data.id_user.name,
+                phone : data.id_user.phone,
+                email : data.id_user.email,
+                cccd : data.id_user.cccd,
+                gender : data.id_user.gender,
+                address : data.id_user.address,
+                dob : data.id_user.dob,
+                classId : data.id_class.id_class,
+                avatar : data.id_user.avatar 
+            }
+            setFormValue(form);
+            console.log(`update vowis data nafy:`, form);
+        })
+        .catch(error => {
+            console.log(error);
+        });
+        }
+        else{
+        console.log(" có add nè")
+        let form = {
+            id:"",
+            mssv:"",
+            name:"",
+            phone:"",
+            email:"",
+            cccd:"",
+            gender:true,
+            address:"",
+            dob:"",
+            classId:"",
+            avatar:""
+        }
+        setFormValue(form);
+        }
+        console.log("data update:", data);
+    },[isAdd]);
+
     return(
-            loading?<></>:
+            loading?<>Sinh viên không có trong hệ thống</>:
             <>
+                <div className={style.avatarWrap}>
+                    <img className={style.avatar} src={formValue.avatar} alt="Logo" />
+                </div>  
+                <input type="text"/>
                 <div className={style.row}>
                     <div className={classnames(style['input-item'], style.col50)}>
                         MSSV
                         <Input
                             label="Tài khoản"
-                            type="text" 
+                            type="text"
                             name="mssv"
                             id="mssv"
                             value={formValue.mssv}
@@ -118,7 +169,7 @@ const StudentUpdatePage = (props) => {
                     <Select
                     defaultValue={formValue.gender}
                     style={{ width: 120 }}
-                    onChange={handleInputChange}
+                    onChange={handleSelect}
                     options={[
                         { value: true, label: 'Nam' },
                         { value: false, label: 'Nữ' },
@@ -162,8 +213,6 @@ const StudentUpdatePage = (props) => {
             </>
             
     )
-
-
 }
 
-export default StudentUpdatePage;
+export default StudentAddEdit;
