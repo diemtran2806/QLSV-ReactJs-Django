@@ -6,7 +6,6 @@ import axios from "axios";
 import { Select, Space } from 'antd';
 const StudentAddEdit = (props) => {
     const [loading, setLoading] = useState(false);
-    const [data, setData] = useState(props.data);
     const [formValue, setFormValue] = useState({
         id:  "",
         mssv:"",
@@ -22,13 +21,7 @@ const StudentAddEdit = (props) => {
     });
 
     const [isAdd, setIsAdd] = useState(false);// add/update
-    const [updateId,setUpdateId] = useState();// id user update
-
-
-    useEffect(()=>{
-        // if(props.data != undefined)
-        //  setFormValue(props.data);
-    },[props.data]);
+    const [updateId,setUpdateId] = useState(props.id);// id user update
     
     // nhập 
     const handleInputChange = (event) => {
@@ -46,54 +39,55 @@ const StudentAddEdit = (props) => {
         console.log(`selected ${value}`);
     };
 
-    //get student by id => UPDATE
     useEffect(()=>{
-        let data;
+        setUpdateId(props.id);
+        setIsAdd(props.isAdd)
+    },[props.id, props.isAdd]);
+
+    useEffect(()=>{
         if(!isAdd){
-        console.log("Không có add nè")
-        axios.get(`http://127.0.0.1:8000/api/student/${updateId}`)
-        .then(response => {
-        //data
-            data = response.data;
+            console.log("Không có add nè")
+            axios.get(`http://127.0.0.1:8000/api/student/${updateId}`)
+            .then(response => {
+            //data
+                const data = response.data;
+                let form = {
+                    id: data.id_user.id,
+                    mssv : data.id_user.mssv,
+                    name : data.id_user.name,
+                    phone : data.id_user.phone,
+                    email : data.id_user.email,
+                    cccd : data.id_user.cccd,
+                    gender : data.id_user.gender,
+                    address : data.id_user.address,
+                    dob : data.id_user.dob,
+                    classId : data.id_class.id_class,
+                    avatar : data.id_user.avatar 
+                }
+                setFormValue(form);
+                console.log(`update vowis data nafy:`, form);
+            })
+            .catch(error => {
+                console.log(error);
+            });
+        }else{
+        console.log(" có add nè")
             let form = {
-                id: data.id_user.id,
-                mssv : data.id_user.mssv,
-                name : data.id_user.name,
-                phone : data.id_user.phone,
-                email : data.id_user.email,
-                cccd : data.id_user.cccd,
-                gender : data.id_user.gender,
-                address : data.id_user.address,
-                dob : data.id_user.dob,
-                classId : data.id_class.id_class,
-                avatar : data.id_user.avatar 
+                id:"",
+                mssv:"",
+                name:"",
+                phone:"",
+                email:"",
+                cccd:"",
+                gender:true,
+                address:"",
+                dob:"",
+                classId:"",
+                avatar:""
             }
             setFormValue(form);
-            console.log(`update vowis data nafy:`, form);
-        })
-        .catch(error => {
-            console.log(error);
-        });
         }
-        else{
-        console.log(" có add nè")
-        let form = {
-            id:"",
-            mssv:"",
-            name:"",
-            phone:"",
-            email:"",
-            cccd:"",
-            gender:true,
-            address:"",
-            dob:"",
-            classId:"",
-            avatar:""
-        }
-        setFormValue(form);
-        }
-        console.log("data update:", data);
-    },[isAdd]);
+    },[updateId]);
 
     return(
             loading?<>Sinh viên không có trong hệ thống</>:

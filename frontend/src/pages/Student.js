@@ -22,7 +22,8 @@ const StudentsPage = (props) => {
   const [isAdd, setIsAdd] = useState(false);// add/update
   const [updateId,setUpdateId] = useState();// id user update
 
-  
+ 
+
   //get all user load table
   useEffect(() => {
       axios.get("http://127.0.0.1:8000/api/student/")
@@ -63,6 +64,7 @@ const StudentsPage = (props) => {
 
   const handleCreateActive = () => {
     setIsAdd(true);
+    setUpdateId(null);
     setIsModal(true);
   }
   
@@ -102,7 +104,7 @@ const StudentsPage = (props) => {
                 <div className={style.rel}></div>
                 <div className={style['model-header']}>Cập nhật sinh viên</div>
               </div>
-              <StudentAddEdit isAdd={isAdd} data={updateId}/>
+              <StudentAddEdit isAdd={isAdd} id={updateId}/>
             </Modal>
           </> 
         }
