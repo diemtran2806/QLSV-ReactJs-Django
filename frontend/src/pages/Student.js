@@ -6,27 +6,26 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import TableList from "../components/ListTable";
 import BodyBox from "../components/BodyBox";
-import StudentUpdatePage from "./StudentUpdate";
-
-const getAllUserURL = "http://127.0.0.1:8000/api/student/"
+import StudentAddEdit from "./StudentAddEdit";
+import { IoIosAddCircle } from "react-icons/io";
+import { ImBin2 } from "react-icons/im";
 
 const StudentsPage = (props) => {
   const [students, setStudents] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [studentIDURL, setStudentIDURL] = useState();
+  const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(props.admin);
-  useEffect(() => {
-    setIsAdmin(props.admin);
-  }, [props.admin]);
-
   const [searchParams] = useSearchParams();
-  const [id, setId] = useState(Number(searchParams.get("id")) || 1);
-  const [isUpdate,setIsUpdate] = useState(false);
-  const [updateId,setUpdateId] = useState(null);
+  const [idClass, setIdClass] = useState(Number(searchParams.get("id")));//user of class
 
-  //get list student on server
+  const [isModal,setIsModal] = useState(false);
+  const [isAdd, setIsAdd] = useState(false);// add/update
+  const [updateId,setUpdateId] = useState();// id user update
+
+  
+  //get all user load table
   useEffect(() => {
-      // nếu không có thì lấy tất cả sinh viên 
-      axios.get(getAllUserURL)
+      axios.get("http://127.0.0.1:8000/api/student/")
         .then(response => {
           //data
           let data = [];
@@ -52,49 +51,62 @@ const StudentsPage = (props) => {
         })
         .catch(error => {
           console.log(error);
-          setLoading(false);
         });
   }, []);
 
+  
   const handleUpdateActive = (id) => {
     setUpdateId(id);
-    setIsUpdate(true);
+    setIsAdd(false);
+    setIsModal(true);
+  }
+
+  const handleCreateActive = () => {
+    setIsAdd(true);
+    setIsModal(true);
+  }
+  
+  const handleSubmit = ()=>{
+
   }
 
   return <>
         {
-          loading ? (
-            <p>Loading..{id}</p>
-          ):
-          (
+          loading ? 
+            <p>Loading...</p>
+          :
+          <>
             <BodyBox>
+              <div className={style['head-button']}>
+                <Button onClick={handleCreateActive} type="primary">Thêm SV<IoIosAddCircle/> </Button>
+                <Button type="primary" danger>Xóa<ImBin2/></Button>
+              </div>
               {
                 isAdmin?
                 <TableList key="admin" data={students} update={handleUpdateActive} del={true} checkbox={true}/>:
                 <TableList key="user" data={students}/>
               }
             </BodyBox>
-          )
-        }
-        {
             <Modal
               centered
-              open={isUpdate}
-              onOk={() => setIsUpdate(false)}
-              onCancel={() => setIsUpdate(false)}
+              open={isModal}
+              onOk={() => setIsModal(false)}
+              onCancel={() => setIsModal(false)}
               width={1000}
               okText="Cập nhật"
               cancelText="Hủy"
               okButtonProps = {{style:{backgroundColor: '#283c4e'}}}
               closable = {false}
             >
-            <div >
-              <div className={style.rel}></div>
-              <div className={style['model-header']}>Cập nhật sinh viên</div>
-            </div>
-            <StudentUpdatePage id={updateId}/>
-          </Modal>
+              <div >
+                <div className={style.rel}></div>
+                <div className={style['model-header']}>Cập nhật sinh viên</div>
+              </div>
+              <StudentAddEdit isAdd={isAdd} data={updateId}/>
+            </Modal>
+          </> 
         }
+         
   </>;
 };
 
@@ -107,7 +119,7 @@ export default StudentsPage;
 
   // const [searchParams] = useSearchParams();
   // const [id, setId] = useState(Number(searchParams.get("id")) || 1);
-  // const [isUpdate,setIsUpdate] = useState(false);
+  // const [isModal,setIsModal] = useState(false);
   // const [updateId,setUpdateId] = useState(null);
 
   // useEffect(() => {
