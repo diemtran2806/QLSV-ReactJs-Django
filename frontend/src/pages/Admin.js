@@ -1,7 +1,13 @@
 import { useState, useEffect } from "react";
 import TableList from "../components/ListTable";
 import BodyBox from "../components/BodyBox";
+import classes from "./Admin.module.css";
+// import { Select, Space } from 'antd';
+import { Button, Modal } from "antd";
 const AdminPage = () => {
+  const [isUpdate, setIsUpdate] = useState(false);
+  const [updateId, setUpdateId] = useState(null);
+
   const [admin, setAdmin] = useState([
     {
       id: 1,
@@ -100,6 +106,25 @@ const AdminPage = () => {
       <BodyBox>
         <TableList key="admin" data={admin} update={true} checkbox={true} />
       </BodyBox>
+      {
+        <Modal
+          centered
+          open={isUpdate}
+          onOk={() => setIsUpdate(false)}
+          onCancel={() => setIsUpdate(false)}
+          width={1000}
+          okText="Cập nhật"
+          cancelText="Hủy"
+          okButtonProps={{ style: { backgroundColor: "#283c4e" } }}
+          closable={false}
+        >
+          <div>
+            <div className={classes.rel}></div>
+            <div className={classes["model-header"]}>Cập nhật sinh viên</div>
+          </div>
+          {/* <StudentUpdatePage id={adminId} /> */}
+        </Modal>
+      }
     </>
   );
 };
