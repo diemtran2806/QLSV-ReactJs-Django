@@ -5,25 +5,12 @@ import classnames from 'classnames';
 import axios from "axios";
 import { Select, Space } from 'antd';
 const StudentAddEdit = (props) => {
-    const [loading, setLoading] = useState(false);
-    const [formValue, setFormValue] = useState({
-        id:  "",
-        mssv:"",
-        name:"",
-        phone:"",
-        email:"",
-        cccd:"",
-        gender:true,
-        address:"",
-        dob:"",
-        classId:"",
-        avatar:"https://scontent.fhan3-1.fna.fbcdn.net/v/t1.30497-1/143086968_2856368904622192_1959732218791162458_n.png?stp=cp0_dst-png_p60x60&_nc_cat=1&ccb=1-7&_nc_sid=7206a8&_nc_ohc=blIOUfZoi4EAX-l182P&_nc_ht=scontent.fhan3-1.fna&oh=00_AfD-rSsRpHTWGNKgzAlsN1Djrz-oyfuo5KVY1Qng3C-LQw&oe=646FE778"
-    });
-
-    const [isAdd, setIsAdd] = useState(false);// add/update
+    const [loading, setLoading] = useState(true);
+    const [formValue, setFormValue] = useState();
+    const [isAdd, setIsAdd] = useState(true);// add/update
     const [updateId,setUpdateId] = useState(props.id);// id user update
-    
-    // nhập 
+    const [classes, setClasses] = useState();
+
     const handleInputChange = (event) => {
         const { name, value } = event.target;
         setFormValue((prevState) => {
@@ -46,7 +33,6 @@ const StudentAddEdit = (props) => {
 
     useEffect(()=>{
         if(!isAdd){
-            console.log("Không có add nè")
             axios.get(`http://127.0.0.1:8000/api/student/${updateId}`)
             .then(response => {
             //data
@@ -65,13 +51,12 @@ const StudentAddEdit = (props) => {
                     avatar : data.id_user.avatar 
                 }
                 setFormValue(form);
-                console.log(`update vowis data nafy:`, form);
+                setLoading(false);
             })
             .catch(error => {
                 console.log(error);
             });
         }else{
-        console.log(" có add nè")
             let form = {
                 id:"",
                 mssv:"",
@@ -83,14 +68,15 @@ const StudentAddEdit = (props) => {
                 address:"",
                 dob:"",
                 classId:"",
-                avatar:""
+                avatar:"https://scontent.fhan3-1.fna.fbcdn.net/v/t1.30497-1/143086968_2856368904622192_1959732218791162458_n.png?stp=cp0_dst-png_p60x60&_nc_cat=1&ccb=1-7&_nc_sid=7206a8&_nc_ohc=blIOUfZoi4EAX-l182P&_nc_ht=scontent.fhan3-1.fna&oh=00_AfD-rSsRpHTWGNKgzAlsN1Djrz-oyfuo5KVY1Qng3C-LQw&oe=646FE778"
             }
             setFormValue(form);
+            setLoading(false);
         }
     },[updateId]);
 
     return(
-            loading?<>Sinh viên không có trong hệ thống</>:
+            loading?<>Loading...</>:
             <>
                 <div className={style.avatarWrap}>
                     <img className={style.avatar} src={formValue.avatar} alt="Logo" />
