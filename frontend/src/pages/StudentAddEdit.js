@@ -4,6 +4,7 @@ import style from "./StudentUpdate.module.css"
 import classnames from 'classnames';
 import axios from "axios";
 import { Select, Space } from 'antd';
+import { useDispatch, useSelector } from "react-redux";
 const StudentAddEdit = (props) => {
     const [loading, setLoading] = useState(true);
     const [formValue, setFormValue] = useState();
@@ -11,6 +12,7 @@ const StudentAddEdit = (props) => {
     const [updateId,setUpdateId] = useState(props.id);// id user update
     const [classes, setClasses] = useState();
 
+    const user = useSelector((state) => state.auth.login.currentUser);
     const handleInputChange = (event) => {
         const { name, value } = event.target;
         setFormValue((prevState) => {
@@ -22,7 +24,11 @@ const StudentAddEdit = (props) => {
     };
 
     //chọn trong option
-    const handleSelect = (value) => {
+    const handleSelectGender = (value,event) => {
+        console.log(`selected ${value}`, event.name);
+    };
+
+    const handleSelectClass = (value) => {
         console.log(`selected ${value}`);
     };
 
@@ -30,6 +36,32 @@ const StudentAddEdit = (props) => {
         setUpdateId(props.id);
         setIsAdd(props.isAdd)
     },[props.id, props.isAdd]);
+
+    //get all class
+    useEffect(()=>{
+        // Gọi API để lấy dữ liệu
+        const accessToken = user?.accessToken;
+
+        axios.get('http://127.0.0.1:8000/api/class/', {
+            headers: {
+            'Authorization': 'Bearer ' + accessToken,
+            'Content-Type': 'application/json'
+            }
+        })
+        .then((response) => {
+            console.log("lớp nè",response.data);
+            const res = response.data;
+            const newClass = res.map(({id_class, class_name})=>{
+                return {value:id_class, label:class_name}
+            })
+            setClasses(newClass);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },[]);
+
+    
 
     useEffect(()=>{
         if(!isAdd){
@@ -147,9 +179,10 @@ const StudentAddEdit = (props) => {
                 </div>
                 <Space wrap>
                     <Select
-                    defaultValue={formValue.gender}
+                    name="gender"
+                    value={formValue.gender}
                     style={{ width: 120 }}
-                    onChange={handleSelect}
+                    onChange={handleSelectGender}
                     options={[
                         { value: true, label: 'Nam' },
                         { value: false, label: 'Nữ' },
@@ -181,17 +214,20 @@ const StudentAddEdit = (props) => {
                 </div>
                 <div className={ classnames(style['input-item'])}>
                     Lớp
-                    <Input
-                        label="Tài khoản"
-                        type="text"
-                        name="className"
-                        id="className"
-                        value={formValue.classId}
-                        onChange={handleInputChange}
-                    />
+                        {
+                            formValue.classId?
+                            <Space wrap>
+                                <Select
+                                    name="classId"
+                                    value={formValue.classId}
+                                    style={{ width: 120 }}
+                                    onChange={(event)=>handleSelectClass(event)}
+                                    options={classes}
+                                />
+                            </Space>:<></>
+                        }
                 </div>
             </>
-            
     )
 }
 

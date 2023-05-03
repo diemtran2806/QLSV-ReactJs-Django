@@ -36,6 +36,7 @@ const StudentsPage = (props) => {
               id: user.id,
               mssv: user.mssv,
               Tên: user.name,
+              "Lớp SH": student.id_class.class_name,
               email:user.email ,
               SĐT:user.phone ,
               "Giới tính":user.gender?"Nam":"Nữ" ,

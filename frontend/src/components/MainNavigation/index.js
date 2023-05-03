@@ -64,7 +64,7 @@ function MainNavigation() {
       <div className={classes.menu}>
         {user ? (
           <div className={classes.avata}>
-            <img src={userAfterUpdate.avatar} alt="avata" />
+            <img src={user.user.avatar} alt="avata" />
             <div className={classes.nameUser}>{user.user.name}</div>
             <ul className={classes.userMenu}>
               <li className={classes.userItem}>
