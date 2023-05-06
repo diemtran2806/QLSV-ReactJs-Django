@@ -1,15 +1,12 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework.views import APIView
 from .serializers import LecturerSerializer, GetLecturerSerializer
-from django.contrib.auth import authenticate
 from django.views.decorators.csrf import csrf_exempt
 from django.http import Http404
 from .models import Lecturer
-from users.serializers import UserSerializer
 from users.models import Users
+from users.views import login_required
 
 
 @csrf_exempt
@@ -38,6 +35,7 @@ def lecturer_view(request, id):
 
 @csrf_exempt
 @api_view(['POST'])
+@login_required
 def lecturer_create_view(request):
     serializer = LecturerSerializer(data=request.data)
     if serializer.is_valid():
@@ -48,6 +46,7 @@ def lecturer_create_view(request):
 
 @csrf_exempt
 @api_view(['PUT'])
+@login_required
 def lecturer_update_view(request, id):
     lecturer = get_object(id)
     serializer = LecturerSerializer(
@@ -60,6 +59,7 @@ def lecturer_update_view(request, id):
 
 @csrf_exempt
 @api_view(['DELETE'])
+@login_required
 def lecturer_delete_view(request, id):
     try:
         lecturer = get_object(id)

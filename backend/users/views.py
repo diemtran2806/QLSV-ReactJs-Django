@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.views import APIView
+from rest_framework_simplejwt.tokens import AccessToken
 from .serializers import UserSerializer
 from django.contrib.auth import authenticate
 from django.views.decorators.csrf import csrf_exempt
@@ -97,8 +98,7 @@ def user_update_password_view(request, id):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    return Response(status=status.HTTP_401_UNAUTHORIZED)
-    
+    return Response(status=status.HTTP_401_UNAUTHORIZED)    
 
 @csrf_exempt
 @api_view(['DELETE'])
@@ -109,4 +109,18 @@ def user_delete_view(request, id):
         return Response(status=status.HTTP_204_NO_CONTENT)
     return Response(status=status.HTTP_401_UNAUTHORIZED)
 
-    
+@csrf_exempt
+def login_required(function):
+    def wrap(request, *args, **kwargs):
+        auth = request.headers.get('Authorization')
+        if auth is None:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+        try:
+            token = auth.split(' ')[1]
+            decoded_token = AccessToken(token, verify=True)
+            user_id = decoded_token['user_id']
+            request.user_id = user_id
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        return function(request, *args, **kwargs)
+    return wrap
