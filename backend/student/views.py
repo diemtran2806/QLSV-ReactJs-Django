@@ -29,6 +29,13 @@ def student_view(request, id):
     return Response(serializer.data)
 
 @csrf_exempt
+@api_view(['GET'])
+def student_view_by_class(request, id_class):
+    students = Student.objects.filter(id_class=id_class)
+    serializer = GetStudentSerializer(students, many=True, context={'request': request})
+    return Response(serializer.data)
+
+@csrf_exempt
 @api_view(['POST'])
 @login_required
 def student_create_view(request):
