@@ -49,9 +49,11 @@ class RegisterView(APIView):
 
     if not serializer.is_valid():
       return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    user = serializer.create(serializer.validated_data)
-    user = UserSerializer(user)
+    try:
+        user = serializer.create(serializer.validated_data)
+        user = UserSerializer(user)
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
     return Response(user.data, status=status.HTTP_201_CREATED)
 
@@ -82,8 +84,11 @@ def user_update_view(request, id):
         data = request.data        
         serializer = UserSerializer(user, data=data)
         if serializer.is_valid():
-            serializer.update(user, serializer.validated_data)
-            return Response(serializer.data)
+            try:
+                serializer.update(user, serializer.validated_data)
+                return Response(serializer.data)
+            except Exception as e:
+                return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     return Response(status=status.HTTP_401_UNAUTHORIZED)    
 
@@ -95,8 +100,11 @@ def user_update_password_view(request, id):
         data = request.data        
         serializer = UserSerializer(user, data=data, partial=True)
         if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
+            try:
+                serializer.save()
+                return Response(serializer.data)
+            except Exception as e:
+                return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     return Response(status=status.HTTP_401_UNAUTHORIZED)    
 

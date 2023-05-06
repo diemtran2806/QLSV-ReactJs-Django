@@ -39,8 +39,11 @@ def lecturer_view(request, id):
 def lecturer_create_view(request):
     serializer = LecturerSerializer(data=request.data)
     if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        try:
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -49,11 +52,13 @@ def lecturer_create_view(request):
 @login_required
 def lecturer_update_view(request, id):
     lecturer = get_object(id)
-    serializer = LecturerSerializer(
-        lecturer, data=request.data, partial=True)
+    serializer = LecturerSerializer(lecturer, data=request.data, partial=True)
     if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data)
+        try:
+            serializer.update(lecturer, serializer.validated_data)
+            return Response(serializer.data)
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
