@@ -41,8 +41,11 @@ def student_view_by_class(request, id_class):
 def student_create_view(request):
     serializer = StudentSerializer(data=request.data)
     if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        try:
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @csrf_exempt
@@ -52,8 +55,11 @@ def student_update_view(request, id):
     student = get_object(id)
     serializer = StudentSerializer(student, data=request.data, partial=True)
     if serializer.is_valid():
-        serializer.update(student, serializer.validated_data)
-        return Response(serializer.data)
+        try:
+            serializer.update(student, serializer.validated_data)
+            return Response(serializer.data)
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @csrf_exempt

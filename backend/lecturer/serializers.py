@@ -37,7 +37,6 @@ class LecturerSerializer(serializers.ModelSerializer):
             instance=instance.id_user, data=user_data, partial=True)
         if user_serializer.is_valid():
             user_serializer.save()
-        print(user_serializer.errors)
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
         instance.save()
