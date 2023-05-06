@@ -1,15 +1,12 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework.views import APIView
 from .serializers import StudentSerializer, GetStudentSerializer
-from django.contrib.auth import authenticate
 from django.views.decorators.csrf import csrf_exempt
 from django.http import Http404
 from .models import Student
-from users.serializers import UserSerializer
 from users.models import Users
+from users.views import login_required
 
 @csrf_exempt
 @api_view(['GET'])
@@ -33,6 +30,7 @@ def student_view(request, id):
 
 @csrf_exempt
 @api_view(['POST'])
+@login_required
 def student_create_view(request):
     serializer = StudentSerializer(data=request.data)
     if serializer.is_valid():
@@ -42,10 +40,29 @@ def student_create_view(request):
 
 @csrf_exempt
 @api_view(['PUT'])
+@login_required
 def student_update_view(request, id):
     student = get_object(id)
-    serializer = StudentSerializer(student, data=request.data)
+    serializer = StudentSerializer(student, data=request.data, partial=True)
     if serializer.is_valid():
         serializer.update(student, serializer.validated_data)
         return Response(serializer.data)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@csrf_exempt
+@api_view(['DELETE'])
+@login_required
+def student_delete_view(request, id):
+    try:
+        student = get_object(id)
+    except Student.DoesNotExist:
+        return Response({"message": "Student not found."}, status=status.HTTP_404_NOT_FOUND)
+
+    user = student.id_user
+    student.delete()
+
+    if Users.objects.filter(id=user.id).exists():
+        user.delete()
+        return Response({"message": "Student and User deleted successfully."}, status=status.HTTP_200_OK)
+    else:
+        return Response({"message": "Student deleted successfully, but User not found."}, status=status.HTTP_200_OK)
