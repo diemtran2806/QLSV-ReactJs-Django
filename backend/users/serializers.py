@@ -3,6 +3,7 @@ from .models import Users
 from roles.models import Roles
 from datetime import datetime
 
+
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     id_role = serializers.PrimaryKeyRelatedField(queryset=Roles.objects.all())
 
@@ -22,6 +23,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         return instance
 
     def update(self, instance, validated_data):
+        validated_data.pop('id_role', None)
         for attr, value in validated_data.items():
             if attr == 'password':
                 instance.set_password(value)
@@ -34,13 +36,12 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Users
         extra_kwargs = {
-            'password': {'write_only': True}, 
+            'password': {'write_only': True},
             'id_role': {'required': True},
             'mssv': {'validators': []},
             'cccd': {'validators': []},
             'email': {'validators': []},
             'phone': {'validators': []},
         }
-        fields = ('id', 'mssv', 'password', 'name', 'email', 'phone', 'gender', 'id_role', 'cccd', 'dob', 'address', 'avatar')
-        
-
+        fields = ('id', 'mssv', 'password', 'name', 'email', 'phone',
+                  'gender', 'id_role', 'cccd', 'dob', 'address', 'avatar')

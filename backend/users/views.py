@@ -29,6 +29,7 @@ def login_view(request):
         'user': UserSerializer(user).data,
     })
 
+
 @csrf_exempt
 @api_view(['POST'])
 def logout_view(request):
@@ -41,27 +42,37 @@ def logout_view(request):
     except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
+
 class RegisterView(APIView):
-  def post(self, request):
-    data = request.data
+    def post(self, request):
+        data = request.data.copy()
+        data['id_role'] = 3
+        serializer = UserSerializer(data=data)
 
-    serializer = UserSerializer(data=data)
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            user = serializer.create(serializer.validated_data)
+            user = UserSerializer(user)
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
-    if not serializer.is_valid():
-      return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    try:
-        user = serializer.create(serializer.validated_data)
-        user = UserSerializer(user)
-    except Exception as e:
-        return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        return Response(user.data, status=status.HTTP_201_CREATED)
 
-    return Response(user.data, status=status.HTTP_201_CREATED)
 
 @csrf_exempt
 @api_view(['GET'])
 def users_view(request):
     users = Users.objects.all()
-    return Response(UserSerializer(users, many=True).data)    
+    return Response(UserSerializer(users, many=True).data)
+
+
+@csrf_exempt
+@api_view(['GET'])
+def admin_view(request):
+    users = Users.objects.filter(id_role=3)
+    return Response(UserSerializer(users, many=True).data)
+
 
 def get_object(id):
     try:
@@ -69,19 +80,21 @@ def get_object(id):
     except Users.DoesNotExist:
         raise Http404
 
+
 @csrf_exempt
 @api_view(['GET'])
 def user_view(request, id):
     user = get_object(id)
-    if user.is_authenticated:        
+    if user.is_authenticated:
         return Response(UserSerializer(user).data)
+
 
 @csrf_exempt
 @api_view(['PUT'])
 def user_update_view(request, id):
     user = get_object(id)
     if user.is_authenticated:
-        data = request.data        
+        data = request.data
         serializer = UserSerializer(user, data=data)
         if serializer.is_valid():
             try:
@@ -90,14 +103,15 @@ def user_update_view(request, id):
             except Exception as e:
                 return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    return Response(status=status.HTTP_401_UNAUTHORIZED)    
+    return Response(status=status.HTTP_401_UNAUTHORIZED)
+
 
 @csrf_exempt
 @api_view(['PATCH'])
 def user_update_password_view(request, id):
     user = get_object(id)
     if user.is_authenticated:
-        data = request.data        
+        data = request.data
         serializer = UserSerializer(user, data=data, partial=True)
         if serializer.is_valid():
             try:
@@ -106,16 +120,18 @@ def user_update_password_view(request, id):
             except Exception as e:
                 return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    return Response(status=status.HTTP_401_UNAUTHORIZED)    
+    return Response(status=status.HTTP_401_UNAUTHORIZED)
+
 
 @csrf_exempt
 @api_view(['DELETE'])
 def user_delete_view(request, id):
     user = get_object(id)
-    if user.is_authenticated:        
+    if user.is_authenticated:
         user.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
     return Response(status=status.HTTP_401_UNAUTHORIZED)
+
 
 @csrf_exempt
 def login_required(function):

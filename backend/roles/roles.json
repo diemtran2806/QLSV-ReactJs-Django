@@ -11,5 +11,13 @@
         "fields": {
             "role_name": "lecturer"
         }
+    },
+
+    {
+        "model": "roles.Roles",
+        "pk": 3,
+        "fields": {
+            "role_name": "admin"
+        }
     }
 ]
