@@ -8,18 +8,22 @@ from .models import Student
 from users.models import Users
 from users.views import login_required
 
+
 @csrf_exempt
 @api_view(['GET'])
 def students_view(request):
     students = Student.objects.all()
-    serializer = GetStudentSerializer(students, many=True, context={'request': request})
+    serializer = GetStudentSerializer(
+        students, many=True, context={'request': request})
     return Response(serializer.data)
+
 
 def get_object(id):
     try:
         return Student.objects.get(id_user=id)
     except Student.DoesNotExist:
         raise Http404
+
 
 @csrf_exempt
 @api_view(['GET'])
@@ -28,18 +32,23 @@ def student_view(request, id):
     serializer = GetStudentSerializer(student)
     return Response(serializer.data)
 
+
 @csrf_exempt
 @api_view(['GET'])
 def student_view_by_class(request, id_class):
     students = Student.objects.filter(id_class=id_class)
-    serializer = GetStudentSerializer(students, many=True, context={'request': request})
+    serializer = GetStudentSerializer(
+        students, many=True, context={'request': request})
     return Response(serializer.data)
+
 
 @csrf_exempt
 @api_view(['POST'])
 @login_required
 def student_create_view(request):
-    serializer = StudentSerializer(data=request.data)
+    data = request.data.copy()
+    data['id_user']['id_role'] = 1
+    serializer = StudentSerializer(data=data)
     if serializer.is_valid():
         try:
             serializer.save()
@@ -47,6 +56,7 @@ def student_create_view(request):
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 @csrf_exempt
 @api_view(['PUT'])
@@ -61,6 +71,7 @@ def student_update_view(request, id):
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 @csrf_exempt
 @api_view(['DELETE'])

@@ -37,7 +37,9 @@ def lecturer_view(request, id):
 @api_view(['POST'])
 @login_required
 def lecturer_create_view(request):
-    serializer = LecturerSerializer(data=request.data)
+    data = request.data.copy()
+    data['id_user']['id_role'] = 2
+    serializer = LecturerSerializer(data=data)
     if serializer.is_valid():
         try:
             serializer.save()
