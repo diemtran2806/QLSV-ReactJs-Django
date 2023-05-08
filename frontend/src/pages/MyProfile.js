@@ -1,18 +1,23 @@
 import Card from "../components/Card";
 import Input from "../components/Input";
 import classes from "./MyProfile.module.css";
-import Avatar from "../components/Avatar";
 import { useDispatch, useSelector } from "react-redux";
 import Button from "../components/Button";
 import { updateUser } from "../store/userActions";
+//import { updateUser } from "../store/authActions";
 import { useState, useEffect } from "react";
 import { DatePicker, Space } from "antd";
 import defaultAvatar from "../assets/images/defaultAvatar.jpg";
 import { useNavigation } from "react-router-dom";
 import { message } from "antd";
+import { IoMdAddCircle } from "react-icons/io";
+import Loading from "../components/Loading";
 
 const MyProfile = () => {
   const [messageApi, contextHolder] = message.useMessage();
+  const [mess, showMess] = useState(false);
+  const [getUserUpdated, setUserUpdated] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const dispatch = useDispatch();
   const navigate = useNavigation();
@@ -24,38 +29,36 @@ const MyProfile = () => {
   const id = user?.user.id;
   const accessToken = user?.accessToken;
 
-  const [form, setForm] = useState({
-    id: userAfterUpdate?.id || "",
-    mssv: userAfterUpdate.mssv || "",
-    name: userAfterUpdate.name || "",
-    phone: userAfterUpdate.phone || "",
-    email: userAfterUpdate.email || "",
-    cccd: userAfterUpdate.cccd || "",
-    gender: userAfterUpdate.gender ? "Nam" : "Nữ" || "",
-    address: userAfterUpdate.address || "",
-    dob: userAfterUpdate.dob || "",
-    avatar: userAfterUpdate.avatar || "",
-  });
-  // const userLogined = {
-  //   id,
-  //   mssv,
-  //   name,
-  //   phone,
-  //   email,
-  //   cccd,
-  //   gender,
-  //   address,
-  //   dob,
-  // };
   // useEffect(() => {
-  //   setForm(userAfterUpdate);
+  //   setUserUpdated(true);
   // }, [userAfterUpdate]);
+  const hasUserUpdated = localStorage.getItem("logined");
+  console.log(hasUserUpdated);
+
+  const [form, setForm] = useState({
+    id: id,
+    mssv: hasUserUpdated === "true" ? userAfterUpdate.mssv : user.user.mssv,
+    name: hasUserUpdated === "true" ? userAfterUpdate.name : user.user.name,
+    phone: hasUserUpdated === "true" ? userAfterUpdate.phone : user.user.phone,
+    email: hasUserUpdated === "true" ? userAfterUpdate.email : user.user.email,
+    cccd: hasUserUpdated === "true" ? userAfterUpdate.cccd : user.user.cccd,
+    gender:
+      hasUserUpdated === "true" ? userAfterUpdate.gender : user.user.gender,
+    address:
+      hasUserUpdated === "true" ? userAfterUpdate.address : user.user.address,
+    dob: hasUserUpdated === "true" ? userAfterUpdate.dob : user.user.dob,
+    avatar:
+      hasUserUpdated === "true" ? userAfterUpdate.avatar : user.user.avatar,
+  });
+
   console.log(accessToken);
 
   const handleChangeAvatar = (event) => {
     const file = event.target.files[0];
     if (file) {
       const reader = new FileReader();
+      setLoading(true);
+      console.log("loading:", loading);
       reader.addEventListener("load", () => {
         const imageSrc = reader.result;
         const formData = new FormData();
@@ -71,9 +74,13 @@ const MyProfile = () => {
           .then((data) => {
             console.log(data.data.url);
             setForm({ ...form, ["avatar"]: data.data.url });
+            setLoading(false);
+            // const updatedForm = { ...form, avatar: data.data.url };
+            // setForm(updatedForm);
+            console.log(form.avatar);
           });
       });
-      // console.log("form:", form.avatar);
+      console.log("form:", form.avatar);
 
       reader.readAsDataURL(file);
     }
@@ -82,13 +89,11 @@ const MyProfile = () => {
   const onChange = ({ name, value }) => {
     setForm({ ...form, [name]: value });
   };
-  const onChangeDate = (date, dateString) => {
-    console.log(dateString);
-  };
   const onSubmit = async (e) => {
     e.preventDefault();
+    console.log(form.avatar);
     const userUpd = {
-      id: form.id,
+      id: id,
       mssv: form.mssv,
       name: form.name,
       phone: form.phone,
@@ -100,6 +105,7 @@ const MyProfile = () => {
       id_role: 1,
       avatar: form.avatar,
     };
+    console.log("UserUpd:", userUpd);
     const statuss = await updateUser(
       userUpd,
       id,
@@ -110,22 +116,35 @@ const MyProfile = () => {
     setForm(userUpd);
     console.log("form ne:", form);
     console.log("Statuss:", statuss);
-    messageApi.open({
-      type: "success",
-      content: "Updated successfully!",
-    });
+    setUserUpdated(true);
+    localStorage.setItem("logined", "true");
+    console.log(localStorage.getItem("logined"));
+    showMess(true);
   };
+
+  useEffect(() => {
+    if (mess) {
+      message.success("Updated successfully!");
+    }
+  }, [mess, messageApi]);
 
   return (
     <Card header="Thông Tin Cá Nhân">
       <div className={classes.wrapAvatar}>
         {/* <Avatar /> */}
         <label for="file-input" className={classes.avatarWrapper}>
-          {form.avatar ? (
+          {loading === true ? (
+            <div className={classes.wrapIcon}>
+              <Loading />
+            </div>
+          ) : (
+            <img className={classes.avatar} src={form.avatar} alt="Avatar" />
+          )}
+          {/* {form.avatar ? (
             <img className={classes.avatar} src={form.avatar} alt="Avatar" />
           ) : (
             <img className={classes.avatar} src={defaultAvatar} alt="Avatar" />
-          )}
+          )} */}
           <input
             type="file"
             id="file-input"
@@ -133,6 +152,9 @@ const MyProfile = () => {
             onChange={handleChangeAvatar}
           />
         </label>
+        <div>
+          <IoMdAddCircle className={classes.iconAdd} />
+        </div>
       </div>
       <div className={classes.wrap}>
         <Input
@@ -203,7 +225,7 @@ const MyProfile = () => {
               value: event.target.value === "Nữ" ? false : true,
             });
           }}
-          value={form.gender}
+          value={form.gender ? "Nữ" : "Nam"}
         />
       </div>
       <div className={classes.wrap}>

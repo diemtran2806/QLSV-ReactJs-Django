@@ -73,6 +73,8 @@ const LoginPage = () => {
         setErrorLogin(
           "The login details you provided are incorrect. Please try again!"
         );
+      localStorage.setItem("logined", "false");
+      console.log("này ở login:", localStorage.getItem("logined"));
     }
   };
 
