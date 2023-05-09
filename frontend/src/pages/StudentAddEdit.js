@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import style from "./StudentUpdate.module.css"
 import classnames from 'classnames';
 import axios from "axios";
+<<<<<<< HEAD
 import { Select, Space, Button, message} from 'antd';
 import { useDispatch, useSelector } from "react-redux";
 import Loading from "../components/Loading";
@@ -22,6 +23,17 @@ const StudentAddEdit = (props) => {
       });
     };
 
+=======
+import { Select, Space } from 'antd';
+import { useDispatch, useSelector } from "react-redux";
+const StudentAddEdit = (props) => {
+    const [loading, setLoading] = useState(true);
+    const [formValue, setFormValue] = useState();
+    const [isAdd, setIsAdd] = useState(true);// add/update
+    const [updateId,setUpdateId] = useState(props.id);// id user update
+    const [classes, setClasses] = useState();
+
+>>>>>>> f661503b5bf511809b9a67fe96619bd70aa6a90a
     const user = useSelector((state) => state.auth.login.currentUser);
     const handleInputChange = (event) => {
         const { name, value } = event.target;
@@ -34,6 +46,7 @@ const StudentAddEdit = (props) => {
     };
 
     //chọn trong option
+<<<<<<< HEAD
     const handleSelect = (value,name) => {
         setFormValue((prevState) => {
             return {
@@ -41,6 +54,14 @@ const StudentAddEdit = (props) => {
               [name]: value,
             };
         });
+=======
+    const handleSelectGender = (value,event) => {
+        console.log(`selected ${value}`, event.name);
+    };
+
+    const handleSelectClass = (value) => {
+        console.log(`selected ${value}`);
+>>>>>>> f661503b5bf511809b9a67fe96619bd70aa6a90a
     };
 
     //get all class
@@ -66,7 +87,34 @@ const StudentAddEdit = (props) => {
         });
     },[]);
 
+    //get all class
     useEffect(()=>{
+        // Gọi API để lấy dữ liệu
+        const accessToken = user?.accessToken;
+
+        axios.get('http://127.0.0.1:8000/api/class/', {
+            headers: {
+            'Authorization': 'Bearer ' + accessToken,
+            'Content-Type': 'application/json'
+            }
+        })
+        .then((response) => {
+            console.log("lớp nè",response.data);
+            const res = response.data;
+            const newClass = res.map(({id_class, class_name})=>{
+                return {value:id_class, label:class_name}
+            })
+            setClasses(newClass);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },[]);
+
+    
+
+    useEffect(()=>{
+<<<<<<< HEAD
         loadData()
     },[isAdd])
 
@@ -76,6 +124,9 @@ const StudentAddEdit = (props) => {
 
     const loadData = () =>{
         if(!props.isAdd){
+=======
+        if(!isAdd){
+>>>>>>> f661503b5bf511809b9a67fe96619bd70aa6a90a
             axios.get(`http://127.0.0.1:8000/api/student/${updateId}`)
             .then(response => {
             //data
@@ -112,7 +163,11 @@ const StudentAddEdit = (props) => {
                 address:"",
                 dob:"",
                 classId:"",
+<<<<<<< HEAD
                 avatar:"https://tinyurl.com/2l59av9t"
+=======
+                avatar:"https://scontent.fhan3-1.fna.fbcdn.net/v/t1.30497-1/143086968_2856368904622192_1959732218791162458_n.png?stp=cp0_dst-png_p60x60&_nc_cat=1&ccb=1-7&_nc_sid=7206a8&_nc_ohc=blIOUfZoi4EAX-l182P&_nc_ht=scontent.fhan3-1.fna&oh=00_AfD-rSsRpHTWGNKgzAlsN1Djrz-oyfuo5KVY1Qng3C-LQw&oe=646FE778"
+>>>>>>> f661503b5bf511809b9a67fe96619bd70aa6a90a
             }
             setFormValue(form);
             setLoading(false);
@@ -179,7 +234,11 @@ const StudentAddEdit = (props) => {
         });
     }
     return(
+<<<<<<< HEAD
             loading?<Loading/>:
+=======
+            loading?<>Loading...</>:
+>>>>>>> f661503b5bf511809b9a67fe96619bd70aa6a90a
             <>
                 <div className={style.avatarWrap}>
                     <img className={style.avatar} src={formValue.avatar} alt="Logo" />
@@ -266,10 +325,16 @@ const StudentAddEdit = (props) => {
                 <Space wrap>
                     <Select
                     name="gender"
+<<<<<<< HEAD
                     defaultValue="Chọn Giới Tính"
                     value={formValue.gender}
                     style={{ width: 120 }}
                     onChange={(value)=>handleSelect(value,"gender")}
+=======
+                    value={formValue.gender}
+                    style={{ width: 120 }}
+                    onChange={handleSelectGender}
+>>>>>>> f661503b5bf511809b9a67fe96619bd70aa6a90a
                     options={[
                         { value: true, label: 'Nam' },
                         { value: false, label: 'Nữ' },
@@ -300,6 +365,7 @@ const StudentAddEdit = (props) => {
                     />
                 </div>
                 <div className={ classnames(style['input-item'])}>
+<<<<<<< HEAD
                     <div>Lớp SH</div>
                         <Space wrap>
                             <Select
@@ -322,6 +388,21 @@ const StudentAddEdit = (props) => {
                         value={formValue.score}
                         onChange={handleInputChange}
                     />
+=======
+                    Lớp
+                        {
+                            formValue.classId?
+                            <Space wrap>
+                                <Select
+                                    name="classId"
+                                    value={formValue.classId}
+                                    style={{ width: 120 }}
+                                    onChange={(event)=>handleSelectClass(event)}
+                                    options={classes}
+                                />
+                            </Space>:<></>
+                        }
+>>>>>>> f661503b5bf511809b9a67fe96619bd70aa6a90a
                 </div>
 
                 <div className={style.buttonWrap}>
