@@ -1,14 +1,13 @@
 import React from "react";
 import style from "./Student.module.css"
 import { useSearchParams } from "react-router-dom";
-import {  Button, Modal, Skeleton, Space} from "antd";
+import {  Button, Modal, Skeleton, Space, message} from "antd";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import TableList from "../components/ListTable";
 import BodyBox from "../components/BodyBox";
 import StudentAddEdit from "./StudentAddEdit";
-import { IoIosAddCircle } from "react-icons/io";
-import { ImBin2 } from "react-icons/im";
+import { useDispatch, useSelector } from "react-redux";
 import Loading from "../components/Loading";
 const StudentsPage = (props) => {
   const [students, setStudents] = useState([]);
@@ -17,11 +16,18 @@ const StudentsPage = (props) => {
   const [isAdmin, setIsAdmin] = useState(props.admin);
   const [searchParams] = useSearchParams();
   const [idClass, setIdClass] = useState(Number(searchParams.get("id")));//user of class
-
+  const user = useSelector((state) => state.auth.login.currentUser);
   const [isModal,setIsModal] = useState(false);
   const [isAdd, setIsAdd] = useState(false);// add/update
   const [updateId,setUpdateId] = useState();// id user update
-
+  const [messageApi, contextHolder] = message.useMessage();
+  const success = () => {
+    messageApi.open({
+      type: 'success',
+      content: 'This is a prompt message for success, and it will disappear in 10 seconds',
+      duration: 10,
+    });
+  };
   //get all user load table
   const loadData = () => {
     axios.get("http://127.0.0.1:8000/api/student/")
@@ -54,7 +60,6 @@ const StudentsPage = (props) => {
       });
   }
   
-
   useEffect(loadData, []);
 
   const handleUpdateActive = (id) => {
@@ -69,25 +74,45 @@ const StudentsPage = (props) => {
     setIsModal(true);
   }
   
-  const handleUpdateSubmit = ()=>{
-    
+  const handleDelete = (id)=>{
+    console.log("delete:",id);
+    const accessToken = user?.accessToken;
+    let url = `http://127.0.0.1:8000/api/student/${id}/delete`
+    axios(
+      {
+        method: 'delete',
+        url:url, 
+        headers: {
+            Authorization: 'Bearer ' + accessToken,
+            'Content-Type': 'application/json'            
+        }
+      }
+    )
+    .then((response) => {
+      message.success('Xóa thành công!');
+      loadData();
+    })
+    .catch((error) => {
+      console.log(error);
+    });
   }
 
+  const handleDeleteMul = (listDel) => {
+    console.log("hihihi")
+      listDel.map((item)=>{
+        handleDelete(item)
+        loadData()
+      })
+  }
   return <>
         {
           loading?<BodyBox><Skeleton/><Loading/></BodyBox>:
           <>
             <BodyBox>
-              <div className={style['head-button']}>
-              <Space wrap>
-                        
-                <Button onClick={handleCreateActive} type="primary">Thêm SV<IoIosAddCircle/> </Button>
-                <Button type="primary" danger>Xóa<ImBin2/></Button>
-                </Space> 
-              </div>
+              
               {
                 isAdmin?
-                <TableList key="admin" data={students} update={handleUpdateActive} del={true} checkbox={true}/>:
+                <TableList key="admin" data={students}  create={handleCreateActive} update={handleUpdateActive} delete={handleDelete} deleteMul={handleDeleteMul} checkbox={true}/>:
                 <TableList key="user" data={students}/>
               }
             </BodyBox>

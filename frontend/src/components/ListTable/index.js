@@ -5,7 +5,10 @@ import tableStyle from "./ListTable.module.css";
 import { HiPencilSquare } from "react-icons/hi2";
 import { RiDeleteBinFill } from "react-icons/ri";
 import { FaInfoCircle } from "react-icons/fa";
-import { Image } from "antd";
+import { } from 'antd';
+import {Space, Button, Popconfirm} from "antd";
+import { IoIosAddCircle } from "react-icons/io";
+import { ImBin2 } from "react-icons/im";
 
 const TableList = (props) => {
   const [data, setData] = useState(props.data);
@@ -14,7 +17,7 @@ const TableList = (props) => {
   const [header, setHeader] = useState([]);
   const [update, setUpdate] = useState(typeof props.update === "function");
 
-  const [del, setDel] = useState(props.del);
+  const [del, setDel] = useState(typeof props.delete === "function");
   const [checkbox, setCheckbox] = useState(props.checkbox);
   const [detail, setDetail] = useState(props.detail);
   const [avatar, setAvatar] = useState(false);
@@ -56,12 +59,13 @@ const TableList = (props) => {
   };
 
   const handleDelete = (id) => {
-    console.log("del:", id);
+    props.delete(id)
   };
 
   const handleUpdate = (id) => {
     props.update(id);
   };
+
 
   const renderTableHeader = () => {
     return (
@@ -157,9 +161,19 @@ const TableList = (props) => {
 
               {del ? (
                 <td className={tableStyle.textcenter}>
-                  <button onClick={() => handleDelete(data.id)}>
-                    <RiDeleteBinFill />
-                  </button>
+                  <Popconfirm
+                    placement="left"
+                    title={"Bạn chắc chắn muốn xóa chứ?"}
+                    description={"Xóa trường này"}
+                    onConfirm={()=>handleDelete(data.id)}
+                    okText="Yes"
+                    cancelText="No"
+                  >
+                    <button>
+                      <RiDeleteBinFill />
+                    </button>
+                  </Popconfirm>
+                  
                 </td>
               ) : (
                 <></>
@@ -186,6 +200,19 @@ const TableList = (props) => {
 
   return data ? (
     <>
+      <Space wrap>
+            <Button onClick={props.create} type="primary">Thêm SV<IoIosAddCircle/> </Button>
+            <Popconfirm
+              placement="left"
+              title={"Bạn chắc chắn muốn xóa mục đã chọn?"}
+              description={""}
+              onConfirm={()=>props.deleteMul(checked)}
+              okText="Xóa"
+              cancelText="Bỏ qua"
+            >
+              <Button type="primary" danger>Xóa<ImBin2/></Button>
+            </Popconfirm>
+      </Space> 
       <table className="tableStyle.data">
         {renderTableHeader()}
         {renderTableData()}
