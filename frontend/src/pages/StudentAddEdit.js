@@ -66,6 +66,32 @@ const StudentAddEdit = (props) => {
         });
     },[]);
 
+    //get all class
+    useEffect(()=>{
+        // Gọi API để lấy dữ liệu
+        const accessToken = user?.accessToken;
+
+        axios.get('http://127.0.0.1:8000/api/class/', {
+            headers: {
+            'Authorization': 'Bearer ' + accessToken,
+            'Content-Type': 'application/json'
+            }
+        })
+        .then((response) => {
+            console.log("lớp nè",response.data);
+            const res = response.data;
+            const newClass = res.map(({id_class, class_name})=>{
+                return {value:id_class, label:class_name}
+            })
+            setClasses(newClass);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },[]);
+
+    
+
     useEffect(()=>{
         loadData()
     },[isAdd])
