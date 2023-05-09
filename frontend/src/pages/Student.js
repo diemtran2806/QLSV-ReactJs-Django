@@ -23,7 +23,6 @@ const StudentsPage = (props) => {
   const [updateId,setUpdateId] = useState();// id user update
 
   //get all user load table
-<<<<<<< HEAD
   const loadData = () => {
     axios.get("http://127.0.0.1:8000/api/student/")
       .then(response => {
@@ -46,33 +45,6 @@ const StudentsPage = (props) => {
             "Điểm trung bình": student.avg_score,
           }
           data.push(stu);
-=======
-  useEffect(() => {
-      axios.get("http://127.0.0.1:8000/api/student/")
-        .then(response => {
-          //data
-          let data = [];
-          response.data.map((student, index) => {
-            const user = student.id_user;
-            const stu = {
-              id: user.id,
-              mssv: user.mssv,
-              Tên: user.name,
-              "Lớp SH": student.id_class.class_name,
-              email:user.email ,
-              SĐT:user.phone ,
-              "Giới tính":user.gender?"Nam":"Nữ" ,
-              cccd:user.cccd ,
-              "Ngày sinh":user.dob ,
-              "Địa chỉ":user.address ,
-              avatar:user.avatar,
-              "Điểm trung bình": student.avg_score,
-            }
-            data.push(stu);
-          })
-          setStudents(data);
-          setLoading(false);
->>>>>>> f661503b5bf511809b9a67fe96619bd70aa6a90a
         })
         setStudents(data);
         setLoading(false);
