@@ -1,7 +1,7 @@
 import React from "react";
 import style from "./Student.module.css"
 import { useSearchParams } from "react-router-dom";
-import {  Button, Modal, Skeleton } from "antd";
+import {  Button, Modal, Skeleton, Space} from "antd";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import TableList from "../components/ListTable";
@@ -22,41 +22,41 @@ const StudentsPage = (props) => {
   const [isAdd, setIsAdd] = useState(false);// add/update
   const [updateId,setUpdateId] = useState();// id user update
 
- 
-
   //get all user load table
-  useEffect(() => {
-      axios.get("http://127.0.0.1:8000/api/student/")
-        .then(response => {
-          //data
-          let data = [];
-          response.data.map((student, index) => {
-            const user = student.id_user;
-            const stu = {
-              id: user.id,
-              mssv: user.mssv,
-              Tên: user.name,
-              "Lớp SH": student.id_class.class_name,
-              email:user.email ,
-              SĐT:user.phone ,
-              "Giới tính":user.gender?"Nam":"Nữ" ,
-              cccd:user.cccd ,
-              "Ngày sinh":user.dob ,
-              "Địa chỉ":user.address ,
-              avatar:user.avatar,
-              "Điểm trung bình": student.avg_score,
-            }
-            data.push(stu);
-          })
-          setStudents(data);
-          setLoading(false);
+  const loadData = () => {
+    axios.get("http://127.0.0.1:8000/api/student/")
+      .then(response => {
+        //data
+        let data = [];
+        response.data.map((student, index) => {
+          const user = student.id_user;
+          const stu = {
+            id: user.id,
+            mssv: user.mssv,
+            Tên: user.name,
+            "Lớp SH": student.id_class.class_name,
+            email:user.email ,
+            SĐT:user.phone ,
+            "Giới tính":user.gender?"Nam":"Nữ" ,
+            cccd:user.cccd ,
+            "Ngày sinh":user.dob ,
+            "Địa chỉ":user.address ,
+            avatar:user.avatar,
+            "Điểm trung bình": student.avg_score,
+          }
+          data.push(stu);
         })
-        .catch(error => {
-          console.log(error);
-        });
-  }, []);
-
+        setStudents(data);
+        setLoading(false);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
   
+
+  useEffect(loadData, []);
+
   const handleUpdateActive = (id) => {
     setUpdateId(id);
     setIsAdd(false);
@@ -79,8 +79,11 @@ const StudentsPage = (props) => {
           <>
             <BodyBox>
               <div className={style['head-button']}>
+              <Space wrap>
+                        
                 <Button onClick={handleCreateActive} type="primary">Thêm SV<IoIosAddCircle/> </Button>
                 <Button type="primary" danger>Xóa<ImBin2/></Button>
+                </Space> 
               </div>
               {
                 isAdmin?
@@ -98,11 +101,11 @@ const StudentsPage = (props) => {
               okButtonProps = {{style:{backgroundColor: '#283c4e'}}}
               closable = {false}
             >
-              <div >
+              <div>
                 <div className={style.rel}></div>
                 <div className={style['model-header']}>Cập nhật sinh viên</div>
               </div>
-              <StudentAddEdit isAdd={isAdd} id={updateId} setIsModal={setIsModal}/>
+              <StudentAddEdit isAdd={isAdd} id={updateId} setIsModal={setIsModal} loadData={loadData}/>
             </Modal>
           </> 
         }

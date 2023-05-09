@@ -3,15 +3,24 @@ import { useEffect, useState } from "react";
 import style from "./StudentUpdate.module.css"
 import classnames from 'classnames';
 import axios from "axios";
-import { Select, Space, Button } from 'antd';
+import { Select, Space, Button, message} from 'antd';
 import { useDispatch, useSelector } from "react-redux";
 import Loading from "../components/Loading";
 const StudentAddEdit = (props) => {
     const [loading, setLoading] = useState(true);
     const [formValue, setFormValue] = useState();
-    const [isAdd, setIsAdd] = useState(true);// add/update
-    const [updateId,setUpdateId] = useState(props.id);// id user update
+    const isAdd = props.isAdd;// add/update
+    const updateId = props.id;// id user update
     const [classes, setClasses] = useState();
+
+    const [messageApi, contextHolder] = message.useMessage();
+    const success = () => {
+      messageApi.open({
+        type: 'success',
+        content: 'This is a prompt message for success, and it will disappear in 10 seconds',
+        duration: 10,
+      });
+    };
 
     const user = useSelector((state) => state.auth.login.currentUser);
     const handleInputChange = (event) => {
@@ -31,14 +40,8 @@ const StudentAddEdit = (props) => {
               ...prevState,
               [name]: value,
             };
-          });
+        });
     };
-
-
-    useEffect(()=>{
-        setUpdateId(props.id);
-        setIsAdd(props.isAdd)
-    },[props.id, props.isAdd]);
 
     //get all class
     useEffect(()=>{
@@ -63,10 +66,16 @@ const StudentAddEdit = (props) => {
         });
     },[]);
 
-    
+    useEffect(()=>{
+        loadData()
+    },[isAdd])
 
     useEffect(()=>{
-        if(!isAdd){
+        loadData()
+    },[props.id])
+
+    const loadData = () =>{
+        if(!props.isAdd){
             axios.get(`http://127.0.0.1:8000/api/student/${updateId}`)
             .then(response => {
             //data
@@ -77,6 +86,7 @@ const StudentAddEdit = (props) => {
                     name : data.id_user.name,
                     phone : data.id_user.phone,
                     email : data.id_user.email,
+                    score : data.avg_score,
                     cccd : data.id_user.cccd,
                     gender : data.id_user.gender,
                     address : data.id_user.address,
@@ -102,48 +112,67 @@ const StudentAddEdit = (props) => {
                 address:"",
                 dob:"",
                 classId:"",
-                avatar:"https://scontent.fhan3-1.fna.fbcdn.net/v/t1.30497-1/143086968_2856368904622192_1959732218791162458_n.png?stp=cp0_dst-png_p60x60&_nc_cat=1&ccb=1-7&_nc_sid=7206a8&_nc_ohc=blIOUfZoi4EAX-l182P&_nc_ht=scontent.fhan3-1.fna&oh=00_AfD-rSsRpHTWGNKgzAlsN1Djrz-oyfuo5KVY1Qng3C-LQw&oe=646FE778"
+                avatar:"https://tinyurl.com/2l59av9t"
             }
             setFormValue(form);
             setLoading(false);
         }
-    },[updateId]);
+    };
 
 
     const handleAddUpdate = () => {
-        axios.get(
-            'http://127.0.0.1:8000/api/class/', 
+        const accessToken = user?.accessToken;
+        let url = ""
+        if(isAdd){
+            url = `http://127.0.0.1:8000/api/student/create` 
+        }else{
+            url = `http://127.0.0.1:8000/api/student/${updateId}/update` 
+        }
+        const data = {
+            "avg_score": parseFloat(formValue.score),
+            "id_class": formValue.classId,
+            "id_user":
             {
+                "mssv": formValue.mssv,
+                "name": formValue.name,
+                "email": formValue.email,
+                "phone": formValue.phone,
+                "gender": formValue.gender,
+                "cccd": formValue.cccd,
+                "dob": formValue.dob,
+                "address": formValue.address,
+                "avatar": formValue.avatar
+            }
+        }
+        if(isAdd){
+            data['id_user']['password'] = formValue.password
+        }
+
+        console.log(data);
+        axios(
+            {
+                method: isAdd?'post':'put',
+                url:url, 
+                data:data,
                 headers: {
-                'Authorization': 'Bearer ' + accessToken,
-                'Content-Type': 'application/json'
-                }
-            },
-            {
-                "avg_score": 8.5,
-                "id_class": 2,
-                "id_user":
-                {
-                    "mssv": "102200315",
-                    "name": "Nguyen Thi F",
-                    "email": "fafa@gmail.com",
-                    "phone": "0120000715",
-                    "gender": false,
-                    "id_role": 1,
-                    "cccd": "123000013",
-                    "dob": "2000-01-01",
-                    "address": "Hueee",
-                    "avatar": "https://dthezntil550i.cloudfront.net/86/latest/861911302007288750002221253/05f85cab-dc3a-48e3-81ff-b7347d2e450b.png"
+                    Authorization: 'Bearer ' + accessToken,
+                    'Content-Type': 'application/json'            
                 }
             }
+            
         )
         .then((response) => {
-            console.log("lớp nè",response.data);
-            const res = response.data;
-            const newClass = res.map(({id_class, class_name})=>{
-                return {value:id_class, label:class_name}
-            })
-            setClasses(newClass);
+            console.log(response.status)
+            if(response.status==200||response.status==201){
+                props.loadData()
+                props.setIsModal(false)
+                if(isAdd){
+                    message.success('Thêm thành công!');
+                }
+                else{
+                    message.success('Cập nhật thành công!');
+                }
+            }
         })
         .catch((error) => {
           console.log(error);
@@ -180,6 +209,21 @@ const StudentAddEdit = (props) => {
                         />
                     </div>
                 </div>
+                {
+                    props.isAdd?
+                    <div className={classnames(style['input-item'])}>
+                        Mật khẩu
+                        <Input
+                            label="Tài khoản"
+                            type="password"
+                            name="password"
+                            id="password"
+                            autoComplete="off"
+                            value={formValue.password}
+                            onChange={handleInputChange}
+                        />
+                     </div>:<></>
+                }
                 <div className={style.row}>
                     <div className={classnames(style['input-item'], style.col50)}>
                         Số điện thoại
@@ -260,7 +304,7 @@ const StudentAddEdit = (props) => {
                         <Space wrap>
                             <Select
                                 name="classId"
-                                value={isAdd?"Chọn lớp":formValue.classId}
+                                value={formValue.classId}
                                 style={{ width: 120 }}
                                 onChange={(value)=>handleSelect(value,"classId")}
                                 options={classes}
@@ -268,9 +312,21 @@ const StudentAddEdit = (props) => {
                         </Space>
                 </div>
 
+                <div className={ classnames(style['input-item'])}>
+                    Điểm trung bình
+                    <Input
+                        label="Điểm trung bình"
+                        type="text"
+                        name="score"
+                        id="avg"
+                        value={formValue.score}
+                        onChange={handleInputChange}
+                    />
+                </div>
+
                 <div className={style.buttonWrap}>
                     <Space wrap>
-                        <Button onClick={()=>props.setIsModal(false)}>Cancle</Button>
+                        <Button onClick={()=>props.setIsModal(false)}>Cancel</Button>
                         <Button 
                             onClick={handleAddUpdate}
                             style={{ backgroundColor: '#283c4e', borderColor: '#283c4e', color: "white" }}>
