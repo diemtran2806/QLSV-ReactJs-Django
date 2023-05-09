@@ -1,7 +1,7 @@
 import React from "react";
 import style from "./Student.module.css"
 import { useSearchParams } from "react-router-dom";
-import {  Button, Modal  } from "antd";
+import {  Button, Modal, Skeleton } from "antd";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import TableList from "../components/ListTable";
@@ -9,7 +9,7 @@ import BodyBox from "../components/BodyBox";
 import StudentAddEdit from "./StudentAddEdit";
 import { IoIosAddCircle } from "react-icons/io";
 import { ImBin2 } from "react-icons/im";
-
+import Loading from "../components/Loading";
 const StudentsPage = (props) => {
   const [students, setStudents] = useState([]);
   const [studentIDURL, setStudentIDURL] = useState();
@@ -69,15 +69,13 @@ const StudentsPage = (props) => {
     setIsModal(true);
   }
   
-  const handleSubmit = ()=>{
-
+  const handleUpdateSubmit = ()=>{
+    
   }
 
   return <>
         {
-          loading ? 
-            <p>Loading...</p>
-          :
+          loading?<BodyBox><Skeleton/><Loading/></BodyBox>:
           <>
             <BodyBox>
               <div className={style['head-button']}>
@@ -93,11 +91,10 @@ const StudentsPage = (props) => {
             <Modal
               centered
               open={isModal}
-              onOk={() => setIsModal(false)}
               onCancel={() => setIsModal(false)}
               width={1000}
-              okText="Cập nhật"
-              cancelText="Hủy"
+              footer={null}
+              okText={isAdd?"Tạo mới":"Cập nhật"}
               okButtonProps = {{style:{backgroundColor: '#283c4e'}}}
               closable = {false}
             >
@@ -105,7 +102,7 @@ const StudentsPage = (props) => {
                 <div className={style.rel}></div>
                 <div className={style['model-header']}>Cập nhật sinh viên</div>
               </div>
-              <StudentAddEdit isAdd={isAdd} id={updateId}/>
+              <StudentAddEdit isAdd={isAdd} id={updateId} setIsModal={setIsModal}/>
             </Modal>
           </> 
         }
