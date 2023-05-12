@@ -2,95 +2,212 @@ import { useState, useEffect } from "react";
 import TableList from "../components/ListTable";
 import BodyBox from "../components/BodyBox";
 import classes from "./Admin.module.css";
+import axios from "axios";
+import style from "./Student.module.css";
+import AddUser from "../components/AddUser";
+import { message } from "antd";
+
+import { IoIosAddCircle } from "react-icons/io";
+import { ImBin2 } from "react-icons/im";
 // import { Select, Space } from 'antd';
 import { Button, Modal } from "antd";
 const AdminPage = () => {
-  const [isUpdate, setIsUpdate] = useState(false);
-  const [updateId, setUpdateId] = useState(null);
+  //const [isUpdate, setIsUpdate] = useState(false);
+  //const [updateId, setUpdateId] = useState(null);
   const [admins, setAdmins] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [showModalUpdate, setShowModalUpdate] = useState(false);
+  const [isAdd, setIsAdd] = useState(false); // add/update
+  const [updateId, setUpdateId] = useState(); // id user update
 
-  //   useEffect(() => {
-  //     const getAdmins = async () => {
-  //       const response = await fetch(
-  //         "https://react-http-e3a5b-default-rtdb.firebaseio.com/meals.json"
-  //       );
+  const [messageApi, contextHolder] = message.useMessage();
+  const [mess, showMess] = useState(false);
 
-  //       if (!response.ok) {
-  //         throw new Error("Something went wrong!");
-  //       }
+  const handleCancelModal = () => {
+    setShowModal(false);
+    setShowModalUpdate(false);
+  };
 
-  //       const responseData = await response.json(); //vì nó vẫn trả về promise nên phải có await
-
-  //       const loadedMeals = [];
-  //       for (const key in responseData) {
-  //         loadedMeals.push({
-  //           id: key,
-  //           name: responseData[key].name,
-  //           description: responseData[key].description,
-  //           price: responseData[key].price,
-  //         });
-  //       }
-
-  //       setMeals(loadedMeals);
-  //       setIsLoading(false);
-  //     };
-  //     fetchMeals().catch((error) => {
-  //       setIsLoading(false);
-  //       setHttpError(error.message);
-  //     });
-  //   }, []);
-
-  const [admin, setAdmin] = useState([
-    {
-      id: 1,
-      Tên: "sdfsd",
-      "Số điện thoại": "0378945213",
-      email: "wasif@email.com",
-      CCCD: "wasif@email.com",
-      "Giới tính": "Nam",
-      "Ngày sinh": "19/05/2002",
-      Khoa: "Khoa Công nghệ thông tin",
-      avatar: "https://img.com/sdfsdf",
-    },
-  ]);
+  //get all admins load table
+  const getAllAdmin = async () => {
+    axios
+      .get("http://127.0.0.1:8000/api/users/admin/")
+      .then((response) => {
+        //data
+        console.log(response);
+        let data = [];
+        response.data.map((admin, index) => {
+          // const user = admin.id_user;
+          const ad = {
+            id: admin.id,
+            // mssv: admin.mssv,
+            Tên: admin.name,
+            email: admin.email,
+            SĐT: admin.phone,
+            "Giới tính": admin.gender ? "Nam" : "Nữ",
+            cccd: admin.cccd,
+            "Ngày sinh": admin.dob,
+            "Địa chỉ": admin.address,
+            avatar: admin.avatar,
+          };
+          data.push(ad);
+        });
+        setAdmins(data);
+        //setLoading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+  useEffect(() => {
+    getAllAdmin();
+  }, []);
 
   const [selectedAdmin, setSelectedAdmin] = useState(null);
 
-  const getAdminDetail = async (adminId) => {
-    const response = await fetch(`/api/amdib/${adminId}`);
-    const data = await response.json();
-    return data;
+  const addAdmin = () => {
+    setShowModal(true);
+    setUpdateId(null);
   };
 
-  const handleUpdateAdmin = async (adminId) => {
-    const data = await getAdminDetail(adminId);
-    setSelectedAdmin(data);
+  const addSubmitHandler = async (admin) => {
+    try {
+      // Gọi API để thêm user xuống server
+      console.log("admin ne:", admin);
+      const response = await fetch(
+        "http://127.0.0.1:8000/api/users/register/",
+        {
+          method: "POST",
+          body: JSON.stringify(admin),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to add user");
+      }
+      localStorage.setItem("modal", "false");
+      // showModal(false);
+      setAdmins([...admins, admin]);
+      getAllAdmin();
+    } catch (error) {
+      console.error(error);
+    }
   };
 
+  //update
+  const handleUpdateActive = (id) => {
+    setUpdateId(id);
+    setShowModalUpdate(true);
+  };
+
+  useEffect(() => {
+    if (mess) {
+      message.success("Delete successfully!");
+    }
+  }, [mess, messageApi]);
+
+  const deleteSubmitHandler = async (id) => {
+    try {
+      const response = await fetch(
+        `http://127.0.0.1:8000/api/users/${id}/delete/`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to delete user");
+      }
+
+      // Xóa user khỏi danh sách bằng cách tạo một danh sách mới chỉ chứa những user khác với user đã xóa
+      const updatedAdmins = admins.filter((admin) => admin.id !== id);
+      setAdmins(updatedAdmins);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const updateSubmitHandler = async (admin, id) => {
+    try {
+      const response = await fetch(
+        `http://127.0.0.1:8000/api/users/${id}/update/`,
+        {
+          method: "PUT",
+          body: JSON.stringify(admin),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to update user");
+      }
+
+      const updatedAdmin = await response.json();
+
+      setAdmins((prevAdmins) => {
+        const index = prevAdmins.findIndex((admin) => admin.id === id);
+        const newAdmins = [...prevAdmins];
+        newAdmins[index] = updatedAdmin;
+        console.log(newAdmins);
+        return newAdmins;
+      });
+      getAllAdmin();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  // const getAdminDetail = async (adminId) => {
+  //   const response = await fetch(`/api/amdib/${adminId}`);
+  //   const data = await response.json();
+  //   return data;
+  // };
+
+  // const handleUpdateAdmin = async (adminId) => {
+  //   const data = await getAdminDetail(adminId);
+  //   setSelectedAdmin(data);
+  // };
+  console.log("modal: ", localStorage.getItem("modal"));
   return (
     <>
       <BodyBox>
-        <TableList key="admin" data={admin} update={true} addButton={true} checkbox={true} />
+        <div className={style["head-button"]}>
+          <Button onClick={addAdmin} type="primary">
+            Thêm SV
+            <IoIosAddCircle />{" "}
+          </Button>
+          <Button type="primary" danger>
+            Xóa
+            <ImBin2 />
+          </Button>
+        </div>
+        <TableList
+          key="admin"
+          data={admins}
+          update={handleUpdateActive}
+          checkbox={true}
+          del={true}
+          delete={deleteSubmitHandler}
+        />
       </BodyBox>
-      {
-        <Modal
-          centered
-          open={isUpdate}
-          onOk={() => setIsUpdate(false)}
-          onCancel={() => setIsUpdate(false)}
-          width={1000}
-          okText="Cập nhật"
-          cancelText="Hủy"
-          okButtonProps={{ style: { backgroundColor: "#283c4e" } }}
-          closable={false}
-        >
-          <div>
-            <div className={classes.rel}></div>
-            <div className={classes["model-header"]}>Cập nhật sinh viên</div>
-          </div>
-          {/* <StudentUpdatePage id={adminId} /> */}
-        </Modal>
-      }
+      {showModal && (
+        <AddUser
+          addSubmitHandler={addSubmitHandler}
+          handleCancel={handleCancelModal}
+        />
+      )}
+      {showModalUpdate && (
+        <AddUser
+          updateSubmitHandler={updateSubmitHandler}
+          handleCancel={handleCancelModal}
+          id={updateId}
+        />
+      )}
     </>
   );
 };

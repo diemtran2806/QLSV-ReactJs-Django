@@ -5,11 +5,11 @@ import tableStyle from "./ListTable.module.css";
 import { HiPencilSquare } from "react-icons/hi2";
 import { RiDeleteBinFill } from "react-icons/ri";
 import { FaInfoCircle } from "react-icons/fa";
-import { } from 'antd';
-import {Space, Button, Popconfirm} from "antd";
+import {} from "antd";
+import { Space, Button, Popconfirm } from "antd";
 import { IoIosAddCircle } from "react-icons/io";
 import { ImBin2 } from "react-icons/im";
-import style from "./ListTable.module.css"
+import style from "./ListTable.module.css";
 
 const TableList = (props) => {
   const [data, setData] = useState(props.data);
@@ -19,7 +19,7 @@ const TableList = (props) => {
   const [update, setUpdate] = useState(typeof props.update === "function");
 
   const [del, setDel] = useState(typeof props.delete === "function");
-  const [addButton,setAdd] = useState(props.addButton)
+  const [addButton, setAdd] = useState(props.addButton);
   const [checkbox, setCheckbox] = useState(props.checkbox);
   const [detail, setDetail] = useState(props.detail);
   const [avatar, setAvatar] = useState(false);
@@ -61,13 +61,12 @@ const TableList = (props) => {
   };
 
   const handleDelete = (id) => {
-    props.delete(id)
+    props.delete(id);
   };
 
   const handleUpdate = (id) => {
     props.update(id);
   };
-
 
   const renderTableHeader = () => {
     return (
@@ -167,7 +166,7 @@ const TableList = (props) => {
                     placement="left"
                     title={"Bạn chắc chắn muốn xóa chứ?"}
                     description={"Xóa trường này"}
-                    onConfirm={()=>handleDelete(data.id)}
+                    onConfirm={() => handleDelete(data.id)}
                     okText="Yes"
                     cancelText="No"
                   >
@@ -175,7 +174,6 @@ const TableList = (props) => {
                       <RiDeleteBinFill />
                     </button>
                   </Popconfirm>
-                  
                 </td>
               ) : (
                 <></>
@@ -203,36 +201,40 @@ const TableList = (props) => {
   return data ? (
     <>
       <Space wrap>
-            {
-              addButton?
-                <Button onClick={props.create} type="primary">Thêm<IoIosAddCircle/></Button>:<></>
-
-            }
-            {
-              checkbox?
-              <Popconfirm
-                placement="left"
-                title={"Bạn chắc chắn muốn xóa mục đã chọn?"}
-                description={""}
-                onConfirm={()=>props.deleteMul(checked)}
-                okText="Xóa"
-                cancelText="Bỏ qua"
-              >
-            
-                <Button type="primary" danger>Xóa<ImBin2/></Button>
-              </Popconfirm>
-              :<></>
-            }
-
-      </Space> 
-      {
-        data.length === 0 ? 
-        <div className={style.nullData}>Danh sách trống</div>:
+        {addButton ? (
+          <Button onClick={props.create} type="primary">
+            Thêm
+            <IoIosAddCircle />
+          </Button>
+        ) : (
+          <></>
+        )}
+        {checkbox ? (
+          <Popconfirm
+            placement="left"
+            title={"Bạn chắc chắn muốn xóa mục đã chọn?"}
+            description={""}
+            onConfirm={() => props.deleteMul(checked)}
+            okText="Xóa"
+            cancelText="Bỏ qua"
+          >
+            <Button type="primary" danger>
+              Xóa
+              <ImBin2 />
+            </Button>
+          </Popconfirm>
+        ) : (
+          <></>
+        )}
+      </Space>
+      {data.length === 0 ? (
+        <div className={style.nullData}>Danh sách trống</div>
+      ) : (
         <table className="tableStyle.data">
           {renderTableHeader()}
           {renderTableData()}
         </table>
-      }
+      )}
     </>
   ) : (
     <></>

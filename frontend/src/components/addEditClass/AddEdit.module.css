@@ -58,4 +58,14 @@
     margin-left: 10px;
 }
 
+.avatar{
+    height: 100px;
+    width: 100px;
+    border-radius: 50px;
+}
+
+.avatarWrap{
+    display: flex;
+    justify-content: center;
+}
 

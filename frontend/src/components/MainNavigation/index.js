@@ -18,7 +18,7 @@ function MainNavigation() {
   const userAfterUpdate = useSelector((state) => state.user.userUpdate);
   const accessToken = user?.accessToken;
   const hasUserUpdated = localStorage.getItem("logined");
-  console.log(hasUserUpdated);
+  console.log("hasUserUpdate:", hasUserUpdated);
   // const id = user?.id;
   console.log(accessToken);
   console.log("MainNav user:", user);
