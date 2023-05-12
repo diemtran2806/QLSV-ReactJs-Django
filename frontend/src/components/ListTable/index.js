@@ -9,6 +9,7 @@ import { } from 'antd';
 import {Space, Button, Popconfirm} from "antd";
 import { IoIosAddCircle } from "react-icons/io";
 import { ImBin2 } from "react-icons/im";
+import style from "./ListTable.module.css"
 
 const TableList = (props) => {
   const [data, setData] = useState(props.data);
@@ -182,7 +183,7 @@ const TableList = (props) => {
               {detail ? (
                 <td className={tableStyle.textcenter}>
                   <Link
-                    to={`${detail}?id=${data.id}`}
+                    to={`${detail}/${data.id}`}
                     className="header-icon tick"
                   >
                     <FaInfoCircle />
@@ -213,10 +214,14 @@ const TableList = (props) => {
               <Button type="primary" danger>Xóa<ImBin2/></Button>
             </Popconfirm>
       </Space> 
-      <table className="tableStyle.data">
-        {renderTableHeader()}
-        {renderTableData()}
-      </table>
+      {
+        data.length === 0 ? 
+        <div className={style.nullData}>Danh sách trống</div>:
+        <table className="tableStyle.data">
+          {renderTableHeader()}
+          {renderTableData()}
+        </table>
+      }
     </>
   ) : (
     <></>

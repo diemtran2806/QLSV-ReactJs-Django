@@ -1,6 +1,6 @@
 import React from "react";
 import style from "./Student.module.css"
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useParams} from "react-router-dom";
 import {  Button, Modal, Skeleton, Space, message} from "antd";
 import axios from "axios";
 import { useState, useEffect } from "react";
@@ -15,7 +15,7 @@ const StudentsPage = (props) => {
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(props.admin);
   const [searchParams] = useSearchParams();
-  const [idClass, setIdClass] = useState(Number(searchParams.get("id")));//user of class
+  const {idClass} = useParams();//user of class
   const user = useSelector((state) => state.auth.login.currentUser);
   const [isModal,setIsModal] = useState(false);
   const [isAdd, setIsAdd] = useState(false);// add/update
@@ -30,7 +30,14 @@ const StudentsPage = (props) => {
   };
   //get all user load table
   const loadData = () => {
-    axios.get("http://127.0.0.1:8000/api/student/")
+    let url = null;
+    if(idClass){
+      console.log(idClass)
+      url = `http://127.0.0.1:8000/api/student/class/${idClass}`;
+    }else{
+      url = `http://127.0.0.1:8000/api/student`;
+    }
+    axios.get(url)
       .then(response => {
         //data
         let data = [];
@@ -116,22 +123,8 @@ const StudentsPage = (props) => {
                 <TableList key="user" data={students}/>
               }
             </BodyBox>
-            <Modal
-              centered
-              open={isModal}
-              onCancel={() => setIsModal(false)}
-              width={1000}
-              footer={null}
-              okText={isAdd?"Tạo mới":"Cập nhật"}
-              okButtonProps = {{style:{backgroundColor: '#283c4e'}}}
-              closable = {false}
-            >
-              <div>
-                <div className={style.rel}></div>
-                <div className={style['model-header']}>Cập nhật sinh viên</div>
-              </div>
-              <StudentAddEdit isAdd={isAdd} id={updateId} setIsModal={setIsModal} loadData={loadData}/>
-            </Modal>
+            
+              <StudentAddEdit isAdd={isAdd} id={updateId} open={isModal} setOpen={setIsModal} loadData={loadData}/>
           </> 
         }
          

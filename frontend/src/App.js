@@ -31,6 +31,10 @@ const router = createBrowserRouter([
         element: <StudentPage admin={true} />,
       },
       {
+        path: "student/class/:idClass",
+        element: <StudentPage admin={true} />,
+      },
+      {
         path: "lecture",
         element: <LecturerPage admin={true} />,
       },

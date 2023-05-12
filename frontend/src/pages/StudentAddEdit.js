@@ -1,9 +1,9 @@
 import Input from "antd/es/input/Input";
 import { useEffect, useState } from "react";
-import style from "./StudentUpdate.module.css"
+import style from "./AddEddit.module.css"
 import classnames from 'classnames';
 import axios from "axios";
-import { Select, Space, Button, message} from 'antd';
+import { Select, Space, Button, message, Modal} from 'antd';
 import { useDispatch, useSelector } from "react-redux";
 import Loading from "../components/Loading";
 const StudentAddEdit = (props) => {
@@ -164,7 +164,7 @@ const StudentAddEdit = (props) => {
             console.log(response.status)
             if(response.status==200||response.status==201){
                 props.loadData()
-                props.setIsModal(false)
+                props.setOpen(false)
                 if(isAdd){
                     message.success('Thêm thành công!');
                 }
@@ -178,161 +178,182 @@ const StudentAddEdit = (props) => {
         });
     }
     return(
-            loading?<Loading/>:
             <>
-                <div className={style.avatarWrap}>
-                    <img className={style.avatar} src={formValue.avatar} alt="Logo" />
-                </div>  
-                <input type="text"/>
-                <div className={style.row}>
-                    <div className={classnames(style['input-item'], style.col50)}>
-                        MSSV
-                        <Input
-                            label="Tài khoản"
-                            type="text"
-                            name="mssv"
-                            id="mssv"
-                            value={formValue.mssv}
-                            onChange={handleInputChange}
-                        />
-                    </div>
-                    <div className={classnames(style['input-item'], style.col50)}>
-                        Tên
-                        <Input
-                            label="Tài khoản"
-                            type="text"
-                            name="name"
-                            id="name"
-                            value={formValue.name}
-                            onChange={handleInputChange}
-                        />
-                    </div>
-                </div>
+                <Modal
+                centered
+                open={props.open}
+                onCancel={() => props.setOpen(false)}
+                width={1000}
+                footer={null}
+                okText={isAdd?"Tạo mới":"Cập nhật"}
+                okButtonProps = {{style:{backgroundColor: '#283c4e'}}}
+                closable = {false}
+                >
                 {
-                    props.isAdd?
-                    <div className={classnames(style['input-item'])}>
-                        Mật khẩu
-                        <Input
-                            label="Tài khoản"
-                            type="password"
-                            name="password"
-                            id="password"
-                            autoComplete="off"
-                            value={formValue.password}
-                            onChange={handleInputChange}
-                        />
-                     </div>:<></>
-                }
-                <div className={style.row}>
-                    <div className={classnames(style['input-item'], style.col50)}>
-                        Số điện thoại
-                        <Input
-                            label="Tài khoản"
-                            type="text"
-                            name="phone"
-                            id="phone"
-                            value={formValue.phone}
-                            onChange={handleInputChange}
-                        />
-                    </div>
-                    <div className={classnames(style['input-item'], style.col50)}>
-                        Email
-                        <Input
-                            label="Tài khoản"
-                            type="email"
-                            name="email"
-                            id="email"
-                            value={formValue.email}
-                            onChange={handleInputChange}
-                        />
-                    </div>
-                </div>
-                <div className={ classnames(style['input-item'])}>
-                    CCCD
-                    <Input
-                        label="Tài khoản"
-                        type="text"
-                        name="cccd"
-                        id="cccd"
-                        value={formValue.cccd}
-                        onChange={handleInputChange}
-                    />
-                </div>
-                <div className={ classnames(style['input-item'])}>
-                <div>
-                    Giới tính
-                </div>
-                <Space wrap>
-                    <Select
-                    name="gender"
-                    defaultValue="Chọn Giới Tính"
-                    value={formValue.gender}
-                    style={{ width: 120 }}
-                    onChange={(value)=>handleSelect(value,"gender")}
-                    options={[
-                        { value: true, label: 'Nam' },
-                        { value: false, label: 'Nữ' },
-                    ]}
-                    />
-                </Space>
-                </div>
-                <div className={ classnames(style['input-item'])}>
-                    Địa chỉ
-                    <Input
-                        label="Tài khoản"
-                        type="text"
-                        name="address"
-                        id="address"
-                        value={formValue.address}
-                        onChange={handleInputChange}
-                    />
-                </div>
-                <div className={ classnames(style['input-item'])}>
-                    Ngày sinh
-                    <Input
-                        label="Tài khoản"
-                        type="text"
-                        name="dob"
-                        id="dob"
-                        value={formValue.dob}
-                        onChange={handleInputChange}
-                    />
-                </div>
-                <div className={ classnames(style['input-item'])}>
-                    <div>Lớp SH</div>
+                    loading?<Loading/>:
+                    <>
+                        <div>
+                            <div className={style.rel}></div>
+                            <div className={style['model-header']}>Cập nhật sinh viên</div>
+                        </div>
+                        <div className={style.avatarWrap}>
+                            <img className={style.avatar} src={formValue.avatar} alt="Logo" />
+                        </div>  
+                        <input type="text"/>
+                        <div className={style.row}>
+                            <div className={classnames(style['input-item'], style.col50)}>
+                                MSSV
+                                <Input
+                                    label="Tài khoản"
+                                    type="text"
+                                    name="mssv"
+                                    id="mssv"
+                                    value={formValue.mssv}
+                                    onChange={handleInputChange}
+                                />
+                            </div>
+                            <div className={classnames(style['input-item'], style.col50)}>
+                                Tên
+                                <Input
+                                    label="Tài khoản"
+                                    type="text"
+                                    name="name"
+                                    id="name"
+                                    value={formValue.name}
+                                    onChange={handleInputChange}
+                                />
+                            </div>
+                        </div>
+                        {
+                            props.isAdd?
+                            <div className={classnames(style['input-item'])}>
+                                Mật khẩu
+                                <Input
+                                    label="Tài khoản"
+                                    type="password"
+                                    name="password"
+                                    id="password"
+                                    autoComplete="off"
+                                    value={formValue.password}
+                                    onChange={handleInputChange}
+                                />
+                            </div>:<></>
+                        }
+                        <div className={style.row}>
+                            <div className={classnames(style['input-item'], style.col50)}>
+                                Số điện thoại
+                                <Input
+                                    label="Tài khoản"
+                                    type="text"
+                                    name="phone"
+                                    id="phone"
+                                    value={formValue.phone}
+                                    onChange={handleInputChange}
+                                />
+                            </div>
+                            <div className={classnames(style['input-item'], style.col50)}>
+                                Email
+                                <Input
+                                    label="Tài khoản"
+                                    type="email"
+                                    name="email"
+                                    id="email"
+                                    value={formValue.email}
+                                    onChange={handleInputChange}
+                                />
+                            </div>
+                        </div>
+                        <div className={ classnames(style['input-item'])}>
+                            CCCD
+                            <Input
+                                label="Tài khoản"
+                                type="text"
+                                name="cccd"
+                                id="cccd"
+                                value={formValue.cccd}
+                                onChange={handleInputChange}
+                            />
+                        </div>
+                        <div className={ classnames(style['input-item'])}>
+                        <div>
+                            Giới tính
+                        </div>
                         <Space wrap>
                             <Select
-                                name="classId"
-                                value={formValue.classId}
-                                style={{ width: 120 }}
-                                onChange={(value)=>handleSelect(value,"classId")}
-                                options={classes}
+                            name="gender"
+                            defaultValue="Chọn Giới Tính"
+                            value={formValue.gender}
+                            style={{ width: 120 }}
+                            onChange={(value)=>handleSelect(value,"gender")}
+                            options={[
+                                { value: true, label: 'Nam' },
+                                { value: false, label: 'Nữ' },
+                            ]}
                             />
                         </Space>
-                </div>
+                        </div>
+                        <div className={ classnames(style['input-item'])}>
+                            Địa chỉ
+                            <Input
+                                label="Tài khoản"
+                                type="text"
+                                name="address"
+                                id="address"
+                                value={formValue.address}
+                                onChange={handleInputChange}
+                            />
+                        </div>
+                        <div className={ classnames(style['input-item'])}>
+                            Ngày sinh
+                            <Input
+                                label="Tài khoản"
+                                type="text"
+                                name="dob"
+                                id="dob"
+                                value={formValue.dob}
+                                onChange={handleInputChange}
+                            />
+                        </div>
+                        <div className={ classnames(style['input-item'])}>
+                            <div>Lớp SH</div>
+                                <Space wrap>
+                                    <Select
+                                        name="classId"
+                                        value={formValue.classId}
+                                        style={{ width: 120 }}
+                                        onChange={(value)=>handleSelect(value,"classId")}
+                                        options={classes}
+                                    />
+                                </Space>
+                        </div>
 
-                <div className={ classnames(style['input-item'])}>
-                    Điểm trung bình
-                    <Input
-                        label="Điểm trung bình"
-                        type="text"
-                        name="score"
-                        id="avg"
-                        value={formValue.score}
-                        onChange={handleInputChange}
-                    />
-                </div>
+                        <div className={ classnames(style['input-item'])}>
+                            Điểm trung bình
+                            <Input
+                                label="Điểm trung bình"
+                                type="text"
+                                name="score"
+                                id="avg"
+                                value={formValue.score}
+                                onChange={handleInputChange}
+                            />
+                        </div>
 
-                <div className={style.buttonWrap}>
-                    <Space wrap>
-                        <Button onClick={()=>props.setIsModal(false)}>Cancel</Button>
-                        <Button 
-                            onClick={handleAddUpdate}
-                            style={{ backgroundColor: '#283c4e', borderColor: '#283c4e', color: "white" }}>
-                            {isAdd?'Thêm mới':'Cập nhật'}
-                        </Button>
-                    </Space>    
-                </div>
+                        <div className={style.buttonWrap}>
+                            <Space wrap>
+                                <Button onClick={()=>props.setOpen(false)}>Cancel</Button>
+                                <Button 
+                                    onClick={handleAddUpdate}
+                                    style={{ backgroundColor: '#283c4e', borderColor: '#283c4e', color: "white" }}>
+                                    {isAdd?'Thêm mới':'Cập nhật'}
+                                </Button>
+                            </Space>    
+                        </div>
+                    </>
+                }
+                
+            </Modal>
+
             </>
     )
 }
