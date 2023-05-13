@@ -29,27 +29,25 @@ const LecturersPage = (props) => {
   };
   //get all user load table
   const loadData = () => {
-    // let url = `http://127.0.0.1:8000/api/lecturer`;
-    let url = ``;
+    let url = `http://127.0.0.1:8000/api/lecturer/`;
     axios.get(url)
       .then(response => {
         //data
         let data = [];
         console.log(response.data)
-        response.data.map((lecturer, index) => {
-          const user = lecturer.id_user;
+        response.data.map((item, index) => {
+          let lecturer = item.id_user;
           const lect = {
-            id: user.id,
-            msgv: user.mssv,
-            Tên: user.name,
-            "Khoa": lecturer.id_faculty.name_faculty,
-            email:user.email ,
-            SĐT:user.phone ,
-            "Giới tính":user.gender?"Nam":"Nữ" ,
-            cccd:user.cccd ,
-            "Ngày sinh":user.dob ,
-            "Địa chỉ":user.address ,
-            avatar:user.avatar,
+            "id": lecturer.id,
+            "msgv": lecturer.mssv,
+            "Tên": lecturer.name,
+            "email": lecturer.email,
+            "SĐT": lecturer.phone,
+            "Giới tính": false,
+            "cccd": lecturer.cccd,
+            "Ngày sinh": lecturer.dob,
+            "Địa chỉ": lecturer.address,
+            "avatar": lecturer.avatar
           }
           data.push(lect);
         })

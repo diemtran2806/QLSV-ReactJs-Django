@@ -6,11 +6,12 @@ import axios from "axios";
 import { Select, Space, Button, message, Modal} from 'antd';
 import { useDispatch, useSelector } from "react-redux";
 import Loading from "../Loading/index";
-const StudentAddEdit = (props) => {
+const LecturerAddEdit = (props) => {
     const [loading, setLoading] = useState(true);
     const [formValue, setFormValue] = useState();
     const isAdd = props.isAdd;// add/update
     const updateId = props.id;// id user update
+    const [faculties, setFaculties] = useState();
     const [classes, setClasses] = useState();
 
     const [messageApi, contextHolder] = message.useMessage();
@@ -43,6 +44,28 @@ const StudentAddEdit = (props) => {
         });
     };
 
+      //get all faculty
+      useEffect(()=>{
+        // Gọi API để lấy dữ liệu
+        const accessToken = user?.accessToken;
+        axios.get('http://127.0.0.1:8000/api/faculty/', {
+            headers: {
+            'Authorization': 'Bearer ' + accessToken,
+            'Content-Type': 'application/json'
+            }
+        })
+        .then((response) => {
+            const res = response.data;
+            const newFaculty = res.map(({id_faculty, name_faculty})=>{
+                return {value:parseInt(id_faculty), label:name_faculty}
+            })
+            setFaculties(newFaculty);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },[]);
+
     //get all class
     useEffect(()=>{
         // Gọi API để lấy dữ liệu
@@ -65,34 +88,28 @@ const StudentAddEdit = (props) => {
         });
     },[]);
 
-    useEffect(()=>{
-        loadData()
-    },[isAdd])
-
-    useEffect(()=>{
-        loadData()
-    },[props.id])
+   
 
     const loadData = () =>{
         if(!props.isAdd){
-            axios.get(`http://127.0.0.1:8000/api/student/${updateId}`)
+            axios.get(`http://127.0.0.1:8000/api/lecturer/${updateId}`)
             .then(response => {
             //data
                 const data = response.data;
                 let form = {
-                    id: data.id_user.id,
-                    mssv : data.id_user.mssv,
+                    id_faculty: parseInt(data.id_faculty.id_faculty),
+                    mssv: data.id_user.mssv,
                     name : data.id_user.name,
-                    phone : data.id_user.phone,
                     email : data.id_user.email,
-                    score : data.avg_score,
-                    cccd : data.id_user.cccd,
+                    phone : data.id_user.phone,
                     gender : data.id_user.gender,
-                    address : data.id_user.address,
+                    id_role: data.id_user.id_role,
+                    cccd : data.id_user.cccd,
                     dob : data.id_user.dob,
-                    classId : data.id_class.id_class,
+                    address : data.id_user.address,
                     avatar : data.id_user.avatar 
                 }
+                console.log(form.id_faculty)
                 setFormValue(form);
                 setLoading(false);
             })
@@ -117,33 +134,41 @@ const StudentAddEdit = (props) => {
             setLoading(false);
         }
     };
+    useEffect(()=>{
+        loadData()
+    },[isAdd])
 
+    useEffect(()=>{
+        loadData()
+    },[props.id])
 
     const handleAddUpdate = () => {
         const accessToken = user?.accessToken;
         let url = ""
         if(isAdd){
-            url = `http://127.0.0.1:8000/api/student/create` 
+            url = `http://127.0.0.1:8000/api/lecturer/create` 
         }else{
-            url = `http://127.0.0.1:8000/api/student/${updateId}/update` 
+            url = `http://127.0.0.1:8000/api/lecturer/${updateId}/update` 
         }
         const data = {
-            "avg_score": parseFloat(formValue.score),
-            "id_class": formValue.classId,
+            "id_faculty": formValue.id_faculty,
             "id_user":
-            {
+            {  
                 "mssv": formValue.mssv,
                 "name": formValue.name,
                 "email": formValue.email,
                 "phone": formValue.phone,
                 "gender": formValue.gender,
+                "id_role": formValue.id_role,
                 "cccd": formValue.cccd,
                 "dob": formValue.dob,
                 "address": formValue.address,
-                "avatar": formValue.avatar
+                "avatar": "https://dthezntil550i.cloudfront.net/86/latest/861911302007288750002221253/05f85cab-dc3a-48e3-81ff-b7347d2e450b.png"
             }
         }
+        
         if(isAdd){
+            data['is_admin'] = true
             data['id_user']['password'] = formValue.password
         }
 
@@ -177,6 +202,9 @@ const StudentAddEdit = (props) => {
           console.log(error);
         });
     }
+
+
+
     return(
             <>
                 <Modal
@@ -202,7 +230,7 @@ const StudentAddEdit = (props) => {
                         <input type="text"/>
                         <div className={style.row}>
                             <div className={classnames(style['input-item'], style.col50)}>
-                                MSSV
+                                MSGV
                                 <Input
                                     label="Tài khoản"
                                     type="text"
@@ -315,28 +343,28 @@ const StudentAddEdit = (props) => {
                             />
                         </div>
                         <div className={ classnames(style['input-item'])}>
-                            <div>Lớp SH</div>
+                            <div>Khoa</div>
                                 <Space wrap>
                                     <Select
-                                        name="classId"
-                                        value={formValue.classId}
+                                        name="id_faculty"
+                                        value={formValue.id_faculty}
                                         style={{ width: 120 }}
-                                        onChange={(value)=>handleSelect(value,"classId")}
-                                        options={classes}
+                                        onChange={(value)=>handleSelect(value,"id_faculty")}
+                                        options={faculties}
                                     />
                                 </Space>
                         </div>
-
                         <div className={ classnames(style['input-item'])}>
-                            Điểm trung bình
-                            <Input
-                                label="Điểm trung bình"
-                                type="text"
-                                name="score"
-                                id="avg"
-                                value={formValue.score}
-                                onChange={handleInputChange}
-                            />
+                            <div>Role</div>
+                                <Space wrap>
+                                    <Select
+                                        name="id_role"
+                                        value={formValue.id_role}
+                                        style={{ width: 120 }}
+                                        onChange={(value)=>handleSelect(value,"id_role")}
+                                        options={classes}
+                                    />
+                                </Space>
                         </div>
 
                         <div className={style.buttonWrap}>
@@ -357,4 +385,4 @@ const StudentAddEdit = (props) => {
     )
 }
 
-export default StudentAddEdit;
+export default LecturerAddEdit;
