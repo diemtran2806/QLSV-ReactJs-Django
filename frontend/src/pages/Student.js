@@ -1,15 +1,14 @@
 import React from "react";
 import style from "./Student.module.css"
 import { useSearchParams } from "react-router-dom";
-import {  Button, Modal  } from "antd";
+import {  Button, Modal, Skeleton, Space, message} from "antd";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import TableList from "../components/ListTable";
 import BodyBox from "../components/BodyBox";
 import StudentAddEdit from "./StudentAddEdit";
-import { IoIosAddCircle } from "react-icons/io";
-import { ImBin2 } from "react-icons/im";
-
+import { useDispatch, useSelector } from "react-redux";
+import Loading from "../components/Loading";
 const StudentsPage = (props) => {
   const [students, setStudents] = useState([]);
   const [studentIDURL, setStudentIDURL] = useState();
@@ -17,45 +16,52 @@ const StudentsPage = (props) => {
   const [isAdmin, setIsAdmin] = useState(props.admin);
   const [searchParams] = useSearchParams();
   const [idClass, setIdClass] = useState(Number(searchParams.get("id")));//user of class
-
+  const user = useSelector((state) => state.auth.login.currentUser);
   const [isModal,setIsModal] = useState(false);
   const [isAdd, setIsAdd] = useState(false);// add/update
   const [updateId,setUpdateId] = useState();// id user update
-
- 
-
+  const [messageApi, contextHolder] = message.useMessage();
+  const success = () => {
+    messageApi.open({
+      type: 'success',
+      content: 'This is a prompt message for success, and it will disappear in 10 seconds',
+      duration: 10,
+    });
+  };
   //get all user load table
-  useEffect(() => {
-      axios.get("http://127.0.0.1:8000/api/student/")
-        .then(response => {
-          //data
-          let data = [];
-          response.data.map((student, index) => {
-            const user = student.id_user;
-            const stu = {
-              id: user.id,
-              mssv: user.mssv,
-              Tên: user.name,
-              email:user.email ,
-              SĐT:user.phone ,
-              "Giới tính":user.gender?"Nam":"Nữ" ,
-              cccd:user.cccd ,
-              "Ngày sinh":user.dob ,
-              "Địa chỉ":user.address ,
-              avatar:user.avatar,
-              "Điểm trung bình": student.avg_score,
-            }
-            data.push(stu);
-          })
-          setStudents(data);
-          setLoading(false);
+  const loadData = () => {
+    axios.get("http://127.0.0.1:8000/api/student/")
+      .then(response => {
+        //data
+        let data = [];
+        response.data.map((student, index) => {
+          const user = student.id_user;
+          const stu = {
+            id: user.id,
+            mssv: user.mssv,
+            Tên: user.name,
+            "Lớp SH": student.id_class.class_name,
+            email:user.email ,
+            SĐT:user.phone ,
+            "Giới tính":user.gender?"Nam":"Nữ" ,
+            cccd:user.cccd ,
+            "Ngày sinh":user.dob ,
+            "Địa chỉ":user.address ,
+            avatar:user.avatar,
+            "Điểm trung bình": student.avg_score,
+          }
+          data.push(stu);
         })
-        .catch(error => {
-          console.log(error);
-        });
-  }, []);
-
+        setStudents(data);
+        setLoading(false);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
   
+  useEffect(loadData, []);
+
   const handleUpdateActive = (id) => {
     setUpdateId(id);
     setIsAdd(false);
@@ -68,43 +74,63 @@ const StudentsPage = (props) => {
     setIsModal(true);
   }
   
-  const handleSubmit = ()=>{
-
+  const handleDelete = (id)=>{
+    console.log("delete:",id);
+    const accessToken = user?.accessToken;
+    let url = `http://127.0.0.1:8000/api/student/${id}/delete`
+    axios(
+      {
+        method: 'delete',
+        url:url, 
+        headers: {
+            Authorization: 'Bearer ' + accessToken,
+            'Content-Type': 'application/json'            
+        }
+      }
+    )
+    .then((response) => {
+      message.success('Xóa thành công!');
+      loadData();
+    })
+    .catch((error) => {
+      console.log(error);
+    });
   }
 
+  const handleDeleteMul = (listDel) => {
+    console.log("hihihi")
+      listDel.map((item)=>{
+        handleDelete(item)
+        loadData()
+      })
+  }
   return <>
         {
-          loading ? 
-            <p>Loading...</p>
-          :
+          loading?<BodyBox><Skeleton/><Loading/></BodyBox>:
           <>
             <BodyBox>
-              <div className={style['head-button']}>
-                <Button onClick={handleCreateActive} type="primary">Thêm SV<IoIosAddCircle/> </Button>
-                <Button type="primary" danger>Xóa<ImBin2/></Button>
-              </div>
+              
               {
                 isAdmin?
-                <TableList key="admin" data={students} update={handleUpdateActive} del={true} checkbox={true}/>:
+                <TableList key="admin" data={students}  create={handleCreateActive} update={handleUpdateActive} delete={handleDelete} deleteMul={handleDeleteMul} checkbox={true}/>:
                 <TableList key="user" data={students}/>
               }
             </BodyBox>
             <Modal
               centered
               open={isModal}
-              onOk={() => setIsModal(false)}
               onCancel={() => setIsModal(false)}
               width={1000}
-              okText="Cập nhật"
-              cancelText="Hủy"
+              footer={null}
+              okText={isAdd?"Tạo mới":"Cập nhật"}
               okButtonProps = {{style:{backgroundColor: '#283c4e'}}}
               closable = {false}
             >
-              <div >
+              <div>
                 <div className={style.rel}></div>
                 <div className={style['model-header']}>Cập nhật sinh viên</div>
               </div>
-              <StudentAddEdit isAdd={isAdd} id={updateId}/>
+              <StudentAddEdit isAdd={isAdd} id={updateId} setIsModal={setIsModal} loadData={loadData}/>
             </Modal>
           </> 
         }
