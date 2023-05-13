@@ -6,6 +6,7 @@ from django.http import Http404
 from .models import Class
 from .serializers import ClassSerializer
 from lecturer.models import Lecturer
+from faculty.models import Faculty
 
 
 def get_object(id):
@@ -39,6 +40,10 @@ def class_create_view(request):
         lecturer_id = serializer.validated_data['id_lecturer'].pk
         if not Lecturer.objects.filter(pk=lecturer_id).exists():
             return Response({'id_lecturer': 'Lecturer with this id does not exist.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        faculty_id = serializer.validated_data['id_faculty'].pk
+        if not Faculty.objects.filter(pk=faculty_id).exists():
+            return Response({'id_faculty': 'Faculty with this id does not exist.'}, status=status.HTTP_400_BAD_REQUEST)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -54,6 +59,9 @@ def class_update_view(request, id):
         if not Lecturer.objects.filter(pk=lecturer_id).exists():
             print("putput class update")
             return Response({'id_lecturer': 'Lecturer with this id does not exist.'}, status=status.HTTP_400_BAD_REQUEST)
+        faculty_id = serializer.validated_data['id_faculty'].pk
+        if not Faculty.objects.filter(pk=faculty_id).exists():
+            return Response({'id_faculty': 'Faculty with this id does not exist.'}, status=status.HTTP_400_BAD_REQUEST)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
