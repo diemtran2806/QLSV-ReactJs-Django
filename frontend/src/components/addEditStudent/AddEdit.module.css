@@ -22,13 +22,10 @@
     justify-content: center;
 }
 
-
 .buttonWrap{
-    display: flex;  
+    display: flex;
     justify-content:flex-end;
 }
-
-
 
 :root{
     --color-dark: #283c4e;
@@ -60,6 +57,5 @@
 .head-button{
     margin-left: 10px;
 }
-
 
 

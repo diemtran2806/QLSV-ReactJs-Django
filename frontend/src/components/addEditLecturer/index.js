@@ -1,11 +1,11 @@
 import Input from "antd/es/input/Input";
 import { useEffect, useState } from "react";
-import style from "./AddEddit.module.css"
+import style from "./AddEdit.module.css"
 import classnames from 'classnames';
 import axios from "axios";
 import { Select, Space, Button, message, Modal} from 'antd';
 import { useDispatch, useSelector } from "react-redux";
-import Loading from "../components/Loading";
+import Loading from "../Loading/index";
 const StudentAddEdit = (props) => {
     const [loading, setLoading] = useState(true);
     const [formValue, setFormValue] = useState();
@@ -351,7 +351,6 @@ const StudentAddEdit = (props) => {
                         </div>
                     </>
                 }
-                
             </Modal>
 
             </>

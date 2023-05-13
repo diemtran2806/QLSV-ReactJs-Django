@@ -1,12 +1,11 @@
 import React from "react";
-import style from "./Student.module.css"
 import { useSearchParams, useParams} from "react-router-dom";
 import {  Button, Modal, Skeleton, Space, message} from "antd";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import TableList from "../components/ListTable";
 import BodyBox from "../components/BodyBox";
-import StudentAddEdit from "./StudentAddEdit";
+import StudentAddEdit from "../components/addEditStudent/";
 import { useDispatch, useSelector } from "react-redux";
 import Loading from "../components/Loading";
 const StudentsPage = (props) => {
@@ -132,45 +131,3 @@ const StudentsPage = (props) => {
 };
 
 export default StudentsPage;
-
-
-  // useEffect(() => {
-  //   setIsAdmin(props.admin);
-  // }, [props.admin]);
-
-  // const [searchParams] = useSearchParams();
-  // const [id, setId] = useState(Number(searchParams.get("id")) || 1);
-  // const [isModal,setIsModal] = useState(false);
-  // const [updateId,setUpdateId] = useState(null);
-
-  // useEffect(() => {
-  //    if (id) {
-  //     // lấy data sinh viên theo lớp
-  //     axios.get(`https://reqres.in/api/users?page=${id}`)
-  //       .then(response => {
-  //         if(response.data.data){
-  //           setStudents(response.data.data);
-  //         }
-  //         else{
-  //           setStudents([]);
-  //         }
-  //         setLoading(false);
-  //       })
-  //       .catch(error => {
-  //         console.log(error);
-  //         setLoading(false);
-  //       });
-  //   } else {
-  //     // nếu không có thì lấy tất cả sinh viên 
-  //     axios.get("http://127.0.0.1:8000/api/student/")
-  //       .then(response => {
-  //         setStudents(response.data);
-  //         console.log("huhu",response.data);
-  //         setLoading(false);
-  //       })
-  //       .catch(error => {
-  //         console.log(error);
-  //         setLoading(false);
-  //       });
-  //   }
-  // }, [id]);

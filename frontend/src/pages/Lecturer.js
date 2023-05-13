@@ -1,17 +1,16 @@
 import React from "react";
-import style from "./Student.module.css"
-import { useSearchParams, useParams } from "react-router-dom";
+import { useSearchParams, useParams} from "react-router-dom";
 import {  Button, Modal, Skeleton, Space, message} from "antd";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import TableList from "../components/ListTable";
 import BodyBox from "../components/BodyBox";
-import StudentAddEdit from "./StudentAddEdit";
+import LecturerAddEdit from "../components/addEditLecturer/";
 import { useDispatch, useSelector } from "react-redux";
 import Loading from "../components/Loading";
-const StudentsPage = (props) => {
-  const [students, setStudents] = useState([]);
-  const [studentIDURL, setStudentIDURL] = useState();
+const LecturersPage = (props) => {
+  const [lecturers, setLecturers] = useState([]);
+  const [lecturerIDURL, setLecturerIDURL] = useState();
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(props.admin);
   const [searchParams] = useSearchParams();
@@ -30,20 +29,18 @@ const StudentsPage = (props) => {
   };
   //get all user load table
   const loadData = () => {
-    if(idClass){
-      console.log(idClass)
-    }else{
-      console.log("không có idClass")
-    }
-    axios.get("http://127.0.0.1:8000/api/lecturer/")
+    // let url = `http://127.0.0.1:8000/api/lecturer`;
+    let url = ``;
+    axios.get(url)
       .then(response => {
         //data
         let data = [];
+        console.log(response.data)
         response.data.map((lecturer, index) => {
           const user = lecturer.id_user;
           const lect = {
             id: user.id,
-            mssv: user.mssv,
+            msgv: user.mssv,
             Tên: user.name,
             "Khoa": lecturer.id_faculty.name_faculty,
             email:user.email ,
@@ -56,7 +53,7 @@ const StudentsPage = (props) => {
           }
           data.push(lect);
         })
-        setStudents(data);
+        setLecturers(data);
         setLoading(false);
       })
       .catch(error => {
@@ -81,7 +78,7 @@ const StudentsPage = (props) => {
   const handleDelete = (id)=>{
     console.log("delete:",id);
     const accessToken = user?.accessToken;
-    let url = `http://127.0.0.1:8000/api/student/${id}/delete`
+    let url = `http://127.0.0.1:8000/api/lecturer/${id}/delete`
     axios(
       {
         method: 'delete',
@@ -116,16 +113,16 @@ const StudentsPage = (props) => {
               
               {
                 isAdmin?
-                <TableList key="admin" data={students}  create={handleCreateActive} update={handleUpdateActive} delete={handleDelete} deleteMul={handleDeleteMul} checkbox={true}/>:
-                <TableList key="user" data={students}/>
+                <TableList key="admin" data={lecturers}  create={handleCreateActive} update={handleUpdateActive} delete={handleDelete} deleteMul={handleDeleteMul} checkbox={true}/>:
+                <TableList key="user" data={lecturers}/>
               }
             </BodyBox>
             
-              <StudentAddEdit isAdd={isAdd} id={updateId} open={isModal} setOpen={setIsModal} loadData={loadData}/>
+              <LecturerAddEdit isAdd={isAdd} id={updateId} open={isModal} setOpen={setIsModal} loadData={loadData}/>
           </> 
         }
          
   </>;
 };
 
-export default StudentsPage;
+export default LecturersPage;
