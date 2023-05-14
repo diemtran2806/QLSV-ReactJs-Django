@@ -1,3 +1,32 @@
+.row{
+    display: flex;
+    justify-content: space-between;
+}
+
+.col50 {
+    width: 50%;
+}
+
+.input-item{
+    padding:10px 5px;
+}
+
+.avatar{
+    height: 100px;
+    width: 100px;
+    border-radius: 50px;
+}
+
+.avatarWrap{
+    display: flex;
+    justify-content: center;
+}
+
+.buttonWrap{
+    display: flex;
+    justify-content:flex-end;
+}
+
 :root{
     --color-dark: #283c4e;
 }
@@ -28,6 +57,5 @@
 .head-button{
     margin-left: 10px;
 }
-
 
 

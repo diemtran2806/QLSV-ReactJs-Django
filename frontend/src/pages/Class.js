@@ -22,11 +22,11 @@ const ClassPage = (props) => {
       {
         isAdmin?
           <BodyBox>
-            <TableList key="admin" data={Class} update={true} detail={"/student"}/>
+            <TableList key="admin" data={Class} update={true} detail={"/student/class"}/>
           </BodyBox>
         :
           <BodyBox>
-            <TableList key="user" data={Class} detail={"/student"}/>
+            <TableList key="user" data={Class} detail={"/student/class"}/>
           </BodyBox>
       }
     </>
