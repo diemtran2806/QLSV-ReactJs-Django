@@ -34,6 +34,17 @@ def lecturer_view(request, id):
 
 
 @csrf_exempt
+@api_view(['GET'])
+def lecturer_view_by_faculty(request, id):
+    try:
+        lecturers = Lecturer.objects.filter(id_faculty=id)
+    except Lecturer.DoesNotExist:
+        raise Http404
+    serializer = LecturerSerializer(lecturers, many=True)
+    return Response(serializer.data)
+
+
+@csrf_exempt
 @api_view(['POST'])
 @login_required
 def lecturer_create_view(request):
