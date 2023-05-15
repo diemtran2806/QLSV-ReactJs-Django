@@ -12,10 +12,10 @@ const StudentsPage = (props) => {
   const [students, setStudents] = useState([]);
   const [studentIDURL, setStudentIDURL] = useState();
   const [loading, setLoading] = useState(true);
-  const [isAdmin, setIsAdmin] = useState(props.admin);
+  const user = useSelector((state) => state.auth.login.currentUser);
+  const [isAdmin, setIsAdmin] = useState(user?(user.user.id_role==3||user.user.id_role==2?true:false):false);
   const [searchParams] = useSearchParams();
   const {idClass} = useParams();//user of class
-  const user = useSelector((state) => state.auth.login.currentUser);
   const [isModal,setIsModal] = useState(false);
   const [isAdd, setIsAdd] = useState(false);// add/update
   const [updateId,setUpdateId] = useState();// id user update
@@ -31,7 +31,6 @@ const StudentsPage = (props) => {
   const loadData = () => {
     let url = null;
     if(idClass){
-      console.log(idClass)
       url = `http://127.0.0.1:8000/api/student/class/${idClass}`;
     }else{
       url = `http://127.0.0.1:8000/api/student`;
@@ -65,7 +64,7 @@ const StudentsPage = (props) => {
         console.log(error);
       });
   }
-  
+  console.log(user)
   useEffect(loadData, []);
 
   const handleUpdateActive = (id) => {

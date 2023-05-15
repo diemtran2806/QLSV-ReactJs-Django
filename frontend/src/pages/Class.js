@@ -12,10 +12,10 @@ const ClassPage = (props) => {
   const [classs, setClass] = useState([]);
   const [classIDURL, setClassIDURL] = useState();
   const [loading, setLoading] = useState(true);
-  const [isAdmin, setIsAdmin] = useState(props.admin);
-  const [searchParams] = useSearchParams();
-  const {idClass} = useParams();//user of class
   const user = useSelector((state) => state.auth.login.currentUser);
+  const [isAdmin, setIsAdmin] = useState(user?(user.user.id_role==3?true:false):false);
+  const [searchParams] = useSearchParams();
+  const {idFaculty} = useParams();//user of class
   const [isModal,setIsModal] = useState(false);
   const [isAdd, setIsAdd] = useState(false);// add/update
   const [updateId,setUpdateId] = useState();// id user update
@@ -30,13 +30,12 @@ const ClassPage = (props) => {
   //get all user load table
   const loadData = () => {
     let url = null;
-    // if(idClass){
-    //   console.log(idClass)
-    //   url = `http://127.0.0.1:8000/api/class/class/${idClass}`;
-    // }else{
+    if(idFaculty){
       url = `http://127.0.0.1:8000/api/class/`;
-    // }
-    console.log(url)
+      // url = `http://127.0.0.1:8000/api/class/class/${idFaculty}`;
+    }else{
+      url = `http://127.0.0.1:8000/api/class/`;
+    }
     axios.get(url)
       .then(response => {
         //data
@@ -111,7 +110,7 @@ const ClassPage = (props) => {
               
               {
                 isAdmin?
-                <TableList key="admin" data={classs}  create={handleCreateActive} update={handleUpdateActive} delete={handleDelete} deleteMul={handleDeleteMul} checkbox={true}/>:
+                <TableList key="admin" data={classs}  create={handleCreateActive} update={handleUpdateActive} delete={handleDelete} deleteMul={handleDeleteMul} checkbox={true} detail={"/student"}/>:
                 <TableList key="user" data={classs}/>
               }
             </BodyBox>

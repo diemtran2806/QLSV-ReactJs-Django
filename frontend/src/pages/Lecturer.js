@@ -10,12 +10,9 @@ import { useDispatch, useSelector } from "react-redux";
 import Loading from "../components/Loading";
 const LecturersPage = (props) => {
   const [lecturers, setLecturers] = useState([]);
-  const [lecturerIDURL, setLecturerIDURL] = useState();
   const [loading, setLoading] = useState(true);
-  const [isAdmin, setIsAdmin] = useState(props.admin);
-  const [searchParams] = useSearchParams();
-  const {idClass} = useParams();//user of class
   const user = useSelector((state) => state.auth.login.currentUser);
+  const [isAdmin, setIsAdmin] = useState(user?(user.user.id_role==3?true:false):false);
   const [isModal,setIsModal] = useState(false);
   const [isAdd, setIsAdd] = useState(false);// add/update
   const [updateId,setUpdateId] = useState();// id user update
@@ -43,7 +40,7 @@ const LecturersPage = (props) => {
             "Tên": lecturer.name,
             "email": lecturer.email,
             "SĐT": lecturer.phone,
-            "Giới tính": false,
+            "Giới tính": user.gender?"Nam":"Nữ" ,
             "cccd": lecturer.cccd,
             "Ngày sinh": lecturer.dob,
             "Địa chỉ": lecturer.address,

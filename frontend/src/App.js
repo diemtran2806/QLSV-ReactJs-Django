@@ -20,27 +20,31 @@ const router = createBrowserRouter([
       { index: true, element: <HomePage /> },
       {
         path: "faculty",
-        element: <FacultyPage admin={true} />,
+        element: <FacultyPage/>,
       },
       {
         path: "class",
-        element: <ClassPage admin={true}/>,
+        element: <ClassPage/>,
+      },
+      {
+        path: "class/:idFaculty",
+        element: <ClassPage/>,
       },
       {
         path: "student",
-        element: <StudentPage admin={true} />,
+        element: <StudentPage/>,
       },
       {
-        path: "student/class/:idClass",
-        element: <StudentPage admin={true} />,
+        path: "student/:idClass",
+        element: <StudentPage/>,
       },
       {
         path: "lecture",
-        element: <LecturerPage admin={true} />,
+        element: <LecturerPage/>,
       },
       {
         path: "admin",
-        element: <AdminPage admin={true} />,
+        element: <AdminPage/>,
       },
       {
         path: "login",

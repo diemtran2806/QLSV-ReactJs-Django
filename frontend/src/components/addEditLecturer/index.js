@@ -66,7 +66,7 @@ const LecturerAddEdit = (props) => {
         });
     },[]);
 
-    //get all class
+    //get all role
     useEffect(()=>{
         // Gọi API để lấy dữ liệu
         const accessToken = user?.accessToken;
@@ -109,25 +109,13 @@ const LecturerAddEdit = (props) => {
                     address : data.id_user.address,
                     avatar : data.id_user.avatar 
                 }
-                console.log(form.id_faculty)
                 setFormValue(form);
                 setLoading(false);
             })
             .catch(error => {
                 console.log(error);
             });
-        }
-    };
-    useEffect(()=>{
-        loadData()
-    },[isAdd])
-
-    useEffect(()=>{
-        loadData()
-    },[props.id])
-
-    useEffect(()=>{
-        if(isAdd){
+        }else{
             let form = {
                 id:"",
                 mssv:"",
@@ -139,12 +127,21 @@ const LecturerAddEdit = (props) => {
                 address:"",
                 dob:"",
                 classId:"",
+                id_role:"",
+                id_faculty:"",
                 avatar:"https://tinyurl.com/2l59av9t"
             }
             setFormValue(form);
             setLoading(false);
         }
-    },[props.open])
+    };
+    useEffect(()=>{
+        loadData()
+    },[isAdd])
+
+    useEffect(()=>{
+        loadData()
+    },[props.id])
 
     const handleAddUpdate = () => {
         const accessToken = user?.accessToken;
@@ -226,7 +223,6 @@ const LecturerAddEdit = (props) => {
                     <>
                         <div>
                             <div className={style.rel}></div>
-                            <div className={style['model-header']}>Cập nhật sinh viên</div>
                             <div className={style['model-header']}>Cập nhật sinh viên</div>
                         </div>
                         <div className={style.avatarWrap}>
@@ -360,6 +356,17 @@ const LecturerAddEdit = (props) => {
                                 </Space>
                         </div>
                         <div className={ classnames(style['input-item'])}>
+                            Role
+                            <Input
+                                label="Role"
+                                type="text"
+                                name="id_role"
+                                id="id_role"
+                                value={formValue.id_role}
+                                onChange={handleInputChange}
+                            />
+                        </div>
+                        {/* <div className={ classnames(style['input-item'])}>
                             <div>Role</div>
                                 <Space wrap>
                                     <Select
@@ -370,7 +377,7 @@ const LecturerAddEdit = (props) => {
                                         options={classes}
                                     />
                                 </Space>
-                        </div>
+                        </div> */}
 
                         <div className={style.buttonWrap}>
                             <Space wrap>
