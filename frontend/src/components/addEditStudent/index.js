@@ -73,6 +73,26 @@ const StudentAddEdit = (props) => {
         loadData()
     },[props.id])
 
+    useEffect(()=>{
+        if(isAdd){
+            let form = {
+                id:"",
+                mssv:"",
+                name:"",
+                phone:"",
+                email:"",
+                cccd:"",
+                gender:true,
+                address:"",
+                dob:"",
+                classId:"",
+                avatar:"https://tinyurl.com/2l59av9t"
+            }
+            setFormValue(form);
+            setLoading(false);
+        }
+    },[props.open])
+
     const loadData = () =>{
         if(!props.isAdd){
             axios.get(`http://127.0.0.1:8000/api/student/${updateId}`)
@@ -99,22 +119,6 @@ const StudentAddEdit = (props) => {
             .catch(error => {
                 console.log(error);
             });
-        }else{
-            let form = {
-                id:"",
-                mssv:"",
-                name:"",
-                phone:"",
-                email:"",
-                cccd:"",
-                gender:true,
-                address:"",
-                dob:"",
-                classId:"",
-                avatar:"https://tinyurl.com/2l59av9t"
-            }
-            setFormValue(form);
-            setLoading(false);
         }
     };
 

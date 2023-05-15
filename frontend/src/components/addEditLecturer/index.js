@@ -116,7 +116,18 @@ const LecturerAddEdit = (props) => {
             .catch(error => {
                 console.log(error);
             });
-        }else{
+        }
+    };
+    useEffect(()=>{
+        loadData()
+    },[isAdd])
+
+    useEffect(()=>{
+        loadData()
+    },[props.id])
+
+    useEffect(()=>{
+        if(isAdd){
             let form = {
                 id:"",
                 mssv:"",
@@ -133,14 +144,7 @@ const LecturerAddEdit = (props) => {
             setFormValue(form);
             setLoading(false);
         }
-    };
-    useEffect(()=>{
-        loadData()
-    },[isAdd])
-
-    useEffect(()=>{
-        loadData()
-    },[props.id])
+    },[props.open])
 
     const handleAddUpdate = () => {
         const accessToken = user?.accessToken;

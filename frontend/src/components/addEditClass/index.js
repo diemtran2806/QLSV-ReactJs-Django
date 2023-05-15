@@ -100,8 +100,8 @@ const ClassAddEdit = (props) => {
                 let form = {
                     id_class: data.id_class,
                     class_name: data.class_name,
-                    id_faculty:data.id_faculty,
-                    id_lecturer: data.id_lecturer
+                    id_faculty:data.faculty.id_faculty,
+                    id_lecturer: data.lecturer.id
                 }
                 setFormValue(form);
                 setLoading(false);
@@ -109,7 +109,15 @@ const ClassAddEdit = (props) => {
             .catch(error => {
                 console.log(error);
             });
-        }else{
+        }
+    };
+
+    useEffect(()=>{
+        loadData()
+    },[isAdd])
+
+    useEffect(()=>{
+        if(isAdd){
             let form = {
                 id_class: "",
                 class_name: "",
@@ -119,11 +127,7 @@ const ClassAddEdit = (props) => {
             setFormValue(form);
             setLoading(false);
         }
-    };
-
-    useEffect(()=>{
-        loadData()
-    },[isAdd])
+    },[props.open])
 
     useEffect(()=>{
         loadData()
