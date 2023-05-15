@@ -202,7 +202,7 @@ const TableList = (props) => {
   return data ? (
     <>
       <Space wrap>
-            <Button onClick={props.create} type="primary">Thêm SV<IoIosAddCircle/> </Button>
+            <Button onClick={props.create} type="primary">Thêm<IoIosAddCircle/> </Button>
             <Popconfirm
               placement="left"
               title={"Bạn chắc chắn muốn xóa mục đã chọn?"}

@@ -24,7 +24,7 @@ const router = createBrowserRouter([
       },
       {
         path: "class",
-        element: <ClassPage />,
+        element: <ClassPage admin={true}/>,
       },
       {
         path: "student",
