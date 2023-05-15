@@ -3,6 +3,9 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.views.decorators.csrf import csrf_exempt
 from django.http import Http404
+from faculty.serializers import FacultySerializer
+
+from lecturer.serializers import LecturerSerializer
 from .models import Class
 from .serializers import ClassSerializer
 from lecturer.models import Lecturer
@@ -20,16 +23,50 @@ def get_object(id):
 @api_view(['GET'])
 def classes_view(request):
     classes = Class.objects.all()
-    serializer = ClassSerializer(classes, many=True)
-    return Response(serializer.data)
+    class_data = []
+    for _class in classes:
+        class_dict = {
+            'id_class': _class.id_class,
+            'class_name': _class.class_name,
+            'lecturer': LecturerSerializer(_class.id_lecturer).data,
+            'faculty': FacultySerializer(_class.id_faculty).data,
+        }
+        class_data.append(class_dict)
+    return Response(class_data)
 
 
 @csrf_exempt
 @api_view(['GET'])
 def class_view(request, id):
     _class = get_object(id)
-    serializer = ClassSerializer(_class)
-    return Response(serializer.data)
+    class_dict = {
+        'id_class': _class.id_class,
+        'class_name': _class.class_name,
+        'lecturer': LecturerSerializer(_class.id_lecturer).data,
+        'faculty': FacultySerializer(_class.id_faculty).data,
+    }
+    return Response(class_dict)
+
+
+@csrf_exempt
+@api_view(['GET'])
+def class_view_by_faculty(request, id):
+    try:
+        classes = Class.objects.filter(id_faculty=id)
+    except Class.DoesNotExist:
+        raise Http404
+
+    class_data = []
+    for _class in classes:
+        class_dict = {
+            'id_class': _class.id_class,
+            'class_name': _class.class_name,
+            'lecturer': LecturerSerializer(_class.id_lecturer).data,
+            'faculty': FacultySerializer(_class.id_faculty).data,
+        }
+        class_data.append(class_dict)
+
+    return Response(class_data)
 
 
 @csrf_exempt

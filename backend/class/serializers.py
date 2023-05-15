@@ -62,7 +62,7 @@ class ClassSerializer(serializers.ModelSerializer):
                     {"id_faculty_data": [
                         "Faculty with this id does not exist."]}
                 )
-            instance.id_faculty_data = faculty
+            instance.id_faculty = faculty
         # Cập nhật các thông tin khác của đối tượng Class
         instance.class_name = validated_data.get(
             'class_name', instance.class_name)

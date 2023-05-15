@@ -7,4 +7,5 @@ urlpatterns = [
     path('<int:id>/', lecturer_view),
     path('<int:id>/delete', lecturer_delete_view),
     path('<int:id>/update', lecturer_update_view),
+    path('<int:id>/faculty/', lecturer_view_by_faculty),
 ]
