@@ -28,6 +28,7 @@ function MainNavigation() {
   const handleLogout = () => {
     logoutUser(dispatch, navigate, accessToken, axiosJWT);
     localStorage.setItem("logined", "false");
+    navigate("/");
   };
 
   return (
@@ -58,11 +59,15 @@ function MainNavigation() {
             Giảng Viên
           </NavLink>
         </div>
-        <div className={classes.wrapperButton}>
-          <NavLink to="/admin" className={classes.text}>
-            Admin
-          </NavLink>
-        </div>
+        {user === null ? (
+          <></>
+        ) : (
+          <div className={classes.wrapperButton}>
+            <NavLink to="/admin" className={classes.text}>
+              Admin
+            </NavLink>
+          </div>
+        )}
       </div>
       <div className={classes.menu}>
         {user ? (

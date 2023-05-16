@@ -11,9 +11,9 @@ const AddUser = (props) => {
   const [isModalOpen, setIsModalOpen] = useState(true);
   const [updateId, setUpdateId] = useState(props.id); // id user update
 
-  const handleOk = () => {
-    setIsModalOpen(false);
-  };
+  // const handleOk = () => {
+  //   setIsModalOpen(false);
+  // };
 
   const handleCancel = () => {
     setIsModalOpen(false);
@@ -22,6 +22,7 @@ const AddUser = (props) => {
 
   useEffect(() => {
     setUpdateId(props.id);
+    console.log("id", updateId);
     if (updateId !== null) {
       getUserUpdate();
     }
@@ -39,7 +40,8 @@ const AddUser = (props) => {
     address: "",
     dob: "",
     id_role: 3,
-    avatar: "https://kynguyenlamdep.com/avatar-cute/",
+    avatar:
+      "https://batterydown.vn/wp-content/uploads/2022/05/hinh-anh-avatar-de-thuong-750x600.jpg",
   });
 
   // nhập
@@ -59,12 +61,17 @@ const AddUser = (props) => {
   };
 
   const addSubmitHandlerModal = () => {
-    console.log(formValue);
-    if (updateId !== null) {
-      props.updateSubmitHandler(formValue, updateId);
-    } else props.addSubmitHandler(formValue);
+    // console.log(formValue);
+    // if (updateId !== null) {
+    props.addSubmitHandler(formValue, updateId);
+    // } else props.addSubmitHandler(formValue);
     setIsModalOpen(false);
     console.log(formValue);
+  };
+
+  const updateSubmitHandlerModal = () => {
+    props.updateSubmitHandler(formValue, updateId);
+    setIsModalOpen(false);
   };
 
   const getUserUpdate = async () => {
@@ -99,7 +106,9 @@ const AddUser = (props) => {
       <Modal
         centered
         open={isModalOpen}
-        onOk={addSubmitHandlerModal}
+        onOk={
+          updateId !== null ? updateSubmitHandlerModal : addSubmitHandlerModal
+        }
         onCancel={handleCancel}
         width={1000}
         okText="Cập nhật"
