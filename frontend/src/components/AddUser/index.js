@@ -1,6 +1,6 @@
 import Input from "antd/es/input/Input";
 import { useEffect, useState } from "react";
-import style from "../../pages/Student.module.css";
+import style from "../../components/addEditClass/AddEdit.module.css";
 import classnames from "classnames";
 import axios from "axios";
 import { Select, Space } from "antd";

@@ -3,7 +3,7 @@ import TableList from "../components/ListTable";
 import BodyBox from "../components/BodyBox";
 import classes from "./Admin.module.css";
 import axios from "axios";
-import style from "./Student.module.css";
+import style from "../components/addEditClass/AddEdit.module.css";
 import AddUser from "../components/AddUser";
 import { message } from "antd";
 
@@ -65,7 +65,7 @@ const AdminPage = () => {
 
   const [selectedAdmin, setSelectedAdmin] = useState(null);
 
-  const addAdmin = () => {
+  const handleCreateActive = () => {
     setShowModal(true);
     setUpdateId(null);
   };
@@ -130,6 +130,15 @@ const AdminPage = () => {
     }
   };
 
+  const handleDeleteMul = (listDel) => {
+    console.log("hihihi");
+    listDel.map((item) => {
+      deleteSubmitHandler(item);
+      getAllAdmin();
+      //loadData();
+    });
+  };
+
   const updateSubmitHandler = async (admin, id) => {
     try {
       const response = await fetch(
@@ -176,7 +185,7 @@ const AdminPage = () => {
   return (
     <>
       <BodyBox>
-        <div className={style["head-button"]}>
+        {/* <div className={style["head-button"]}>
           <Button onClick={addAdmin} type="primary">
             Thêm SV
             <IoIosAddCircle />{" "}
@@ -185,18 +194,22 @@ const AdminPage = () => {
             Xóa
             <ImBin2 />
           </Button>
-        </div>
+        </div> */}
         <TableList
           key="admin"
           data={admins}
+          create={handleCreateActive}
           update={handleUpdateActive}
           checkbox={true}
           del={true}
+          addButton={true}
           delete={deleteSubmitHandler}
+          deleteMul={handleDeleteMul}
         />
       </BodyBox>
       {showModal && (
         <AddUser
+          id={null}
           addSubmitHandler={addSubmitHandler}
           handleCancel={handleCancelModal}
         />
@@ -207,7 +220,7 @@ const AdminPage = () => {
           handleCancel={handleCancelModal}
           id={updateId}
         />
-      )}
+      )}{" "}
     </>
   );
 };
