@@ -44,6 +44,7 @@ const LecturersPage = (props) => {
             "cccd": lecturer.cccd,
             "Ngày sinh": lecturer.dob,
             "Địa chỉ": lecturer.address,
+            "Khoa": item.id_faculty.name_faculty,
             "avatar": lecturer.avatar
           }
           data.push(lect);
@@ -108,7 +109,7 @@ const LecturersPage = (props) => {
               
               {
                 isAdmin?
-                <TableList key="admin" data={lecturers}  create={handleCreateActive} update={handleUpdateActive} delete={handleDelete} deleteMul={handleDeleteMul} checkbox={true}/>:
+                <TableList key="admin" data={lecturers}  create={handleCreateActive} update={handleUpdateActive} delete={handleDelete} deleteMul={handleDeleteMul} addButton={true} checkbox={true}/>:
                 <TableList key="user" data={lecturers}/>
               }
             </BodyBox>

@@ -66,30 +66,6 @@ const LecturerAddEdit = (props) => {
         });
     },[]);
 
-    //get all role
-    useEffect(()=>{
-        // Gọi API để lấy dữ liệu
-        const accessToken = user?.accessToken;
-        axios.get('http://127.0.0.1:8000/api/class/', {
-            headers: {
-            'Authorization': 'Bearer ' + accessToken,
-            'Content-Type': 'application/json'
-            }
-        })
-        .then((response) => {
-            const res = response.data;
-            const newClass = res.map(({id_class, class_name})=>{
-                return {value:id_class, label:class_name}
-            })
-            setClasses(newClass);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    },[]);
-
-   
-
     const loadData = () =>{
         if(!props.isAdd){
             axios.get(`http://127.0.0.1:8000/api/lecturer/${updateId}`)
@@ -103,7 +79,6 @@ const LecturerAddEdit = (props) => {
                     email : data.id_user.email,
                     phone : data.id_user.phone,
                     gender : data.id_user.gender,
-                    id_role: data.id_user.id_role,
                     cccd : data.id_user.cccd,
                     dob : data.id_user.dob,
                     address : data.id_user.address,
@@ -127,7 +102,6 @@ const LecturerAddEdit = (props) => {
                 address:"",
                 dob:"",
                 classId:"",
-                id_role:"",
                 id_faculty:"",
                 avatar:"https://tinyurl.com/2l59av9t"
             }
@@ -160,7 +134,6 @@ const LecturerAddEdit = (props) => {
                 "email": formValue.email,
                 "phone": formValue.phone,
                 "gender": formValue.gender,
-                "id_role": formValue.id_role,
                 "cccd": formValue.cccd,
                 "dob": formValue.dob,
                 "address": formValue.address,
@@ -355,29 +328,6 @@ const LecturerAddEdit = (props) => {
                                     />
                                 </Space>
                         </div>
-                        <div className={ classnames(style['input-item'])}>
-                            Role
-                            <Input
-                                label="Role"
-                                type="text"
-                                name="id_role"
-                                id="id_role"
-                                value={formValue.id_role}
-                                onChange={handleInputChange}
-                            />
-                        </div>
-                        {/* <div className={ classnames(style['input-item'])}>
-                            <div>Role</div>
-                                <Space wrap>
-                                    <Select
-                                        name="id_role"
-                                        value={formValue.id_role}
-                                        style={{ width: 120 }}
-                                        onChange={(value)=>handleSelect(value,"id_role")}
-                                        options={classes}
-                                    />
-                                </Space>
-                        </div> */}
 
                         <div className={style.buttonWrap}>
                             <Space wrap>

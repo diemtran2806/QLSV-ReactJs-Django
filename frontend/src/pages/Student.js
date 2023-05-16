@@ -117,7 +117,7 @@ const StudentsPage = (props) => {
               
               {
                 isAdmin?
-                <TableList key="admin" data={students}  create={handleCreateActive} update={handleUpdateActive} delete={handleDelete} deleteMul={handleDeleteMul} checkbox={true}/>:
+                <TableList key="admin" data={students}  create={handleCreateActive} update={handleUpdateActive} delete={handleDelete} deleteMul={handleDeleteMul} addButton={true} checkbox={true}/>:
                 <TableList key="user" data={students}/>
               }
             </BodyBox>

@@ -70,7 +70,7 @@ const AdminPage = () => {
   return (
     <>
       <BodyBox>
-        <TableList key="admin" data={admin} update={true} checkbox={true} />
+        <TableList key="admin" data={admin} update={true} addButton={true} checkbox={true} />
       </BodyBox>
       {
         <Modal

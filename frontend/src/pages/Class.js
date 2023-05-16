@@ -31,8 +31,7 @@ const ClassPage = (props) => {
   const loadData = () => {
     let url = null;
     if(idFaculty){
-      url = `http://127.0.0.1:8000/api/class/`;
-      // url = `http://127.0.0.1:8000/api/class/class/${idFaculty}`;
+      url = `http://127.0.0.1:8000/api/class/${idFaculty}/faculty/`;
     }else{
       url = `http://127.0.0.1:8000/api/class/`;
     }
@@ -110,7 +109,7 @@ const ClassPage = (props) => {
               
               {
                 isAdmin?
-                <TableList key="admin" data={classs}  create={handleCreateActive} update={handleUpdateActive} delete={handleDelete} deleteMul={handleDeleteMul} checkbox={true} detail={"/student"}/>:
+                <TableList key="admin" data={classs}  create={handleCreateActive} update={handleUpdateActive} delete={handleDelete} deleteMul={handleDeleteMul} checkbox={true} addButton={true} detail={"/student"}/>:
                 <TableList key="user" data={classs}/>
               }
             </BodyBox>

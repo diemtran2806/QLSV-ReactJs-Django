@@ -19,6 +19,7 @@ const TableList = (props) => {
   const [update, setUpdate] = useState(typeof props.update === "function");
 
   const [del, setDel] = useState(typeof props.delete === "function");
+  const [addButton,setAdd] = useState(props.addButton)
   const [checkbox, setCheckbox] = useState(props.checkbox);
   const [detail, setDetail] = useState(props.detail);
   const [avatar, setAvatar] = useState(false);
@@ -202,17 +203,27 @@ const TableList = (props) => {
   return data ? (
     <>
       <Space wrap>
-            <Button onClick={props.create} type="primary">Thêm<IoIosAddCircle/> </Button>
-            <Popconfirm
-              placement="left"
-              title={"Bạn chắc chắn muốn xóa mục đã chọn?"}
-              description={""}
-              onConfirm={()=>props.deleteMul(checked)}
-              okText="Xóa"
-              cancelText="Bỏ qua"
-            >
-              <Button type="primary" danger>Xóa<ImBin2/></Button>
-            </Popconfirm>
+            {
+              addButton?
+                <Button onClick={props.create} type="primary">Thêm<IoIosAddCircle/></Button>:<></>
+
+            }
+            {
+              checkbox?
+              <Popconfirm
+                placement="left"
+                title={"Bạn chắc chắn muốn xóa mục đã chọn?"}
+                description={""}
+                onConfirm={()=>props.deleteMul(checked)}
+                okText="Xóa"
+                cancelText="Bỏ qua"
+              >
+            
+                <Button type="primary" danger>Xóa<ImBin2/></Button>
+              </Popconfirm>
+              :<></>
+            }
+
       </Space> 
       {
         data.length === 0 ? 
