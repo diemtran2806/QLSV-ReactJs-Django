@@ -1,0 +1,10 @@
+.wrapIcon {
+    align-items: center;
+    justify-content: center;
+}
+.icon {
+    color: rgb(7, 7, 179);
+    border: none;
+    font-size: 24px;
+    font-weight: 700;
+}

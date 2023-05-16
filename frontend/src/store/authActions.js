@@ -8,6 +8,7 @@ import {
   logoutSuccess,
   logoutFalse,
   setPasswordUpdated,
+  setUserUpdated,
 } from "./authSlice";
 
 export const loginUser = async (user, dispatch, navigate) => {
@@ -60,6 +61,25 @@ export const changePassword = async (
     navigate("/");
   } catch (err) {
     console.log(err);
+    return err.response.status;
+  }
+};
+
+export const updateUser = async (user, id, dispatch, accessToken, navigate) => {
+  console.log("user o tren:", user);
+  try {
+    const res = await axios.put(
+      `http://127.0.0.1:8000/api/users/${id}/update/`,
+      user,
+      {
+        headers: { authorization: `Bearer ${accessToken}` },
+      }
+    );
+    console.log("user update action:", res.data);
+    dispatch(setUserUpdated(res.data));
+    // navigate("/");
+  } catch (err) {
+    // console.log("error", err.response);
     return err.response.status;
   }
 };

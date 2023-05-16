@@ -17,14 +17,18 @@ function MainNavigation() {
   const user = useSelector((state) => state.auth.login.currentUser);
   const userAfterUpdate = useSelector((state) => state.user.userUpdate);
   const accessToken = user?.accessToken;
+  const hasUserUpdated = localStorage.getItem("logined");
+  console.log("hasUserUpdate:", hasUserUpdated);
   // const id = user?.id;
   console.log(accessToken);
-  console.log(user);
+  console.log("MainNav user:", user);
 
   let axiosJWT = createAxios(user, dispatch, logoutSuccess);
 
   const handleLogout = () => {
     logoutUser(dispatch, navigate, accessToken, axiosJWT);
+    localStorage.setItem("logined", "false");
+    navigate("/");
   };
 
   return (
@@ -55,17 +59,32 @@ function MainNavigation() {
             Giảng Viên
           </NavLink>
         </div>
-        <div className={classes.wrapperButton}>
-          <NavLink to="/admin" className={classes.text}>
-            Admin
-          </NavLink>
-        </div>
+        {user === null ? (
+          <></>
+        ) : (
+          <div className={classes.wrapperButton}>
+            <NavLink to="/admin" className={classes.text}>
+              Admin
+            </NavLink>
+          </div>
+        )}
       </div>
       <div className={classes.menu}>
         {user ? (
           <div className={classes.avata}>
-            <img src={user.user.avatar} alt="avata" />
-            <div className={classes.nameUser}>{user.user.name}</div>
+            <img
+              src={
+                hasUserUpdated === "true"
+                  ? userAfterUpdate.avatar
+                  : user.user.avatar
+              }
+              alt="avata"
+            />
+            <div className={classes.nameUser}>
+              {hasUserUpdated === "true"
+                ? userAfterUpdate.name
+                : user.user.name}
+            </div>
             <ul className={classes.userMenu}>
               <li className={classes.userItem}>
                 <div className={classes.wrapperUserItem}>

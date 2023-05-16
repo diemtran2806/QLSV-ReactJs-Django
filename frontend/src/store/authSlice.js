@@ -44,6 +44,13 @@ const authSlice = createSlice({
     setPasswordUpdated: (state, action) => {
       state.updatePass.currentUser = action.payload;
     },
+    setUserUpdated(state, action) {
+      // state.updateUser.userUpdate = action.payload;
+      // state.userUpdate = action.payload;
+      state.login.isFetching = false;
+      state.login.currentUser = action.payload;
+      state.login.error = false;
+    },
   },
 });
 
@@ -55,6 +62,7 @@ export const {
   logoutSuccess,
   logoutFalse,
   setPasswordUpdated,
+  setUserUpdated,
 } = authSlice.actions;
 
 export default authSlice;
