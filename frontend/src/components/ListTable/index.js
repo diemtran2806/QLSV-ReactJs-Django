@@ -6,7 +6,7 @@ import { HiPencilSquare } from "react-icons/hi2";
 import { RiDeleteBinFill } from "react-icons/ri";
 import { FaInfoCircle } from "react-icons/fa";
 import {} from "antd";
-import { Space, Button, Popconfirm } from "antd";
+import { Space, Button, Popconfirm, Input } from "antd";
 import { IoIosAddCircle } from "react-icons/io";
 import { ImBin2 } from "react-icons/im";
 import style from "./ListTable.module.css";
