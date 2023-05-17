@@ -25,8 +25,13 @@ const LecturersPage = (props) => {
     });
   };
   //get all user load table
-  const loadData = () => {
-    let url = `http://127.0.0.1:8000/api/lecturer/`;
+  const loadData = (searchValue=null) => {
+    let url = null
+    if(searchValue){
+      url = `http://127.0.0.1:8000/api/lecturer?search=${searchValue}`;
+    }else{
+      url = `http://127.0.0.1:8000/api/lecturer`;
+    }
     axios.get(url)
       .then(response => {
         //data
@@ -53,10 +58,12 @@ const LecturersPage = (props) => {
         setLoading(false);
       })
       .catch(error => {
-        console.log(error);
+        console.log("lỗi rùi",error);
       });
   }
   
+  
+
   useEffect(loadData, []);
 
   const handleUpdateActive = (id) => {
@@ -109,8 +116,8 @@ const LecturersPage = (props) => {
               
               {
                 isAdmin?
-                <TableList key="admin" data={lecturers}  create={handleCreateActive} update={handleUpdateActive} delete={handleDelete} deleteMul={handleDeleteMul} addButton={true} checkbox={true}/>:
-                <TableList key="user" data={lecturers}/>
+                <TableList key="admin" data={lecturers}  create={handleCreateActive} update={handleUpdateActive} delete={handleDelete} deleteMul={handleDeleteMul} addButton={true} checkbox={true}  loadData={loadData}/>:
+                <TableList key="user" data={lecturers}  loadData={loadData}/>
               }
             </BodyBox>
             

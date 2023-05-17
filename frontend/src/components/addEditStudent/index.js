@@ -47,14 +47,15 @@ const StudentAddEdit = (props) => {
     useEffect(()=>{
         // Gọi API để lấy dữ liệu
         const accessToken = user?.accessToken;
-        axios.get('http://127.0.0.1:8000/api/class/', {
+        console.log("token nè", accessToken)
+        axios.get('http://127.0.0.1:8000/api/class', {
             headers: {
-            'Authorization': 'Bearer ' + accessToken,
             'Content-Type': 'application/json'
             }
         })
         .then((response) => {
             const res = response.data;
+            console.log(res)
             const newClass = res.map(({id_class, class_name})=>{
                 return {value:id_class, label:class_name}
             })
@@ -95,7 +96,15 @@ const StudentAddEdit = (props) => {
 
     const loadData = () =>{
         if(!props.isAdd){
-            axios.get(`http://127.0.0.1:8000/api/student/${updateId}`)
+            const accessToken = user?.accessToken;
+            axios({
+                method: "get",
+                url: `http://127.0.0.1:8000/api/student/${updateId}`,
+                headers: {
+                  Authorization: "Bearer " + accessToken,
+                  "Content-Type": "application/json",
+                },
+            })
             .then(response => {
             //data
                 const data = response.data;

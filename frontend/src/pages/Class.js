@@ -28,12 +28,16 @@ const ClassPage = (props) => {
     });
   };
   //get all user load table
-  const loadData = () => {
+  const loadData = (searchValue = null) => {
     let url = null;
-    if(idFaculty){
-      url = `http://127.0.0.1:8000/api/class/${idFaculty}/faculty/`;
+    if(searchValue){
+      url = `http://127.0.0.1:8000/api/class?search=${searchValue}`;
     }else{
-      url = `http://127.0.0.1:8000/api/class/`;
+      if(idFaculty){
+        url = `http://127.0.0.1:8000/api/class/${idFaculty}/faculty/`;
+      }else{
+        url = `http://127.0.0.1:8000/api/class`;
+      }
     }
     axios.get(url)
       .then(response => {
@@ -110,8 +114,8 @@ const ClassPage = (props) => {
               
               {
                 isAdmin?
-                <TableList key="admin" data={classs}  create={handleCreateActive} update={handleUpdateActive} delete={handleDelete} deleteMul={handleDeleteMul} checkbox={true} addButton={true} detail={"/student"}/>:
-                <TableList key="user" data={classs}/>
+                <TableList key="admin" data={classs}  create={handleCreateActive} update={handleUpdateActive} delete={handleDelete} deleteMul={handleDeleteMul} checkbox={true} addButton={true} detail={"/student"} loadData={loadData}/>:
+                <TableList key="user" data={classs} loadData={loadData}/>
               }
             </BodyBox>
             

@@ -29,9 +29,15 @@ const AdminPage = () => {
   };
 
   //get all admins load table
-  const getAllAdmin = async () => {
+  const getAllAdmin = async (searchValue=null) => {
+    let url = null;
+    if(searchValue){
+      url = `http://127.0.0.1:8000/api/users/admin?search=${searchValue}`
+    }else{
+      url = "http://127.0.0.1:8000/api/users/admin"
+    }
     axios
-      .get("http://127.0.0.1:8000/api/users/admin/")
+      .get(url)
       .then((response) => {
         //data
         console.log(response);
@@ -205,6 +211,7 @@ const AdminPage = () => {
           addButton={true}
           delete={deleteSubmitHandler}
           deleteMul={handleDeleteMul}
+          loadData={getAllAdmin}
         />
       </BodyBox>
       {showModal && (

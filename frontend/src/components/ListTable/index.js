@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import tableStyle from "./ListTable.module.css";
 import { HiPencilSquare } from "react-icons/hi2";
 import { RiDeleteBinFill } from "react-icons/ri";
+import { BiSearchAlt } from "react-icons/bi";
 import { FaInfoCircle } from "react-icons/fa";
 import {} from "antd";
 import { Space, Button, Popconfirm, Input } from "antd";
@@ -24,7 +25,7 @@ const TableList = (props) => {
   const [detail, setDetail] = useState(props.detail);
   const [avatar, setAvatar] = useState(false);
   const [notShow, setNotShow] = useState(["id", "avatar"]);
-
+  const [searchValue, setSearchValue]=useState("");
   useEffect(() => {
     setData(props.data);
   }, [props.data]);
@@ -67,6 +68,13 @@ const TableList = (props) => {
   const handleUpdate = (id) => {
     props.update(id);
   };
+
+  const handleInputChange = (event) => {
+    setSearchValue(event.target.value);
+    props.loadData(searchValue);
+  };
+
+
 
   const renderTableHeader = () => {
     return (
@@ -200,32 +208,37 @@ const TableList = (props) => {
 
   return data ? (
     <>
-      <Space wrap>
-        {addButton ? (
-          <Button onClick={props.create} type="primary">
-            Thêm
-            <IoIosAddCircle />
-          </Button>
-        ) : (
-          <></>
-        )}
-        {checkbox ? (
-          <Popconfirm
-            placement="left"
-            title={"Bạn chắc chắn muốn xóa mục đã chọn?"}
-            description={""}
-            onConfirm={() => props.deleteMul(checked)}
-            okText="Xóa"
-            cancelText="Bỏ qua"
-          >
-            <Button type="primary" danger>
-              Xóa
-              <ImBin2 />
+      <Space wrap className={style['justify-content-between']}>
+        <Space wrap>
+          {addButton ? (
+            <Button onClick={props.create} type="primary">
+              Thêm
+              <IoIosAddCircle />
             </Button>
-          </Popconfirm>
-        ) : (
-          <></>
-        )}
+          ) : (
+            <></>
+          )}
+          {checkbox ? (
+            <Popconfirm
+              placement="left"
+              title={"Bạn chắc chắn muốn xóa mục đã chọn?"}
+              description={""}
+              onConfirm={() => props.deleteMul(checked)}
+              okText="Xóa"
+              cancelText="Bỏ qua"
+            >
+              <Button type="primary" danger>
+                Xóa
+                <ImBin2 />
+              </Button>
+            </Popconfirm>
+          ) : (
+            <></>
+          )}
+        </Space>
+        <Space>
+          <Input size="large" placeholder="Tìm kiếm " maxLength={1000} prefix={<BiSearchAlt />}  value={searchValue} onChange={handleInputChange}/>
+        </Space>
       </Space>
       {data.length === 0 ? (
         <div className={style.nullData}>Danh sách trống</div>

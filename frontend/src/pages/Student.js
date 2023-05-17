@@ -35,12 +35,16 @@ const StudentsPage = (props) => {
     });
   };
   //get all user load table
-  const loadData = () => {
+  const loadData = (searchValue=null) => {
     let url = null;
-    if (idClass) {
-      url = `http://127.0.0.1:8000/api/student/class/${idClass}`;
-    } else {
-      url = `http://127.0.0.1:8000/api/student`;
+    if(searchValue){
+        url = `http://127.0.0.1:8000/api/student?search=${searchValue}`;
+    }else{
+      if (idClass) {
+        url = `http://127.0.0.1:8000/api/student/class/${idClass}`;
+      } else {
+        url = `http://127.0.0.1:8000/api/student`;
+      }
     }
     axios
       .get(url)
@@ -72,6 +76,7 @@ const StudentsPage = (props) => {
         console.log(error);
       });
   };
+
   console.log(user);
   useEffect(loadData, []);
 
@@ -127,6 +132,7 @@ const StudentsPage = (props) => {
           <BodyBox>
             {isAdmin ? (
               <TableList
+                loadData={loadData}
                 key="admin"
                 data={students}
                 create={handleCreateActive}
@@ -137,7 +143,7 @@ const StudentsPage = (props) => {
                 checkbox={true}
               />
             ) : (
-              <TableList key="user" data={students} />
+              <TableList key="user" data={students} loadData={loadData}/>
             )}
           </BodyBox>
 
