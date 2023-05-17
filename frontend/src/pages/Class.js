@@ -44,9 +44,10 @@ const ClassPage = (props) => {
           const clas = {
             "id": item.id_class,
             "Tên Lớp": item.class_name,
-            "Giáo viên chủ nhiệm":item.lecturer.id_user.name,
-            "Khoa quản lý": item.faculty.name_faculty
+            "Giáo viên chủ nhiệm":item.id_lecturer.id_user.name,
+            "Khoa quản lý": item.id_faculty.name_faculty
           }
+          console.log(clas);
           data.push(clas);
         })
         setClass(data);
