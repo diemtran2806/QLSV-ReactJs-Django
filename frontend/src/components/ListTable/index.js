@@ -70,6 +70,7 @@ const TableList = (props) => {
   };
 
   const handleInputChange = (event) => {
+    console.log("hihihihih")
     setSearchValue(event.target.value);
     props.loadData(searchValue);
   };
@@ -241,7 +242,7 @@ const TableList = (props) => {
             maxLength={1000}
             prefix={<BiSearchAlt />}
             value={searchValue}
-            onChange={() => handleInputChange}
+            onChange={(event) => handleInputChange(event)}
           />
         </Space>
       </Space>
