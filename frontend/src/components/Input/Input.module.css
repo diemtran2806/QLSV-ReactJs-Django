@@ -18,6 +18,16 @@
 	color: #333;
 	font-weight: 500;
 }
+.inputWrapper {
+	display: flex;
+	align-items: center;
+  }
+
+  .icon {
+	display: flex;
+	align-items: center;
+	padding: 0 10px;
+  }
 
 .error {
 	color: red;
