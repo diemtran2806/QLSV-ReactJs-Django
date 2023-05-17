@@ -95,7 +95,7 @@ const ChangePassword = () => {
     <Card header="Đổi Mật Khẩu">
       <Input
         label="Nhập mật khẩu mới"
-        type="text"
+        type="password"
         name="newpass"
         id="newpass"
         onChange={(event) => {
@@ -105,7 +105,7 @@ const ChangePassword = () => {
       />
       <Input
         label="Nhập lại mật khẩu"
-        type="text"
+        type="password"
         name="retypepass"
         id="retypepass"
         onChange={(event) => {

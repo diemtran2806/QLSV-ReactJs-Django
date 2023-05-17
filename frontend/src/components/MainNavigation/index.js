@@ -14,14 +14,17 @@ import defaultAvatar from "../../assets/images/defaultAvatar.jpg";
 function MainNavigation() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  let id_role = 1;
   const user = useSelector((state) => state.auth.login.currentUser);
   const userAfterUpdate = useSelector((state) => state.user.userUpdate);
   const accessToken = user?.accessToken;
   const hasUserUpdated = localStorage.getItem("logined");
   console.log("hasUserUpdate:", hasUserUpdated);
-  // const id = user?.id;
+  if (user !== null) {
+    id_role = user?.user.id_role;
+  }
   console.log(accessToken);
-  console.log("MainNav user:", user);
+  console.log("MainNav user:", id_role);
 
   let axiosJWT = createAxios(user, dispatch, logoutSuccess);
 
@@ -59,14 +62,16 @@ function MainNavigation() {
             Giảng Viên
           </NavLink>
         </div>
-        {user === null ? (
+        {user === null && id_role !== 3 ? (
           <></>
         ) : (
-          <div className={classes.wrapperButton}>
-            <NavLink to="/admin" className={classes.text}>
-              Admin
-            </NavLink>
-          </div>
+          id_role === 3 && (
+            <div className={classes.wrapperButton}>
+              <NavLink to="/admin" className={classes.text}>
+                Admin
+              </NavLink>
+            </div>
+          )
         )}
       </div>
       <div className={classes.menu}>

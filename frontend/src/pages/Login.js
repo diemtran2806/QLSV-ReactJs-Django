@@ -6,6 +6,7 @@ import Card from "../components/Card";
 import Input from "../components/Input";
 import classes from "./Login.module.css";
 import Button from "../components/Button";
+import { BiShow } from "react-icons/bi";
 
 const LoginPage = () => {
   const dispatch = useDispatch();
@@ -15,6 +16,8 @@ const LoginPage = () => {
   const [errorLogin, setErrorLogin] = useState("");
   const [form, setForm] = useState({});
 
+  const [showPass, setShowPass] = useState(false);
+  const [textShowHide, setTextShowHide] = useState("Show Password");
   const onChange = ({ name, value }) => {
     setForm({ ...form, [name]: value });
 
@@ -78,6 +81,13 @@ const LoginPage = () => {
     }
   };
 
+  const showHidePassHandler = () => {
+    setShowPass((prev) => !prev);
+    if (showPass) {
+      setTextShowHide("Show Password");
+    } else setTextShowHide("Hide Password");
+  };
+
   return (
     <Card header="Đăng nhập">
       <Input
@@ -93,15 +103,27 @@ const LoginPage = () => {
       />
       <Input
         label="Mật khẩu"
-        type="password"
+        type={showPass ? "text" : "password"}
         name="password"
         id="password"
         placeholder="Nhập mật khẩu"
         onChange={(event) => {
           onChange({ name: "password", value: event.target.value });
         }}
+        icon={<BiShow />}
         error={errors.password}
       />
+      <div className={classes.wrapperText}>
+        <div
+          className={classes.showHidePass}
+          onClick={() => navigate("/changePassword")}
+        >
+          Quên mật khẩu?
+        </div>
+        <div className={classes.showHidePass} onClick={showHidePassHandler}>
+          {textShowHide}
+        </div>
+      </div>
       {errorLogin && <div className={classes.errorLogin}>{errorLogin}</div>}
       <div className={classes.wrapperBtn}>
         <Button onClick={onSubmit}>Đăng nhập</Button>

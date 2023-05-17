@@ -107,6 +107,7 @@ const AdminPage = () => {
       // showModal(false);
       setAdmins([...admins, admin]);
       getAllAdmin();
+      showMess(true);
     } catch (error) {
       console.error(error);
     }
@@ -120,7 +121,7 @@ const AdminPage = () => {
 
   useEffect(() => {
     if (mess) {
-      message.success("Delete successfully!");
+      message.success("Successfully!");
     }
   }, [mess, messageApi]);
 
@@ -145,6 +146,7 @@ const AdminPage = () => {
       // Xóa user khỏi danh sách bằng cách tạo một danh sách mới chỉ chứa những user khác với user đã xóa
       const updatedAdmins = admins.filter((admin) => admin.id !== id);
       setAdmins(updatedAdmins);
+      showMess(true);
     } catch (error) {
       console.error(error);
     }
@@ -157,6 +159,7 @@ const AdminPage = () => {
       getAllAdmin();
       //loadData();
     });
+    showMess(true);
   };
 
   const updateSubmitHandler = async (admin, id) => {
@@ -188,6 +191,7 @@ const AdminPage = () => {
         return newAdmins;
       });
       getAllAdmin();
+      showMess(true);
     } catch (error) {
       console.error(error);
     }
