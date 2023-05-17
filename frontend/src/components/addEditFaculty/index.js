@@ -46,7 +46,15 @@ const FacultyAddEdit = (props) => {
 
     const loadData = () =>{
         if(!props.isAdd){
-            axios.get(`http://127.0.0.1:8000/api/faculty/${updateId}`)
+            const accessToken = user?.accessToken;
+            axios({
+                method: "get",
+                url: `http://127.0.0.1:8000/api/faculty/${updateId}`,
+                headers: {
+                  Authorization: "Bearer " + accessToken,
+                  "Content-Type": "application/json",
+                },
+              })
             .then(response => {
             //data
                 const data = response.data;
@@ -88,9 +96,9 @@ const FacultyAddEdit = (props) => {
         const accessToken = user?.accessToken;
         let url = ""
         if(isAdd){
-            url = `http://127.0.0.1:8000/api/faculty/create/` 
+            url = `http://127.0.0.1:8000/api/faculty/create` 
         }else{
-            url = `http://127.0.0.1:8000/api/faculty/${updateId}/update/` 
+            url = `http://127.0.0.1:8000/api/faculty/${updateId}/update` 
         }
         console.log(url)
         const data = {

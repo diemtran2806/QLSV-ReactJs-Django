@@ -34,7 +34,7 @@ const ClassPage = (props) => {
       url = `http://127.0.0.1:8000/api/class?search=${searchValue}`;
     }else{
       if(idFaculty){
-        url = `http://127.0.0.1:8000/api/class/${idFaculty}/faculty/`;
+        url = `http://127.0.0.1:8000/api/class/${idFaculty}/faculty`;
       }else{
         url = `http://127.0.0.1:8000/api/class`;
       }

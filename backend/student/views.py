@@ -76,7 +76,7 @@ def get_object(id):
 
 @csrf_exempt
 @api_view(['GET'])
-@permission_classes([IsRole3User | IsSameUser])
+@permission_classes([IsRole2User| IsRole3User | IsSameUser])
 def student_view(request, id):
     student = get_object(id)
     serializer = GetStudentSerializer(student)
@@ -93,7 +93,7 @@ def student_view_by_class(request, id_class):
 
 @csrf_exempt
 @api_view(['POST'])
-@permission_classes([IsRole3User])
+@permission_classes([IsRole2User| IsRole3User])
 def student_create_view(request):
     data = request.data.copy()
     data['id_user']['id_role'] = 1
@@ -109,7 +109,7 @@ def student_create_view(request):
 
 @csrf_exempt
 @api_view(['PUT'])
-@permission_classes([IsRole3User | IsSameUser])
+@permission_classes([IsRole2User| IsRole3User | IsSameUser])
 def student_update_view(request, id):
     student = get_object(id)
     serializer = StudentSerializer(student, data=request.data, partial=True)

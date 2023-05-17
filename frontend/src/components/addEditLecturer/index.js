@@ -48,7 +48,7 @@ const LecturerAddEdit = (props) => {
       useEffect(()=>{
         // Gọi API để lấy dữ liệu
         const accessToken = user?.accessToken;
-        axios.get('http://127.0.0.1:8000/api/faculty/', {
+        axios.get('http://127.0.0.1:8000/api/faculty', {
             headers: {
             'Authorization': 'Bearer ' + accessToken,
             'Content-Type': 'application/json'
@@ -68,7 +68,16 @@ const LecturerAddEdit = (props) => {
 
     const loadData = () =>{
         if(!props.isAdd){
-            axios.get(`http://127.0.0.1:8000/api/lecturer/${updateId}`)
+        const accessToken = user?.accessToken;
+        axios
+            ({
+                method: "get",
+                url: `http://127.0.0.1:8000/api/lecturer/${updateId}`,
+                headers: {
+                  Authorization: "Bearer " + accessToken,
+                  "Content-Type": "application/json",
+                },
+            })
             .then(response => {
             //data
                 const data = response.data;

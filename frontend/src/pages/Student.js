@@ -46,8 +46,15 @@ const StudentsPage = (props) => {
         url = `http://127.0.0.1:8000/api/student`;
       }
     }
-    axios
-      .get(url)
+    const accessToken = user?.accessToken;
+    axios({
+      method: "get",
+      url: url,
+      headers: {
+        Authorization: "Bearer " + accessToken,
+        "Content-Type": "application/json",
+      },
+    })
       .then((response) => {
         //data
         let data = [];

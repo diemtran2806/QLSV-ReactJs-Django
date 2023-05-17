@@ -5,7 +5,7 @@ export const updateUser = async (user, id, dispatch, accessToken, navigate) => {
   console.log("user o tren:", user);
   try {
     const res = await axios.put(
-      `http://127.0.0.1:8000/api/users/${id}/update/`,
+      `http://127.0.0.1:8000/api/users/${id}/update`,
       user,
       {
         headers: { authorization: `Bearer ${accessToken}` },
@@ -30,7 +30,7 @@ export const changePassword = async (
   console.log(newPass);
   try {
     const res = await axios.patch(
-      `http://127.0.0.1:8000/api/users/${id}/change-password/`,
+      `http://127.0.0.1:8000/api/users/${id}/change-password`,
       newPass,
       {
         headers: { authorization: `Bearer ${accessToken}` },

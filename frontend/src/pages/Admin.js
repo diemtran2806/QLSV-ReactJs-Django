@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import TableList from "../components/ListTable";
 import BodyBox from "../components/BodyBox";
 import classes from "./Admin.module.css";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import style from "../components/addEditClass/AddEdit.module.css";
 import AddUser from "../components/AddUser";
@@ -22,8 +23,9 @@ const AdminPage = () => {
 
   const [messageApi, contextHolder] = message.useMessage();
   const [mess, showMess] = useState(false);
-
-  const handleCancelModal = () => {
+  const user = useSelector((state) => state.auth.login.currentUser);
+      const accessToken = user?.accessToken;
+      const handleCancelModal = () => {
     setShowModal(false);
     setShowModalUpdate(false);
   };
@@ -36,8 +38,14 @@ const AdminPage = () => {
     }else{
       url = "http://127.0.0.1:8000/api/users/admin"
     }
-    axios
-      .get(url)
+    axios({
+      method: "get",
+      url: url,
+      headers: {
+        Authorization: "Bearer " + accessToken,
+        "Content-Type": "application/json",
+      },
+    })
       .then((response) => {
         //data
         console.log(response);
@@ -81,12 +89,13 @@ const AdminPage = () => {
       // Gọi API để thêm user xuống server
       console.log("admin ne:", admin);
       const response = await fetch(
-        "http://127.0.0.1:8000/api/users/register/",
+        "http://127.0.0.1:8000/api/users/register",
         {
           method: "POST",
           body: JSON.stringify(admin),
           headers: {
             "Content-Type": "application/json",
+            Authorization: "Bearer " + accessToken,
           },
         }
       );
@@ -118,9 +127,14 @@ const AdminPage = () => {
   const deleteSubmitHandler = async (id) => {
     try {
       const response = await fetch(
-        `http://127.0.0.1:8000/api/users/${id}/delete/`,
+        `http://127.0.0.1:8000/api/users/${id}/delete`,
         {
           method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + accessToken,
+
+          },
         }
       );
 
@@ -148,12 +162,14 @@ const AdminPage = () => {
   const updateSubmitHandler = async (admin, id) => {
     try {
       const response = await fetch(
-        `http://127.0.0.1:8000/api/users/${id}/update/`,
+        `http://127.0.0.1:8000/api/users/${id}/update`,
         {
           method: "PUT",
           body: JSON.stringify(admin),
           headers: {
             "Content-Type": "application/json",
+            Authorization: "Bearer " + accessToken,
+
           },
         }
       );

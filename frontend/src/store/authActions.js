@@ -15,7 +15,7 @@ export const loginUser = async (user, dispatch, navigate) => {
   dispatch(loginStart());
   try {
     const res = await axios.post(
-      "http://127.0.0.1:8000/api/users/login/",
+      "http://127.0.0.1:8000/api/users/login",
       user
     );
     dispatch(loginSuccess(res.data));
@@ -29,7 +29,7 @@ export const loginUser = async (user, dispatch, navigate) => {
 export const logoutUser = async (dispatch, navigate, accessToken, axiosJWT) => {
   dispatch(logoutStart());
   try {
-    await axiosJWT.post("http://127.0.0.1:8000/api/users/logout/", {
+    await axiosJWT.post("http://127.0.0.1:8000/api/users/logout", {
       headers: { authorization: `Bearer ${accessToken}` },
     });
     dispatch(logoutSuccess());
@@ -50,7 +50,7 @@ export const changePassword = async (
   console.log(newPass);
   try {
     const res = await axios.patch(
-      `http://127.0.0.1:8000/api/users/${id}/change-password/`,
+      `http://127.0.0.1:8000/api/users/${id}/change-password`,
       newPass,
       {
         headers: { authorization: `Bearer ${accessToken}` },
@@ -69,7 +69,7 @@ export const updateUser = async (user, id, dispatch, accessToken, navigate) => {
   console.log("user o tren:", user);
   try {
     const res = await axios.put(
-      `http://127.0.0.1:8000/api/users/${id}/update/`,
+      `http://127.0.0.1:8000/api/users/${id}/update`,
       user,
       {
         headers: { authorization: `Bearer ${accessToken}` },

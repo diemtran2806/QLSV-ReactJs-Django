@@ -2,6 +2,7 @@ import Input from "antd/es/input/Input";
 import { useEffect, useState } from "react";
 import style from "../../components/addEditClass/AddEdit.module.css";
 import classnames from "classnames";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { Select, Space } from "antd";
 import { Button, Modal } from "antd";
@@ -10,6 +11,7 @@ const AddUser = (props) => {
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(true);
   const [updateId, setUpdateId] = useState(props.id); // id user update
+  const user = useSelector((state) => state.auth.login.currentUser);
 
   // const handleOk = () => {
   //   setIsModalOpen(false);
@@ -75,8 +77,15 @@ const AddUser = (props) => {
   };
 
   const getUserUpdate = async () => {
-    axios
-      .get(`http://127.0.0.1:8000/api/users/${updateId}/`)
+    const accessToken = user?.accessToken;
+    axios({
+      method: "get",
+      url: `http://127.0.0.1:8000/api/users/${updateId}`,
+      headers: {
+        Authorization: "Bearer " + accessToken,
+        "Content-Type": "application/json",
+      },
+    })
       .then((response) => {
         //data
         const data = response.data;

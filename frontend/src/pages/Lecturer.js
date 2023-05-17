@@ -45,7 +45,7 @@ const LecturersPage = (props) => {
             "Tên": lecturer.name,
             "email": lecturer.email,
             "SĐT": lecturer.phone,
-            "Giới tính": user.gender?"Nam":"Nữ" ,
+            "Giới tính": lecturer.gender?"Nam":"Nữ" ,
             "cccd": lecturer.cccd,
             "Ngày sinh": lecturer.dob,
             "Địa chỉ": lecturer.address,

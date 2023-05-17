@@ -13,7 +13,8 @@ const ClassAddEdit = (props) => {
     const updateId = props.id;// id user update
     const [lecturer, setLecturer] = useState();
     const [faculty, setFaculty] = useState();
-
+    const user = useSelector((state) => state.auth.login.currentUser);
+    const accessToken = user?.accessToken;
     const [messageApi, contextHolder] = message.useMessage();
     const success = () => {
       messageApi.open({
@@ -23,7 +24,6 @@ const ClassAddEdit = (props) => {
       });
     };
 
-    const user = useSelector((state) => state.auth.login.currentUser);
     const handleInputChange = (event) => {
         const { name, value } = event.target;
         setFormValue((prevState) => {
@@ -47,8 +47,7 @@ const ClassAddEdit = (props) => {
     //get all lecturer
     useEffect(()=>{
         // Gọi API để lấy dữ liệu
-        const accessToken = user?.accessToken;
-        axios.get('http://127.0.0.1:8000/api/lecturer/', {
+        axios.get('http://127.0.0.1:8000/api/lecturer', {
             headers: {
             'Authorization': 'Bearer ' + accessToken,
             'Content-Type': 'application/json'
@@ -71,7 +70,7 @@ const ClassAddEdit = (props) => {
     useEffect(()=>{
         // Gọi API để lấy dữ liệu
         const accessToken = user?.accessToken;
-        axios.get('http://127.0.0.1:8000/api/faculty/', {
+        axios.get('http://127.0.0.1:8000/api/faculty', {
             headers: {
             'Authorization': 'Bearer ' + accessToken,
             'Content-Type': 'application/json'
@@ -88,8 +87,6 @@ const ClassAddEdit = (props) => {
           console.log(error);
         });
     },[]);
-
-    
 
     const loadData = () =>{
         if(!props.isAdd){
@@ -139,7 +136,7 @@ const ClassAddEdit = (props) => {
         if(isAdd){
             url = `http://127.0.0.1:8000/api/class/create` 
         }else{
-            url = `http://127.0.0.1:8000/api/class/${updateId}/update/` 
+            url = `http://127.0.0.1:8000/api/class/${updateId}/update` 
         }
         console.log(url)
         const data = {
