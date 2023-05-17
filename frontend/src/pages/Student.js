@@ -51,7 +51,6 @@ const StudentsPage = (props) => {
       method: "get",
       url: url,
       headers: {
-        Authorization: "Bearer " + accessToken,
         "Content-Type": "application/json",
       },
     })
