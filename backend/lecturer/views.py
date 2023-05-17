@@ -4,6 +4,8 @@ from rest_framework import status
 from .serializers import LecturerSerializer, GetLecturerSerializer
 from django.views.decorators.csrf import csrf_exempt
 from django.http import Http404
+from django.db.models import Q
+from datetime import datetime
 from .models import Lecturer
 from users.models import Users
 from users.views import login_required
@@ -13,6 +15,37 @@ from permissions.custom_permissions import IsRole1User, IsRole2User, IsRole3User
 @csrf_exempt
 @api_view(['GET'])
 def lecturers_view(request):
+    search = request.GET.get('search', '')
+    if search != '':
+        search = search.lower()
+        try:
+            search_date = datetime.strptime(search, '%Y-%m-%d').date()
+            lecturers = Lecturer.objects.filter(Q(id_user__dob=search_date))
+        except ValueError:
+            lecturers = Lecturer.objects.filter(
+                Q(id_user__mssv__icontains=search) |
+                Q(id_user__email__icontains=search) |
+                Q(id_user__name__icontains=search) |
+                Q(id_user__phone__icontains=search) |
+                Q(id_user__address__icontains=search) |
+                Q(id_user__cccd__icontains=search) |
+                Q(id_faculty__name_faculty__icontains=search)
+            )
+
+            gender = None
+            try:
+                if search == 'nam':
+                    gender = True
+                elif search == 'nữ':
+                    gender = False
+                lecturers |= Lecturer.objects.filter(Q(id_user__gender=gender))
+            except ValueError:
+                pass
+
+        serializer = GetLecturerSerializer(
+            lecturers, many=True, context={'request': request})
+        return Response(serializer.data)
+
     lecturers = Lecturer.objects.all()
     serializer = GetLecturerSerializer(
         lecturers, many=True, context={'request': request})

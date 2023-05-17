@@ -7,6 +7,8 @@ from .serializers import StudentSerializer, GetStudentSerializer
 from django.views.decorators.csrf import csrf_exempt
 from permissions.custom_permissions import IsRole1User, IsRole2User, IsRole3User, IsSameUser
 from django.http import Http404
+from django.db.models import Q
+from datetime import datetime
 from .models import Student
 from users.models import Users
 
@@ -14,6 +16,51 @@ from users.models import Users
 @csrf_exempt
 @api_view(['GET'])
 def students_view(request):
+    search = request.GET.get('search', '')
+    if search != '':
+        search = search.lower()
+
+        try:
+            search_date = datetime.strptime(search, '%Y-%m-%d').date()
+            students = Student.objects.filter(
+                Q(id_user__dob=search_date)
+            )
+        except ValueError:
+            try:
+                avg_score = float(search)
+                students = Student.objects.filter(
+                    Q(avg_score=avg_score) |
+                    Q(id_user__mssv__icontains=search) |
+                    Q(id_user__email__icontains=search) |
+                    Q(id_user__name__icontains=search) |
+                    Q(id_user__phone__icontains=search) |
+                    Q(id_user__address__icontains=search) |
+                    Q(id_user__cccd__icontains=search) |
+                    Q(id_class__class_name__icontains=search)
+                )
+            except ValueError:
+                students = Student.objects.filter(
+                    Q(id_user__mssv__icontains=search) |
+                    Q(id_user__email__icontains=search) |
+                    Q(id_user__name__icontains=search) |
+                    Q(id_user__phone__icontains=search) |
+                    Q(id_user__address__icontains=search) |
+                    Q(id_user__cccd__icontains=search) |
+                    Q(id_class__class_name__icontains=search)
+                )
+            gender = None
+            try:
+                if search == 'nam':
+                    gender = True
+                elif search == 'nữ':
+                    gender = False
+                students |= Student.objects.filter(Q(id_user__gender=gender))
+            except ValueError:
+                pass
+
+        serializer = GetStudentSerializer(
+            students, many=True, context={'request': request})
+        return Response(serializer.data)
     students = Student.objects.all()
     serializer = GetStudentSerializer(
         students, many=True, context={'request': request})
@@ -43,7 +90,6 @@ def student_view_by_class(request, id_class):
     serializer = GetStudentSerializer(
         students, many=True, context={'request': request})
     return Response(serializer.data)
-
 
 @csrf_exempt
 @api_view(['POST'])
