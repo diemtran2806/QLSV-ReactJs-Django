@@ -8,7 +8,7 @@ from django.db.models import Q
 from datetime import datetime
 from .serializers import UserSerializer
 from django.contrib.auth import authenticate
-from permissions.custom_permissions import IsRole1User, IsRole2User, IsRole3User, IsSameUser
+from permissions.custom_permissions import IsStudent, IsLecturer, IsAdmin, IsSameUser
 from django.views.decorators.csrf import csrf_exempt
 from django.http import Http404
 from .models import Users
@@ -46,7 +46,7 @@ def logout_view(request):
         return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
-@permission_classes([IsRole3User])
+@permission_classes([IsAdmin])
 class RegisterView(APIView):
     def post(self, request):
         data = request.data.copy()
@@ -73,8 +73,7 @@ def users_view(request):
 
 @csrf_exempt
 @api_view(['GET'])
-@permission_classes([IsRole3User])
-def admin_view(request):    
+def admin_view(request):
     search = request.GET.get('search')
     if search:
         search = search.lower()
@@ -127,7 +126,7 @@ def user_view(request, id):
 
 @csrf_exempt
 @api_view(['PUT'])
-@permission_classes([IsRole3User | IsSameUser])
+@permission_classes([IsAdmin | IsSameUser])
 def user_update_view(request, id):
     user = get_object(id)
     if user.is_authenticated:
@@ -145,7 +144,7 @@ def user_update_view(request, id):
 
 @csrf_exempt
 @api_view(['PATCH'])
-@permission_classes([IsRole3User | IsSameUser])
+@permission_classes([IsAdmin | IsSameUser])
 def user_update_password_view(request, id):
     user = get_object(id)
     if user.is_authenticated:
@@ -163,7 +162,7 @@ def user_update_password_view(request, id):
 
 @csrf_exempt
 @api_view(['DELETE'])
-@permission_classes([IsRole3User])
+@permission_classes([IsAdmin])
 def user_delete_view(request, id):
     user = get_object(id)
     if user.is_authenticated:

@@ -4,7 +4,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework import status
 from django.http import Http404
-from permissions.custom_permissions import IsRole1User, IsRole2User, IsRole3User, IsSameUser
+from permissions.custom_permissions import IsStudent, IsLecturer, IsAdmin, IsSameUser
 
 from roles.serializers import RolesSerializer
 from .models import Roles

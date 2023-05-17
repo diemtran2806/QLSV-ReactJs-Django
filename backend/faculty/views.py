@@ -5,7 +5,7 @@ from rest_framework import status
 from django.views.decorators.csrf import csrf_exempt
 from django.http import Http404
 
-from permissions.custom_permissions import IsRole1User, IsRole2User, IsRole3User, IsSameUser
+from permissions.custom_permissions import IsStudent, IsLecturer, IsAdmin, IsSameUser
 from .models import Faculty
 from .serializers import FacultySerializer
 
@@ -39,7 +39,7 @@ def get_object(id):
 
 @csrf_exempt
 @api_view(['GET'])
-@permission_classes([IsRole3User])
+@permission_classes([IsAdmin])
 def faculty_view(request, id):
     faculty = get_object(id)
     return Response(FacultySerializer(faculty).data)
@@ -47,7 +47,7 @@ def faculty_view(request, id):
 
 @csrf_exempt
 @api_view(['POST'])
-@permission_classes([IsRole3User])
+@permission_classes([IsAdmin])
 def faculty_create_view(request):
     serializer = FacultySerializer(data=request.data)
     if serializer.is_valid():
@@ -58,7 +58,7 @@ def faculty_create_view(request):
 
 @csrf_exempt
 @api_view(['PUT'])
-@permission_classes([IsRole3User])
+@permission_classes([IsAdmin])
 def faculty_update_view(request, id):
     faculty = get_object(id)
     data = request.data
@@ -71,7 +71,7 @@ def faculty_update_view(request, id):
 
 @csrf_exempt
 @api_view(['PATCH'])
-@permission_classes([IsRole3User])
+@permission_classes([IsAdmin])
 def faculty_partial_update_view(request, id):
     faculty = get_object(id)
     data = request.data
@@ -83,7 +83,7 @@ def faculty_partial_update_view(request, id):
 
 
 @csrf_exempt
-@permission_classes([IsRole3User])
+@permission_classes([IsAdmin])
 @api_view(['DELETE'])
 def faculty_delete_view(request, id):
     faculty = get_object(id)

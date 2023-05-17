@@ -75,6 +75,10 @@ const TableList = (props) => {
     props.loadData(searchValue);
   };
 
+  useEffect(()=>{
+    props.loadData(searchValue)
+  },[searchValue])
+
   const renderTableHeader = () => {
     return (
       <>

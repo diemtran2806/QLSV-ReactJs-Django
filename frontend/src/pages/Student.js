@@ -5,7 +5,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import TableList from "../components/ListTable";
 import BodyBox from "../components/BodyBox";
-import StudentAddEdit from "../components/addEditStudent/";
+import StudentAddEdit from "../components/addEditStudent";
 import { useDispatch, useSelector } from "react-redux";
 import Loading from "../components/Loading";
 const StudentsPage = (props) => {
@@ -49,12 +49,18 @@ const StudentsPage = (props) => {
       }
     }
     const accessToken = user?.accessToken;
+    console.log(accessToken);
+    let headers = {"Content-Type": "application/json",}
+    if(accessToken != undefined) {
+      headers = {
+        Authorization: "Bearer " + accessToken,
+        "Content-Type": "application/json",
+      }
+    }
     axios({
       method: "get",
       url: url,
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: headers
     })
       .then((response) => {
         //data
