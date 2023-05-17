@@ -35,14 +35,16 @@ const StudentsPage = (props) => {
     });
   };
   //get all user load table
-  const loadData = (searchValue=null) => {
+  const loadData = (searchValue = null) => {
     let url = null;
-    if(searchValue){
-        url = `http://127.0.0.1:8000/api/student?search=${searchValue}`;
-    }else{
+    if (searchValue) {
+      console.log(123567);
+      url = `http://127.0.0.1:8000/api/student?search=${searchValue}`;
+    } else {
       if (idClass) {
         url = `http://127.0.0.1:8000/api/student/class/${idClass}`;
       } else {
+        console.log(123);
         url = `http://127.0.0.1:8000/api/student`;
       }
     }
@@ -80,6 +82,7 @@ const StudentsPage = (props) => {
         setLoading(false);
       })
       .catch((error) => {
+        console.log(url);
         console.log(error);
       });
   };
@@ -150,7 +153,7 @@ const StudentsPage = (props) => {
                 checkbox={true}
               />
             ) : (
-              <TableList key="user" data={students} loadData={loadData}/>
+              <TableList key="user" data={students} loadData={loadData} />
             )}
           </BodyBox>
 
