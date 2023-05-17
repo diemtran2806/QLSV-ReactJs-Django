@@ -1,5 +1,6 @@
 import classes from "./Input.module.css";
 import { useState } from "react";
+
 const Input = (props) => {
   const [focused, setFocused] = useState(false);
   const getBorderColor = () => {
@@ -17,6 +18,7 @@ const Input = (props) => {
       <label for={props.id} className={classes.label}>
         {props.label}
       </label>
+      {/* <div className={classes.inputWrapper}> */}
       <input
         className={classes.input}
         style={{
@@ -36,6 +38,8 @@ const Input = (props) => {
           setFocused(false);
         }}
       />
+      {/* {props.icon && <div className={classes.icon}>{props.icon}</div>} */}
+      {/* </div> */}
       {props.error && <div className={classes.error}>{props.error}</div>}
     </div>
   );

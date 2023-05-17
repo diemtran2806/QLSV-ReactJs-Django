@@ -120,7 +120,7 @@ const AddUser = (props) => {
         }
         onCancel={handleCancel}
         width={1000}
-        okText="Cập nhật"
+        okText="OK"
         cancelText="Hủy"
         okButtonProps={{ style: { backgroundColor: "#283c4e" } }}
         closable={false}

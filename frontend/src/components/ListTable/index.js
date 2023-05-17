@@ -25,7 +25,7 @@ const TableList = (props) => {
   const [detail, setDetail] = useState(props.detail);
   const [avatar, setAvatar] = useState(false);
   const [notShow, setNotShow] = useState(["id", "avatar"]);
-  const [searchValue, setSearchValue]=useState("");
+  const [searchValue, setSearchValue] = useState("");
   useEffect(() => {
     setData(props.data);
   }, [props.data]);
@@ -73,8 +73,6 @@ const TableList = (props) => {
     setSearchValue(event.target.value);
     props.loadData(searchValue);
   };
-
-
 
   const renderTableHeader = () => {
     return (
@@ -208,7 +206,7 @@ const TableList = (props) => {
 
   return data ? (
     <>
-      <Space wrap className={style['justify-content-between']}>
+      <Space wrap className={style["justify-content-between"]}>
         <Space wrap>
           {addButton ? (
             <Button onClick={props.create} type="primary">
@@ -237,7 +235,14 @@ const TableList = (props) => {
           )}
         </Space>
         <Space>
-          <Input size="large" placeholder="Tìm kiếm " maxLength={1000} prefix={<BiSearchAlt />}  value={searchValue} onChange={handleInputChange}/>
+          <Input
+            size="large"
+            placeholder="Tìm kiếm "
+            maxLength={1000}
+            prefix={<BiSearchAlt />}
+            value={searchValue}
+            onChange={() => handleInputChange}
+          />
         </Space>
       </Space>
       {data.length === 0 ? (
