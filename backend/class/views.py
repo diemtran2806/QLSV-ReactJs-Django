@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.views.decorators.csrf import csrf_exempt
 from django.http import Http404
+from django.db.models import Q
 from permissions.custom_permissions import IsRole2User, IsRole1User, IsRole3User, IsSameUser
 from .models import Class
 from .serializers import ClassSerializer, GetClassSerializer
@@ -20,7 +21,15 @@ def get_object(id):
 @csrf_exempt
 @api_view(['GET'])
 def classes_view(request):
-    classes = Class.objects.all()
+    search = request.GET.get('search', '')
+    if search != '':
+        classes = Class.objects.filter(
+            Q(class_name__icontains=search) |
+            Q(id_lecturer__id_user__name__icontains=search) |
+            Q(id_faculty__name_faculty__icontains=search)
+        )
+    else:
+        classes = Class.objects.all()
     serializer = GetClassSerializer(
         classes, many=True, context={'request': request}
     )

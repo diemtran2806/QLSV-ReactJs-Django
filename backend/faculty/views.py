@@ -22,7 +22,11 @@ class FacultyCreate(APIView):
 @csrf_exempt
 @api_view(['GET'])
 def faculties_view(request):
-    faculties = Faculty.objects.all()
+    search = request.GET.get('search', '')
+    if search != '':
+        faculties = Faculty.objects.filter(name_faculty__icontains=search)
+    else:
+        faculties = Faculty.objects.all()
     return Response(FacultySerializer(faculties, many=True).data)
 
 

@@ -4,6 +4,8 @@ from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import AccessToken
+from django.db.models import Q
+from datetime import datetime
 from .serializers import UserSerializer
 from django.contrib.auth import authenticate
 from permissions.custom_permissions import IsRole1User, IsRole2User, IsRole3User, IsSameUser
@@ -71,7 +73,38 @@ def users_view(request):
 
 @csrf_exempt
 @api_view(['GET'])
-def admin_view(request):
+def admin_view(request):    
+    search = request.GET.get('search')
+    if search:
+        search = search.lower()
+        try:
+            search_date = datetime.strptime(search, '%Y-%m-%d').date()
+            users = Users.objects.filter(
+                Q(id_role=3) &
+                Q(dob=search_date)
+            )
+        except ValueError:
+            users = Users.objects.filter(
+                Q(mssv__icontains=search) |
+                Q(email__icontains=search) |
+                Q(name__icontains=search) |
+                Q(phone__icontains=search) |
+                Q(address__icontains=search) |
+                Q(cccd__icontains=search)
+            )
+            gender = None
+            try:
+                if search == 'nam':
+                    gender = True
+                elif search == 'nữ':
+                    gender = False
+                users |= Users.objects.filter(Q(gender=gender))
+            except ValueError:
+                pass
+            users = users.filter(id_role=3)
+
+        return Response(UserSerializer(users, many=True).data)
+
     users = Users.objects.filter(id_role=3)
     return Response(UserSerializer(users, many=True).data)
 
