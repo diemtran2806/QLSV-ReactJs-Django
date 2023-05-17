@@ -1,4 +1,4 @@
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework import status
 from .serializers import LecturerSerializer, GetLecturerSerializer
@@ -7,6 +7,7 @@ from django.http import Http404
 from .models import Lecturer
 from users.models import Users
 from users.views import login_required
+from permissions.custom_permissions import IsRole1User, IsRole2User, IsRole3User, IsSameUser
 
 
 @csrf_exempt
@@ -27,6 +28,7 @@ def get_object(id):
 
 @csrf_exempt
 @api_view(['GET'])
+@permission_classes([IsRole3User | IsSameUser])
 def lecturer_view(request, id):
     lecturer = get_object(id)
     serializer = GetLecturerSerializer(lecturer)
@@ -46,7 +48,7 @@ def lecturer_view_by_faculty(request, id):
 
 @csrf_exempt
 @api_view(['POST'])
-@login_required
+@permission_classes([IsRole3User])
 def lecturer_create_view(request):
     data = request.data.copy()
     data['id_user']['id_role'] = 2
@@ -62,7 +64,7 @@ def lecturer_create_view(request):
 
 @csrf_exempt
 @api_view(['PUT'])
-@login_required
+@permission_classes([IsRole3User | IsSameUser])
 def lecturer_update_view(request, id):
     lecturer = get_object(id)
     serializer = LecturerSerializer(lecturer, data=request.data, partial=True)
@@ -77,7 +79,7 @@ def lecturer_update_view(request, id):
 
 @csrf_exempt
 @api_view(['DELETE'])
-@login_required
+@permission_classes([IsRole3User])
 def lecturer_delete_view(request, id):
     try:
         lecturer = get_object(id)

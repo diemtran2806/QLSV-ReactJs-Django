@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from faculty.serializers import FacultySerializer
 
 from lecturer.models import Lecturer
 from faculty.models import Faculty
@@ -69,3 +70,12 @@ class ClassSerializer(serializers.ModelSerializer):
         instance.save()
 
         return instance
+
+
+class GetClassSerializer(serializers.ModelSerializer):
+    id_lecturer = LecturerSerializer()
+    id_faculty = FacultySerializer()
+
+    class Meta:
+        model = Class
+        fields = ('id_class', 'class_name', 'id_lecturer', 'id_faculty')

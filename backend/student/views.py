@@ -1,12 +1,14 @@
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework import status
+
+from users.views import login_required
 from .serializers import StudentSerializer, GetStudentSerializer
 from django.views.decorators.csrf import csrf_exempt
+from permissions.custom_permissions import IsRole1User, IsRole2User, IsRole3User, IsSameUser
 from django.http import Http404
 from .models import Student
 from users.models import Users
-from users.views import login_required
 
 
 @csrf_exempt
@@ -27,6 +29,7 @@ def get_object(id):
 
 @csrf_exempt
 @api_view(['GET'])
+@permission_classes([IsRole3User | IsSameUser])
 def student_view(request, id):
     student = get_object(id)
     serializer = GetStudentSerializer(student)
@@ -44,7 +47,7 @@ def student_view_by_class(request, id_class):
 
 @csrf_exempt
 @api_view(['POST'])
-@login_required
+@permission_classes([IsRole3User])
 def student_create_view(request):
     data = request.data.copy()
     data['id_user']['id_role'] = 1
@@ -60,7 +63,7 @@ def student_create_view(request):
 
 @csrf_exempt
 @api_view(['PUT'])
-@login_required
+@permission_classes([IsRole3User | IsSameUser])
 def student_update_view(request, id):
     student = get_object(id)
     serializer = StudentSerializer(student, data=request.data, partial=True)
@@ -76,6 +79,7 @@ def student_update_view(request, id):
 @csrf_exempt
 @api_view(['DELETE'])
 @login_required
+@permission_classes([IsRole3User])
 def student_delete_view(request, id):
     try:
         student = get_object(id)

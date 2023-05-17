@@ -1,4 +1,4 @@
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -6,6 +6,7 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import AccessToken
 from .serializers import UserSerializer
 from django.contrib.auth import authenticate
+from permissions.custom_permissions import IsRole1User, IsRole2User, IsRole3User, IsSameUser
 from django.views.decorators.csrf import csrf_exempt
 from django.http import Http404
 from .models import Users
@@ -43,6 +44,7 @@ def logout_view(request):
         return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
+@permission_classes([IsRole3User])
 class RegisterView(APIView):
     def post(self, request):
         data = request.data.copy()
@@ -91,6 +93,7 @@ def user_view(request, id):
 
 @csrf_exempt
 @api_view(['PUT'])
+@permission_classes([IsRole3User | IsSameUser])
 def user_update_view(request, id):
     user = get_object(id)
     if user.is_authenticated:
@@ -108,6 +111,7 @@ def user_update_view(request, id):
 
 @csrf_exempt
 @api_view(['PATCH'])
+@permission_classes([IsRole3User | IsSameUser])
 def user_update_password_view(request, id):
     user = get_object(id)
     if user.is_authenticated:
@@ -125,6 +129,7 @@ def user_update_password_view(request, id):
 
 @csrf_exempt
 @api_view(['DELETE'])
+@permission_classes([IsRole3User])
 def user_delete_view(request, id):
     user = get_object(id)
     if user.is_authenticated:

@@ -1,13 +1,11 @@
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework import status
 from django.views.decorators.csrf import csrf_exempt
 from django.http import Http404
-from faculty.serializers import FacultySerializer
-
-from lecturer.serializers import LecturerSerializer
+from permissions.custom_permissions import IsRole2User, IsRole1User, IsRole3User, IsSameUser
 from .models import Class
-from .serializers import ClassSerializer
+from .serializers import ClassSerializer, GetClassSerializer
 from lecturer.models import Lecturer
 from faculty.models import Faculty
 
@@ -23,29 +21,21 @@ def get_object(id):
 @api_view(['GET'])
 def classes_view(request):
     classes = Class.objects.all()
-    class_data = []
-    for _class in classes:
-        class_dict = {
-            'id_class': _class.id_class,
-            'class_name': _class.class_name,
-            'lecturer': LecturerSerializer(_class.id_lecturer).data,
-            'faculty': FacultySerializer(_class.id_faculty).data,
-        }
-        class_data.append(class_dict)
-    return Response(class_data)
+    serializer = GetClassSerializer(
+        classes, many=True, context={'request': request}
+    )
+    return Response(serializer.data)
 
 
 @csrf_exempt
 @api_view(['GET'])
+@permission_classes([IsRole3User])
 def class_view(request, id):
     _class = get_object(id)
-    class_dict = {
-        'id_class': _class.id_class,
-        'class_name': _class.class_name,
-        'lecturer': LecturerSerializer(_class.id_lecturer).data,
-        'faculty': FacultySerializer(_class.id_faculty).data,
-    }
-    return Response(class_dict)
+    serializer = GetClassSerializer(
+        _class
+    )
+    return Response(serializer.data)
 
 
 @csrf_exempt
@@ -55,22 +45,13 @@ def class_view_by_faculty(request, id):
         classes = Class.objects.filter(id_faculty=id)
     except Class.DoesNotExist:
         raise Http404
-
-    class_data = []
-    for _class in classes:
-        class_dict = {
-            'id_class': _class.id_class,
-            'class_name': _class.class_name,
-            'lecturer': LecturerSerializer(_class.id_lecturer).data,
-            'faculty': FacultySerializer(_class.id_faculty).data,
-        }
-        class_data.append(class_dict)
-
-    return Response(class_data)
+    serializer = GetClassSerializer(classes, many=True,)
+    return Response(serializer.data)
 
 
 @csrf_exempt
 @api_view(['POST'])
+@permission_classes([IsRole3User])
 def class_create_view(request):
     serializer = ClassSerializer(data=request.data)
     if serializer.is_valid():
@@ -88,6 +69,7 @@ def class_create_view(request):
 
 @csrf_exempt
 @api_view(['PUT'])
+@permission_classes([IsRole3User])
 def class_update_view(request, id):
     _class = get_object(id)
     serializer = ClassSerializer(_class, data=request.data, partial=True)
@@ -106,6 +88,7 @@ def class_update_view(request, id):
 
 @csrf_exempt
 @api_view(['DELETE'])
+@permission_classes([IsRole3User])
 def class_delete_view(request, id):
     _class = get_object(id)
     _class.delete()
