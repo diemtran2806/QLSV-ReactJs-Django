@@ -4,7 +4,7 @@ from rest_framework import status
 from django.views.decorators.csrf import csrf_exempt
 from django.http import Http404
 from django.db.models import Q
-from permissions.custom_permissions import IsRole2User, IsRole1User, IsRole3User, IsSameUser
+from permissions.custom_permissions import IsLecturer, IsStudent, IsAdmin, IsSameUser
 from .models import Class
 from .serializers import ClassSerializer, GetClassSerializer
 from lecturer.models import Lecturer
@@ -38,7 +38,7 @@ def classes_view(request):
 
 @csrf_exempt
 @api_view(['GET'])
-@permission_classes([IsRole3User])
+@permission_classes([IsAdmin])
 def class_view(request, id):
     _class = get_object(id)
     serializer = GetClassSerializer(
@@ -60,7 +60,7 @@ def class_view_by_faculty(request, id):
 
 @csrf_exempt
 @api_view(['POST'])
-@permission_classes([IsRole3User])
+@permission_classes([IsAdmin])
 def class_create_view(request):
     serializer = ClassSerializer(data=request.data)
     if serializer.is_valid():
@@ -78,7 +78,7 @@ def class_create_view(request):
 
 @csrf_exempt
 @api_view(['PUT'])
-@permission_classes([IsRole3User])
+@permission_classes([IsAdmin])
 def class_update_view(request, id):
     _class = get_object(id)
     serializer = ClassSerializer(_class, data=request.data, partial=True)
@@ -97,7 +97,7 @@ def class_update_view(request, id):
 
 @csrf_exempt
 @api_view(['DELETE'])
-@permission_classes([IsRole3User])
+@permission_classes([IsAdmin])
 def class_delete_view(request, id):
     _class = get_object(id)
     _class.delete()

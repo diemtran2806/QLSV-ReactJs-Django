@@ -151,11 +151,9 @@ const LecturerAddEdit = (props) => {
         }
         
         if(isAdd){
-            data['is_admin'] = true
             data['id_user']['password'] = formValue.password
         }
 
-        console.log(data);
         axios(
             {
                 method: isAdd?'post':'put',
