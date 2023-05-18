@@ -251,7 +251,7 @@ const TableList = (props) => {
           )}
         </Space>
         <Space>
-          <Input
+          <Input 
             size="large"
             placeholder="Tìm kiếm "
             maxLength={1000}

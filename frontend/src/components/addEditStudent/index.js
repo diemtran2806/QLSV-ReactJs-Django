@@ -6,8 +6,8 @@ import axios from "axios";
 import { Select, Space, Button, message, Modal} from 'antd';
 import { useDispatch, useSelector } from "react-redux";
 import Loading from "../Loading/index";
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import DatePicker from "react-datepicker";
 import { format } from 'date-fns'
 const StudentAddEdit = (props) => {
     const [loading, setLoading] = useState(true);
@@ -320,14 +320,6 @@ const StudentAddEdit = (props) => {
                                 selected={startDate}             
                                 dateFormat="yyyy-MM-dd"
                             />
-                            {/* <Input
-                                label="Tài khoản"
-                                type="text"
-                                name="dob"
-                                id="dob"
-                                value={formValue.dob}
-                                onChange={handleInputChange}
-                            /> */}
                         </div>
                         <div className={ classnames(style['input-item'])}>
                             <div>Lớp SH</div>

@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import style from "./AddEdit.module.css"
 import classnames from 'classnames';
 import axios from "axios";
+import DatePicker from "react-datepicker";
+import { format } from 'date-fns'
 import { Select, Space, Button, message, Modal} from 'antd';
 import { useDispatch, useSelector } from "react-redux";
 import Loading from "../Loading/index";
@@ -12,8 +14,7 @@ const LecturerAddEdit = (props) => {
     const isAdd = props.isAdd;// add/update
     const updateId = props.id;// id user update
     const [faculties, setFaculties] = useState();
-    const [classes, setClasses] = useState();
-
+    const [startDate, setStartDate] = useState(new Date());
     const [messageApi, contextHolder] = message.useMessage();
     const success = () => {
       messageApi.open({
@@ -300,13 +301,15 @@ const LecturerAddEdit = (props) => {
                         </div>
                         <div className={ classnames(style['input-item'])}>
                             Ngày sinh
-                            <Input
-                                label="Tài khoản"
-                                type="text"
-                                name="dob"
-                                id="dob"
-                                value={formValue.dob}
-                                onChange={handleInputChange}
+                            <DatePicker 
+                                className={style.dateTimePicker}   
+                                onChange={(date) => {
+                                    const datePick = format(date, 'yyyy-MM-dd')
+                                    handleSelect(datePick,"dob")
+                                    setStartDate(date)
+                                }}
+                                selected={startDate}             
+                                dateFormat="yyyy-MM-dd"
                             />
                         </div>
                         <div className={ classnames(style['input-item'])}>

@@ -1,9 +1,11 @@
 import Input from "antd/es/input/Input";
 import { useEffect, useState } from "react";
-import style from "../../components/addEditClass/AddEdit.module.css";
+import style from "../../components/addEditStudent/AddEdit.module.css";
 import classnames from "classnames";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
+import DatePicker from "react-datepicker";
+import { format } from 'date-fns'
 import { Select, Space } from "antd";
 import { Button, Modal } from "antd";
 import defaultAvatar from "../../assets/images/defaultAvatar.jpg";
@@ -12,6 +14,7 @@ const AddUser = (props) => {
   const [isModalOpen, setIsModalOpen] = useState(true);
   const [updateId, setUpdateId] = useState(props.id); // id user update
   const user = useSelector((state) => state.auth.login.currentUser);
+  const [startDate, setStartDate] = useState(new Date());
 
   // const handleOk = () => {
   //   setIsModalOpen(false);
@@ -57,9 +60,14 @@ const AddUser = (props) => {
     });
   };
 
-  //chọn trong option
-  const handleSelect = (value) => {
-    console.log(`selected ${value}`);
+   //chọn trong option
+  const handleSelect = (value,name) => {
+      setFormValue((prevState) => {
+          return {
+            ...prevState,
+            [name]: value,
+          };
+      });
   };
 
   const addSubmitHandlerModal = () => {
@@ -219,13 +227,15 @@ const AddUser = (props) => {
         </div>
         <div className={classnames(style["input-item"])}>
           Ngày sinh
-          <Input
-            label="Tài khoản"
-            type="text"
-            name="dob"
-            id="dob"
-            value={formValue.dob}
-            onChange={handleInputChange}
+          <DatePicker 
+              className={style.dateTimePicker}   
+              onChange={(date) => {
+                  const datePick = format(date, 'yyyy-MM-dd')
+                  handleSelect(datePick,"dob")
+                  setStartDate(date)
+              }}
+              selected={startDate}             
+              dateFormat="yyyy-MM-dd"
           />
         </div>
       </Modal>
