@@ -8,4 +8,5 @@ urlpatterns = [
     path('/<int:id>/update', student_update_view),
     path('/<int:id>/delete', student_delete_view),
     path('/class/<int:id_class>', student_view_by_class),
+    path('/lecturer/<int:id_lecturer>', student_view_by_lecturer)
 ]

@@ -1,6 +1,7 @@
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.exceptions import PermissionDenied
 
 from users.views import login_required
 from .serializers import StudentSerializer, GetStudentSerializer
@@ -10,7 +11,9 @@ from django.http import Http404
 from django.db.models import Q
 from datetime import datetime
 from .models import Student
+from lecturer.models import Lecturer
 from users.models import Users
+from Class.models import Class
 
 
 @csrf_exempt
@@ -81,9 +84,13 @@ def get_object(id):
 
 @csrf_exempt
 @api_view(['GET'])
-@permission_classes([IsAdmin | IsSameUser  | IsLecturer])
+@permission_classes([IsAdmin | IsSameUser | IsLecturer])
 def student_view(request, id):
     student = get_object(id)
+    # Kiểm tra xem người dùng hiện tại có là giảng viên quản lý của sinh viên hay không
+    if student.id_class.id_lecturer.id_ != request.user:
+        raise PermissionDenied("You do not have permission to access this student.")
+
     serializer = GetStudentSerializer(student)
     return Response(serializer.data)
 
@@ -96,6 +103,19 @@ def student_view_by_class(request, id_class):
         students, many=True, context={'request': request})
     return Response(serializer.data)
 
+@csrf_exempt
+@api_view(['GET'])
+@permission_classes([IsLecturer | IsAdmin])
+def student_view_by_lecturer(request, id_lecturer):
+    if(IsLecturer().has_permission(request, None)):
+        lecturer = Lecturer.objects.get(id_user=request.user.id).id
+        print(lecturer,id_lecturer)
+        if(lecturer != id_lecturer):
+            return Response("Không có quyền truy cập.", status=status.HTTP_403_FORBIDDEN)
+    classes = Class.objects.filter(id_lecturer=id_lecturer)
+    students = Student.objects.filter(id_class__in=classes)
+    serializer = GetStudentSerializer(students, many=True, context={'request': request})
+    return Response(serializer.data)
 
 @csrf_exempt
 @api_view(['POST'])
