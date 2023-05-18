@@ -67,7 +67,7 @@ const LecturerAddEdit = (props) => {
     },[]);
 
     const loadData = () =>{
-        if(!props.isAdd){
+        if(!props.isAdd && props.id){
         const accessToken = user?.accessToken;
         axios
             ({
@@ -118,9 +118,9 @@ const LecturerAddEdit = (props) => {
             setLoading(false);
         }
     };
-    useEffect(()=>{
-        loadData()
-    },[isAdd])
+    // useEffect(()=>{
+    //     loadData()
+    // },[isAdd])
 
     useEffect(()=>{
         loadData()

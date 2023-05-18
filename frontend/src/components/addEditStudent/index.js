@@ -66,9 +66,9 @@ const StudentAddEdit = (props) => {
         });
     },[]);
 
-    useEffect(()=>{
-        loadData()
-    },[isAdd])
+    // useEffect(()=>{
+    //     loadData()
+    // },[isAdd])
 
     useEffect(()=>{
         loadData()
@@ -95,7 +95,7 @@ const StudentAddEdit = (props) => {
     },[props.open])
 
     const loadData = () =>{
-        if(!props.isAdd){
+        if(!props.isAdd && props.id){
             const accessToken = user?.accessToken;
             axios({
                 method: "get",
@@ -356,7 +356,7 @@ const StudentAddEdit = (props) => {
                             <Space wrap>
                                 <Button onClick={()=>props.setOpen(false)}>Cancel</Button>
                                 <Button 
-                                    onClick={handleAddUpdate}
+                                    onClick={()=>handleAddUpdate}
                                     style={{ backgroundColor: '#283c4e', borderColor: '#283c4e', color: "white" }}>
                                     {isAdd?'Thêm mới':'Cập nhật'}
                                 </Button>
