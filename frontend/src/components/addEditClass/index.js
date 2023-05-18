@@ -89,12 +89,12 @@ const ClassAddEdit = (props) => {
     },[]);
 
     const loadData = () =>{
-        if(!props.isAdd){
+        if(!props.isAdd && props.id){
             axios.get(`http://127.0.0.1:8000/api/class/${updateId}`, {
-            headers: {
-            'Authorization': 'Bearer ' + accessToken,
-            'Content-Type': 'application/json'
-            }
+                headers: {
+                    'Authorization': 'Bearer ' + accessToken,
+                    'Content-Type': 'application/json'
+                }
             })
             .then(response => {
             //data
@@ -114,9 +114,9 @@ const ClassAddEdit = (props) => {
         }
     };
 
-    useEffect(()=>{
-        loadData()
-    },[isAdd])
+    // useEffect(()=>{
+    //     loadData()
+    // },[isAdd])
 
     useEffect(()=>{
         if(isAdd){
@@ -160,7 +160,6 @@ const ClassAddEdit = (props) => {
                     'Content-Type': 'application/json'            
                 }
             }
-            
         )
         .then((response) => {
             console.log(response.status)

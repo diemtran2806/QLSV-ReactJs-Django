@@ -91,6 +91,7 @@ const MyProfile = () => {
   };
   const onSubmit = async (e) => {
     e.preventDefault();
+    showMess(false);
     console.log(form.avatar);
     const userUpd = {
       id: id,

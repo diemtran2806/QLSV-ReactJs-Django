@@ -67,7 +67,7 @@ const LecturerAddEdit = (props) => {
     },[]);
 
     const loadData = () =>{
-        if(!props.isAdd){
+        if(!props.isAdd && props.id){
         const accessToken = user?.accessToken;
         axios
             ({
@@ -118,9 +118,9 @@ const LecturerAddEdit = (props) => {
             setLoading(false);
         }
     };
-    useEffect(()=>{
-        loadData()
-    },[isAdd])
+    // useEffect(()=>{
+    //     loadData()
+    // },[isAdd])
 
     useEffect(()=>{
         loadData()
@@ -151,7 +151,7 @@ const LecturerAddEdit = (props) => {
         }
         
         if(isAdd){
-            data['id_user']['password'] = formValue.password
+            data['id_user']['password'] = "123456"
         }
 
         axios(
@@ -233,21 +233,7 @@ const LecturerAddEdit = (props) => {
                                 />
                             </div>
                         </div>
-                        {
-                            props.isAdd?
-                            <div className={classnames(style['input-item'])}>
-                                Mật khẩu
-                                <Input
-                                    label="Tài khoản"
-                                    type="password"
-                                    name="password"
-                                    id="password"
-                                    autoComplete="off"
-                                    value={formValue.password}
-                                    onChange={handleInputChange}
-                                />
-                            </div>:<></>
-                        }
+                        
                         <div className={style.row}>
                             <div className={classnames(style['input-item'], style.col50)}>
                                 Số điện thoại

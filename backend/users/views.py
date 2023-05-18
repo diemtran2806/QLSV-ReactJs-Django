@@ -73,6 +73,7 @@ def users_view(request):
 
 @csrf_exempt
 @api_view(['GET'])
+@permission_classes([IsAdmin])
 def admin_view(request):
     search = request.GET.get('search')
     if search:

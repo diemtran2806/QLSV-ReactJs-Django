@@ -84,7 +84,7 @@ def get_object(id):
 
 @csrf_exempt
 @api_view(['GET'])
-@permission_classes([IsAdmin | IsSameUser | IsLecturer])
+@permission_classes([IsAdmin | IsSameUser  | IsLecturer])
 def student_view(request, id):
     student = get_object(id)
     # Kiểm tra xem người dùng hiện tại có là giảng viên quản lý của sinh viên hay không
@@ -102,6 +102,7 @@ def student_view_by_class(request, id_class):
     serializer = GetStudentSerializer(
         students, many=True, context={'request': request})
     return Response(serializer.data)
+
 
 @csrf_exempt
 @api_view(['GET'])

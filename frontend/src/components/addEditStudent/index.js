@@ -66,9 +66,9 @@ const StudentAddEdit = (props) => {
         });
     },[]);
 
-    useEffect(()=>{
-        loadData()
-    },[isAdd])
+    // useEffect(()=>{
+    //     loadData()
+    // },[isAdd])
 
     useEffect(()=>{
         loadData()
@@ -95,7 +95,7 @@ const StudentAddEdit = (props) => {
     },[props.open])
 
     const loadData = () =>{
-        if(!props.isAdd){
+        if(!props.isAdd && props.id){
             const accessToken = user?.accessToken;
             axios({
                 method: "get",
@@ -157,7 +157,7 @@ const StudentAddEdit = (props) => {
             }
         }
         if(isAdd){
-            data['id_user']['password'] = formValue.password
+            data['id_user']['password'] = "123456"
         }
 
         console.log(data);
@@ -171,7 +171,6 @@ const StudentAddEdit = (props) => {
                     'Content-Type': 'application/json'            
                 }
             }
-            
         )
         .then((response) => {
             console.log(response.status)
@@ -227,7 +226,7 @@ const StudentAddEdit = (props) => {
                             </div>
                             <div className={classnames(style['input-item'], style.col50)}>
                                 Tên
-                                <Input
+                                <Input  
                                     label="Tài khoản"
                                     type="text"
                                     name="name"
@@ -237,21 +236,6 @@ const StudentAddEdit = (props) => {
                                 />
                             </div>
                         </div>
-                        {
-                            props.isAdd?
-                            <div className={classnames(style['input-item'])}>
-                                Mật khẩu
-                                <Input
-                                    label="Tài khoản"
-                                    type="password"
-                                    name="password"
-                                    id="password"
-                                    autoComplete="off"
-                                    value={formValue.password}
-                                    onChange={handleInputChange}
-                                />
-                            </div>:<></>
-                        }
                         <div className={style.row}>
                             <div className={classnames(style['input-item'], style.col50)}>
                                 Số điện thoại
@@ -356,7 +340,7 @@ const StudentAddEdit = (props) => {
                             <Space wrap>
                                 <Button onClick={()=>props.setOpen(false)}>Cancel</Button>
                                 <Button 
-                                    onClick={handleAddUpdate}
+                                    onClick={()=>handleAddUpdate}
                                     style={{ backgroundColor: '#283c4e', borderColor: '#283c4e', color: "white" }}>
                                     {isAdd?'Thêm mới':'Cập nhật'}
                                 </Button>

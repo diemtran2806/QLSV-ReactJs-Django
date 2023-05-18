@@ -113,16 +113,9 @@ const LoginPage = () => {
         icon={<BiShow />}
         error={errors.password}
       />
-      <div className={classes.wrapperText}>
-        <div
-          className={classes.showHidePass}
-          onClick={() => navigate("/changePassword")}
-        >
-          Quên mật khẩu?
-        </div>
-        <div className={classes.showHidePass} onClick={showHidePassHandler}>
-          {textShowHide}
-        </div>
+      
+      <div className={classes.showHidePass} onClick={showHidePassHandler}>
+        {textShowHide}
       </div>
       {errorLogin && <div className={classes.errorLogin}>{errorLogin}</div>}
       <div className={classes.wrapperBtn}>

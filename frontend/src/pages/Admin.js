@@ -85,6 +85,7 @@ const AdminPage = () => {
   };
 
   const addSubmitHandler = async (admin) => {
+    showMess(false);
     try {
       // Gọi API để thêm user xuống server
       console.log("admin ne:", admin);
@@ -108,6 +109,8 @@ const AdminPage = () => {
       setAdmins([...admins, admin]);
       getAllAdmin();
       showMess(true);
+      setShowModal(false);
+
     } catch (error) {
       console.error(error);
     }
@@ -126,6 +129,7 @@ const AdminPage = () => {
   }, [mess, messageApi]);
 
   const deleteSubmitHandler = async (id) => {
+    showMess(false);
     try {
       const response = await fetch(
         `http://127.0.0.1:8000/api/users/${id}/delete`,
@@ -153,6 +157,7 @@ const AdminPage = () => {
   };
 
   const handleDeleteMul = (listDel) => {
+    showMess(false);
     console.log("hihihi");
     listDel.map((item) => {
       deleteSubmitHandler(item);
@@ -163,6 +168,7 @@ const AdminPage = () => {
   };
 
   const updateSubmitHandler = async (admin, id) => {
+    showMess(false);
     try {
       const response = await fetch(
         `http://127.0.0.1:8000/api/users/${id}/update`,
@@ -192,6 +198,7 @@ const AdminPage = () => {
       });
       getAllAdmin();
       showMess(true);
+      setShowModalUpdate(false)
     } catch (error) {
       console.error(error);
     }
