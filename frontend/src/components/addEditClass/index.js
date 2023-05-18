@@ -198,8 +198,7 @@ const ClassAddEdit = (props) => {
                             <div className={style['model-header']}>{isAdd?"Thêm ":"Cập nhật "} lớp sinh hoạt</div>
                         </div>
                         
-                        <div className={style.row}>
-                            <div className={classnames(style['input-item'], style.col50)}>
+                            <div className={ classnames(style['input-item'])}>
                                 Tên
                                 <Input
                                     label="Tài khoản"
@@ -210,36 +209,37 @@ const ClassAddEdit = (props) => {
                                     onChange={handleInputChange}
                                 />
                             </div>
-                        </div>
                         
                        
-                        <div className={ classnames(style['input-item'])}>
-                            <div>
-                                Khoa
-                            </div>
-                            <Space wrap>
-                                <Select
-                                name="id_faculty"
-                                value={formValue.id_faculty}
-                                style={{ width: 120 }}
-                                onChange={(value)=>handleSelect(value,"id_faculty")}
-                                options={faculty}
-                                />
-                            </Space>
-                        </div>
-                       
-                       
-                        <div className={ classnames(style['input-item'])}>
-                            <div>Giáo viên chủ nhiệm</div>
+                        <div className={style.flexRow}>
+                            <div className={ classnames(style['input-item'])}>
+                                <div>
+                                    Khoa
+                                </div>
                                 <Space wrap>
                                     <Select
-                                        name="id_lecturer"
-                                        value={formValue.id_lecturer}
-                                        style={{ width: 120 }}
-                                        onChange={(value)=>handleSelect(value,"id_lecturer")}
-                                        options={lecturer}
+                                    name="id_faculty"
+                                    value={formValue.id_faculty}
+                                    style={{ width: 300 }}
+                                    onChange={(value)=>handleSelect(value,"id_faculty")}
+                                    options={faculty}
                                     />
                                 </Space>
+                            </div>
+                        
+                        
+                            <div className={ classnames(style['input-item'])}>
+                                <div>Giáo viên chủ nhiệm</div>
+                                    <Space wrap>
+                                        <Select
+                                            name="id_lecturer"
+                                            value={formValue.id_lecturer}
+                                            style={{ width: 300 }}
+                                            onChange={(value)=>handleSelect(value,"id_lecturer")}
+                                            options={lecturer}
+                                        />
+                                    </Space>
+                            </div>
                         </div>
 
                         <div className={style.buttonWrap}>
