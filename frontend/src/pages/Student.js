@@ -5,7 +5,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import TableList from "../components/ListTable";
 import BodyBox from "../components/BodyBox";
-import StudentAddEdit from "../components/addEditStudent";
+import StudentAddEdit from "../components/addEditStudent/";
 import { useDispatch, useSelector } from "react-redux";
 import Loading from "../components/Loading";
 const StudentsPage = (props) => {
@@ -38,33 +38,27 @@ const StudentsPage = (props) => {
   const loadData = (searchValue = null) => {
     let url = null;
     if (searchValue) {
-      console.log(123567);
       url = `http://127.0.0.1:8000/api/student?search=${searchValue}`;
     } else {
       if (idClass) {
         url = `http://127.0.0.1:8000/api/student/class/${idClass}`;
       } else {
-        console.log(123);
         url = `http://127.0.0.1:8000/api/student`;
       }
     }
     const accessToken = user?.accessToken;
-    console.log(accessToken);
-    let headers = {"Content-Type": "application/json",}
-    if(accessToken != undefined) {
-      headers = {
-        Authorization: "Bearer " + accessToken,
-        "Content-Type": "application/json",
-      }
-    }
     axios({
       method: "get",
       url: url,
-      headers: headers
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: isAdmin?"Bearer " + accessToken:null,
+      },
     })
       .then((response) => {
         //data
         let data = [];
+        console.log("data sinh vien",response.data)
         response.data.map((student, index) => {
           const user = student.id_user;
           const stu = {
@@ -79,8 +73,10 @@ const StudentsPage = (props) => {
             "Ngày sinh": user.dob,
             "Địa chỉ": user.address,
             avatar: user.avatar,
-            "Điểm trung bình": student.avg_score,
           };
+          if(isAdmin){
+            stu['Điểm TB'] = student.avg_score
+          }
           data.push(stu);
         });
         setStudents(data);
