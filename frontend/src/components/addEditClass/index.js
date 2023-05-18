@@ -160,7 +160,6 @@ const ClassAddEdit = (props) => {
                     'Content-Type': 'application/json'            
                 }
             }
-            
         )
         .then((response) => {
             console.log(response.status)
