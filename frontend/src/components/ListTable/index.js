@@ -239,11 +239,13 @@ const TableList = (props) => {
             <></>
           )}
           {myClassButton ? (
+            props.isMyClass?
+            <Button onClick={props.isLecturer} type="primary">
+            Tất cả lớp
+            </Button>:
             <Button onClick={props.isLecturer} type="primary">
               Lớp của tôi
-            </Button>
-           
-            
+          </Button>
             ) : (
             <></>
           )}

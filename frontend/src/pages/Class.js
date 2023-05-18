@@ -135,7 +135,7 @@ const ClassPage = (props) => {
                 isAdmin?
                 <TableList key="admin" data={classs}  create={handleCreateActive} update={handleUpdateActive} delete={handleDelete} deleteMul={handleDeleteMul} checkbox={true} addButton={true} detail={"/student"} loadData={loadData} myClassButton={lecturerId?true:false}/>:
                 lecturerId?
-                <TableList key="user" data={classs} loadData={loadData} isLecturer = {myClassClickHandle}  detail={"/student"}/>:
+                <TableList key="user" data={classs} loadData={loadData} isLecturer = {myClassClickHandle} isMyClass={isMyClass}  detail={"/student"}/>:
                 <TableList key="user" data={classs} loadData={loadData} detail={"/student"} />
                 
               }
