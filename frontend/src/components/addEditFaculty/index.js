@@ -151,7 +151,7 @@ const FacultyAddEdit = (props) => {
                     <>
                         <div>
                             <div className={style.rel}></div>
-                            <div className={style['model-header']}>Cập nhật lớp học</div>
+                            <div className={style['model-header']}>{isAdd?"Thêm ":"Cập nhật "} Khoa</div>
                         </div>
                         
                         <div className={classnames(style['input-item'])}>

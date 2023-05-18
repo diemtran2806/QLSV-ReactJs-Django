@@ -1,5 +1,6 @@
 import React from "react";
 import { useSearchParams, useParams} from "react-router-dom";
+import { useLocation } from 'react-router-dom';
 import {  Button, Modal, Skeleton, Space, message} from "antd";
 import axios from "axios";
 import { useState, useEffect } from "react";
@@ -19,6 +20,11 @@ const ClassPage = (props) => {
   const [isModal,setIsModal] = useState(false);
   const [isAdd, setIsAdd] = useState(false);// add/update
   const [updateId,setUpdateId] = useState();// id user update
+
+  const location = useLocation();
+  const hasLecturer = location.pathname.includes('/lecturer');
+  const [lecturerId,setLecturerId] = useState(user.user.id_role == 2?user.user.id:null);// id user update
+  const [isMyClass, setIsMyClass] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
   const success = () => {
     messageApi.open({
@@ -27,18 +33,32 @@ const ClassPage = (props) => {
       duration: 10,
     });
   };
+
+  const myClassClickHandle = ()=>{
+    console.log("huhuhuhuhgu")
+    setIsMyClass(!isMyClass);
+    loadData();
+    return isMyClass;
+  }
   //get all user load table
   const loadData = (searchValue = null) => {
     let url = null;
-    if(searchValue){
-      url = `http://127.0.0.1:8000/api/class?search=${searchValue}`;
-    }else{
-      if(idFaculty){
-        url = `http://127.0.0.1:8000/api/class/${idFaculty}/faculty`;
+     
+    if(isMyClass && lecturerId){
+      url = `http://127.0.0.1:8000/api/class/${lecturerId}/lecturer`;
+    }
+    else{
+      if(searchValue){
+        url = `http://127.0.0.1:8000/api/class?search=${searchValue}`;
       }else{
-        url = `http://127.0.0.1:8000/api/class`;
+        if(idFaculty){
+          url = `http://127.0.0.1:8000/api/class/${idFaculty}/faculty`;
+        }else{
+          url = `http://127.0.0.1:8000/api/class`;
+        }
       }
     }
+    console.log(url)
     axios.get(url)
       .then(response => {
         //data
@@ -114,8 +134,11 @@ const ClassPage = (props) => {
               
               {
                 isAdmin?
-                <TableList key="admin" data={classs}  create={handleCreateActive} update={handleUpdateActive} delete={handleDelete} deleteMul={handleDeleteMul} checkbox={true} addButton={true} detail={"/student"} loadData={loadData}/>:
-                <TableList key="user" data={classs} loadData={loadData}/>
+                <TableList key="admin" data={classs}  create={handleCreateActive} update={handleUpdateActive} delete={handleDelete} deleteMul={handleDeleteMul} checkbox={true} addButton={true} detail={"/student"} loadData={loadData} myClassButton={lecturerId?true:false}/>:
+                lecturerId?
+                <TableList key="user" data={classs} loadData={loadData} isLecturer = {myClassClickHandle}  detail={"/student"}/>:
+                <TableList key="user" data={classs} loadData={loadData} detail={"/student"} />
+                
               }
             </BodyBox>
             

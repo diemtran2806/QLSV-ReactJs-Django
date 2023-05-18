@@ -88,7 +88,7 @@ def get_object(id):
 def student_view(request, id):
     student = get_object(id)
     # Kiểm tra xem người dùng hiện tại có là giảng viên quản lý của sinh viên hay không
-    if student.id_class.id_lecturer.id_ != request.user:
+    if (student.id_class.id_lecturer.id_user != request.user) and (request.user.id_role.id_role != 3):
         raise PermissionDenied("You do not have permission to access this student.")
 
     serializer = GetStudentSerializer(student)

@@ -195,7 +195,7 @@ const ClassAddEdit = (props) => {
                     <>
                         <div>
                             <div className={style.rel}></div>
-                            <div className={style['model-header']}>Cập nhật lớp học</div>
+                            <div className={style['model-header']}>{isAdd?"Thêm ":"Cập nhật "} lớp sinh hoạt</div>
                         </div>
                         
                         <div className={style.row}>

@@ -15,7 +15,7 @@ const StudentsPage = (props) => {
   const user = useSelector((state) => state.auth.login.currentUser);
   const [isAdmin, setIsAdmin] = useState(
     user
-      ? user.user.id_role == 3 || user.user.id_role == 2
+      ? user.user.id_role == 3 
         ? true
         : false
       : false
@@ -26,6 +26,7 @@ const StudentsPage = (props) => {
   const [isAdd, setIsAdd] = useState(false); // add/update
   const [updateId, setUpdateId] = useState(); // id user update
   const [messageApi, contextHolder] = message.useMessage();
+  const [isUpdate, setIsUpdate] = useState(false);
   const success = () => {
     messageApi.open({
       type: "success",
@@ -34,7 +35,48 @@ const StudentsPage = (props) => {
       duration: 10,
     });
   };
-  //get all user load table
+  //check lecture class
+  useEffect(()=>{
+    if(idClass){
+      const accessToken = user?.accessToken;
+      const url = `http://127.0.0.1:8000/api/class/${user.user.id}/lecturer` 
+
+      axios({
+        method: "get",
+        url: url,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + accessToken,
+        },
+      })
+      .then((response) => {
+        //data
+        let data = [];
+        response.data.map((lecturer, index) => {
+          const clas = lecturer.id_class;
+          data.push(clas);
+        });
+        console.log(typeof(idClass))
+        console.log("huhuhu ",data)
+        if(data.find(element => element === parseInt(idClass))){
+          console.log("huhuhu có nha có nha")
+          setIsUpdate(true)
+        }
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.log(url);
+        console.log(error);
+      });
+    }else{
+      setIsUpdate(false)
+    }
+    // get all class off lecturer
+    //keem tra xem idclass cos trong lecturer ddos khoong neeus cos thif theem update
+
+  },[idClass])
+
+
   const loadData = (searchValue = null) => {
     let url = null;
     if (searchValue) {
@@ -141,7 +183,7 @@ const StudentsPage = (props) => {
       ) : (
         <>
           <BodyBox>
-            {isAdmin ? (
+            {isAdmin ? 
               <TableList
                 loadData={loadData}
                 key="admin"
@@ -153,9 +195,18 @@ const StudentsPage = (props) => {
                 addButton={true}
                 checkbox={true}
               />
-            ) : (
+            : 
+            isUpdate?
+            <TableList
+              loadData={loadData}
+              key="admin"
+              data={students}
+              create={handleCreateActive}
+              update={handleUpdateActive}
+              addButton={true}
+            />:
               <TableList key="user" data={students} loadData={loadData} />
-            )}
+            }
           </BodyBox>
 
           <StudentAddEdit

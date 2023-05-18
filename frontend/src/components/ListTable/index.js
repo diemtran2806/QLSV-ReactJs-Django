@@ -5,22 +5,23 @@ import tableStyle from "./ListTable.module.css";
 import { HiPencilSquare } from "react-icons/hi2";
 import { RiDeleteBinFill } from "react-icons/ri";
 import { BiSearchAlt } from "react-icons/bi";
+import { NavLink } from "react-router-dom";
 import { FaInfoCircle } from "react-icons/fa";
 import {} from "antd";
 import { Space, Button, Popconfirm, Input } from "antd";
 import { IoIosAddCircle } from "react-icons/io";
 import { ImBin2 } from "react-icons/im";
 import style from "./ListTable.module.css";
-
+import { BsFillHeartFill } from "react-icons/bs";
 const TableList = (props) => {
   const [data, setData] = useState(props.data);
   const [checked, setChecked] = useState([]);
   const [isCheckAll, setIsCheckAll] = useState(false);
   const [header, setHeader] = useState([]);
   const [update, setUpdate] = useState(typeof props.update === "function");
-
   const [del, setDel] = useState(typeof props.delete === "function");
-  const [addButton, setAdd] = useState(props.addButton);
+  const [addButton, setAddButton] = useState(props.addButton);
+  const [myClassButton, setMyClassButton] = useState(typeof props.isLecturer === "function");
   const [checkbox, setCheckbox] = useState(props.checkbox);
   const [detail, setDetail] = useState(props.detail);
   const [avatar, setAvatar] = useState(false);
@@ -236,6 +237,16 @@ const TableList = (props) => {
               </Button>
             </Popconfirm>
           ) : (
+            <></>
+          )}
+          {myClassButton ? (
+            <Button onClick={props.isLecturer} type="primary">
+              Lớp của tôi
+              <BsFillHeartFill />
+            </Button>
+           
+            
+            ) : (
             <></>
           )}
         </Space>

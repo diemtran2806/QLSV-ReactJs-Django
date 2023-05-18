@@ -6,13 +6,16 @@ import axios from "axios";
 import { Select, Space, Button, message, Modal} from 'antd';
 import { useDispatch, useSelector } from "react-redux";
 import Loading from "../Loading/index";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { format } from 'date-fns'
 const StudentAddEdit = (props) => {
     const [loading, setLoading] = useState(true);
     const [formValue, setFormValue] = useState();
     const isAdd = props.isAdd;// add/update
     const updateId = props.id;// id user update
     const [classes, setClasses] = useState();
-
+    const [startDate, setStartDate] = useState(new Date());
     const [messageApi, contextHolder] = message.useMessage();
     const success = () => {
       messageApi.open({
@@ -32,6 +35,8 @@ const StudentAddEdit = (props) => {
           };
         });
     };
+
+
 
     //chọn trong option
     const handleSelect = (value,name) => {
@@ -122,11 +127,13 @@ const StudentAddEdit = (props) => {
                     classId : data.id_class.id_class,
                     avatar : data.id_user.avatar 
                 }
+                const dateSplit = data.id_user.dob.split("-")
+                setStartDate(new Date(dateSplit[0],dateSplit[1],dateSplit[2]))
                 setFormValue(form);
                 setLoading(false);
             })
             .catch(error => {
-                console.log(error);
+                console.log(error);     
             });
         }
     };
@@ -206,12 +213,13 @@ const StudentAddEdit = (props) => {
                     <>
                         <div>
                             <div className={style.rel}></div>
-                            <div className={style['model-header']}>Cập nhật sinh viên</div>
+                            <div className={style['model-header']}>{isAdd?"Thêm ":"Cập nhật "} sinh viên</div>
                         </div>
                         <div className={style.avatarWrap}>
                             <img className={style.avatar} src={formValue.avatar} alt="Logo" />
                         </div>  
                         <input type="text"/>
+
                         <div className={style.row}>
                             <div className={classnames(style['input-item'], style.col50)}>
                                 MSSV
@@ -302,14 +310,24 @@ const StudentAddEdit = (props) => {
                         </div>
                         <div className={ classnames(style['input-item'])}>
                             Ngày sinh
-                            <Input
+                            <DatePicker 
+                                className={style.dateTimePicker}   
+                                onChange={(date) => {
+                                    const datePick = format(date, 'yyyy-MM-dd')
+                                    handleSelect(datePick,"dob")
+                                    setStartDate(date)
+                                }}
+                                selected={startDate}             
+                                dateFormat="yyyy-MM-dd"
+                            />
+                            {/* <Input
                                 label="Tài khoản"
                                 type="text"
                                 name="dob"
                                 id="dob"
                                 value={formValue.dob}
                                 onChange={handleInputChange}
-                            />
+                            /> */}
                         </div>
                         <div className={ classnames(style['input-item'])}>
                             <div>Lớp SH</div>
@@ -340,15 +358,15 @@ const StudentAddEdit = (props) => {
                             <Space wrap>
                                 <Button onClick={()=>props.setOpen(false)}>Cancel</Button>
                                 <Button 
-                                    onClick={()=>handleAddUpdate}
+                                    onClick={handleAddUpdate}
                                     style={{ backgroundColor: '#283c4e', borderColor: '#283c4e', color: "white" }}>
                                     {isAdd?'Thêm mới':'Cập nhật'}
                                 </Button>
                             </Space>    
                         </div>
+                       
                     </>
                 }
-                
             </Modal>
 
             </>

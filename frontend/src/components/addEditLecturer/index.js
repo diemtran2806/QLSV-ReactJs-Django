@@ -203,7 +203,7 @@ const LecturerAddEdit = (props) => {
                     <>
                         <div>
                             <div className={style.rel}></div>
-                            <div className={style['model-header']}>Cập nhật sinh viên</div>
+                            <div className={style['model-header']}>{isAdd?"Thêm ":"Cập nhật "} giảng viên</div>
                         </div>
                         <div className={style.avatarWrap}>
                             <img className={style.avatar} src={formValue.avatar} alt="Logo" />

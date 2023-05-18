@@ -4,6 +4,7 @@ from rest_framework import status
 from django.views.decorators.csrf import csrf_exempt
 from django.http import Http404
 from django.db.models import Q
+from users.models import Users
 from permissions.custom_permissions import IsLecturer, IsStudent, IsAdmin, IsSameUser
 from .models import Class
 from .serializers import ClassSerializer, GetClassSerializer
@@ -51,7 +52,7 @@ def class_view(request, id):
 @api_view(['GET'])
 def class_view_by_faculty(request, id):
     try:
-        classes = Class.objects.filter(id_faculty=id)
+        classes = Class.objects.get(id_faculty=id)
     except Class.DoesNotExist:
         raise Http404
     serializer = GetClassSerializer(classes, many=True,)
@@ -60,8 +61,9 @@ def class_view_by_faculty(request, id):
 @csrf_exempt
 @api_view(['GET'])
 def class_view_by_lecturer(request, id):
+    lecturer = Lecturer.objects.get(id_user=id)
     try:
-        classes = Class.objects.filter(id_lecturer=id)
+        classes = Class.objects.filter(id_lecturer=lecturer.id)
     except Class.DoesNotExist:
         raise Http404
     serializer = GetClassSerializer(classes, many=True,)
