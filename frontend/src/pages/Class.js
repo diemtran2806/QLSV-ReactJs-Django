@@ -35,16 +35,15 @@ const ClassPage = (props) => {
   };
 
   const myClassClickHandle = ()=>{
-    console.log("huhuhuhuhgu")
-    setIsMyClass(!isMyClass);
-    loadData();
-    return isMyClass;
+      loadData(null,!isMyClass);
+      setIsMyClass(!isMyClass)
+
   }
   //get all user load table
-  const loadData = (searchValue = null) => {
+  const loadData = (searchValue = null, isMyClass_=null) => {
     let url = null;
      
-    if(isMyClass && lecturerId){
+    if(isMyClass_ && lecturerId){
       url = `http://127.0.0.1:8000/api/class/${lecturerId}/lecturer`;
     }
     else{

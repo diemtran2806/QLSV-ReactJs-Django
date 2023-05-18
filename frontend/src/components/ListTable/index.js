@@ -12,7 +12,6 @@ import { Space, Button, Popconfirm, Input } from "antd";
 import { IoIosAddCircle } from "react-icons/io";
 import { ImBin2 } from "react-icons/im";
 import style from "./ListTable.module.css";
-import { BsFillHeartFill } from "react-icons/bs";
 const TableList = (props) => {
   const [data, setData] = useState(props.data);
   const [checked, setChecked] = useState([]);
@@ -242,7 +241,6 @@ const TableList = (props) => {
           {myClassButton ? (
             <Button onClick={props.isLecturer} type="primary">
               Lớp của tôi
-              <BsFillHeartFill />
             </Button>
            
             
