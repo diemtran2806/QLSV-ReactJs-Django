@@ -9,7 +9,7 @@ from datetime import datetime
 from .models import Lecturer
 from users.models import Users
 from users.views import login_required
-from permissions.custom_permissions import IsRole1User, IsRole2User, IsRole3User, IsSameUser
+from permissions.custom_permissions import IsStudent, IsLecturer, IsAdmin, IsSameUser
 
 
 @csrf_exempt
@@ -61,7 +61,7 @@ def get_object(id):
 
 @csrf_exempt
 @api_view(['GET'])
-@permission_classes([IsRole3User | IsSameUser])
+@permission_classes([IsAdmin | IsSameUser])
 def lecturer_view(request, id):
     lecturer = get_object(id)
     serializer = GetLecturerSerializer(lecturer)
@@ -81,10 +81,11 @@ def lecturer_view_by_faculty(request, id):
 
 @csrf_exempt
 @api_view(['POST'])
-@permission_classes([IsRole3User])
+@permission_classes([IsAdmin])
 def lecturer_create_view(request):
     data = request.data.copy()
     data['id_user']['id_role'] = 2
+    print(data)
     serializer = LecturerSerializer(data=data)
     if serializer.is_valid():
         try:
@@ -97,7 +98,7 @@ def lecturer_create_view(request):
 
 @csrf_exempt
 @api_view(['PUT'])
-@permission_classes([IsRole3User | IsSameUser])
+@permission_classes([IsAdmin | IsSameUser])
 def lecturer_update_view(request, id):
     lecturer = get_object(id)
     serializer = LecturerSerializer(lecturer, data=request.data, partial=True)
@@ -112,7 +113,7 @@ def lecturer_update_view(request, id):
 
 @csrf_exempt
 @api_view(['DELETE'])
-@permission_classes([IsRole3User])
+@permission_classes([IsAdmin])
 def lecturer_delete_view(request, id):
     try:
         lecturer = get_object(id)

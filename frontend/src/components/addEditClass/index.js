@@ -90,15 +90,20 @@ const ClassAddEdit = (props) => {
 
     const loadData = () =>{
         if(!props.isAdd){
-            axios.get(`http://127.0.0.1:8000/api/class/${updateId}`)
+            axios.get(`http://127.0.0.1:8000/api/class/${updateId}`, {
+            headers: {
+            'Authorization': 'Bearer ' + accessToken,
+            'Content-Type': 'application/json'
+            }
+            })
             .then(response => {
             //data
                 const data = response.data;
                 let form = {
                     id_class: data.id_class,
                     class_name: data.class_name,
-                    id_faculty:data.faculty.id_faculty,
-                    id_lecturer: data.lecturer.id
+                    id_faculty:data.id_faculty.id_faculty,
+                    id_lecturer: data.id_lecturer.id
                 }
                 setFormValue(form);
                 setLoading(false);

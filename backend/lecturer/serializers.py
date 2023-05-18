@@ -15,7 +15,7 @@ class LecturerSerializer(serializers.ModelSerializer):
         dob = user_data.pop('dob', None)
         id_role = user_data.pop('id_role', None)
         instance_user = Users.objects.create(**user_data, id_role=id_role)
-
+        print("xxx")
         if password is not None:
             instance_user.set_password(password)
 
