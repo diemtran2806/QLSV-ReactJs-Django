@@ -119,9 +119,11 @@ const LecturerAddEdit = (props) => {
             setLoading(false);
         }
     };
-    // useEffect(()=>{
-    //     loadData()
-    // },[isAdd])
+    useEffect(()=>{
+        if(isAdd){
+            loadData()
+        }
+    },[props.open])
 
     useEffect(()=>{
         loadData()
