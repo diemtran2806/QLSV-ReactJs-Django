@@ -52,10 +52,10 @@ def class_view(request, id):
 @api_view(['GET'])
 def class_view_by_faculty(request, id):
     try:
-        classes = Class.objects.get(id_faculty=id)
+        classes = Class.objects.filter(id_faculty=id)
     except Class.DoesNotExist:
         raise Http404
-    serializer = GetClassSerializer(classes, many=True,)
+    serializer = GetClassSerializer(classes, many=True)
     return Response(serializer.data)
 
 @csrf_exempt
