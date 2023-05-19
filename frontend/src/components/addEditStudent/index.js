@@ -25,6 +25,13 @@ const StudentAddEdit = (props) => {
       });
     };
 
+    const error = () => {
+        messageApi.open({
+          type: 'error',
+          content: 'This is an error message',
+        });
+    };
+    
     const user = useSelector((state) => state.auth.login.currentUser);
     const handleInputChange = (event) => {
         const { name, value } = event.target;
@@ -193,7 +200,32 @@ const StudentAddEdit = (props) => {
             }
         })
         .catch((error) => {
-          console.log(error);
+          if(error.response.status===400){
+            let time = 5;
+            let errordata = error.response.data
+            console.log(error)
+            if(errordata.avg_score){
+                message.error("Điểm TB: "+error.response.data.avg_score[0],time);
+            }
+            if(errordata.id_class){
+                message.error("Lớp sinh hoạt: "+error.response.data.id_class[0],time++);
+            }
+            if(errordata.id_user){
+                let errId_user = errordata.id_user
+                if(errId_user.dob){
+                    message.error("Ngày sinh: "+errId_user.dob[0],time++);
+                }
+                if(errId_user.email){
+                    message.error("Email: "+errId_user.email[0],time++);
+                }
+                if(errId_user.name){
+                    message.error("Tên: "+errId_user.name[0],time++);
+                }
+                if(errId_user.phone){
+                    message.error("Số điện thoại"+errId_user.phone[0],time++);
+                }
+            }
+          }
         });
     }
     return(
